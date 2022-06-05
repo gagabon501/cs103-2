@@ -14,8 +14,8 @@ using namespace std;
 // Structure definitions here
 
 // Function prototypes here
-int showMainMenu();
-int showLoginMenu();
+int showMainMenu();  // This is inside this main.cpp file
+int showLoginMenu(); // Located in users.cpp file
 
 int main()
 {
