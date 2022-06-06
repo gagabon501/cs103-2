@@ -55,12 +55,6 @@ int main()
 int showMainMenu(struct User user)
 {
     int choice = 0;
-    string accessStr = (user.accessLevel > 1) ? "Administrator Level" : "User Level";
-
-    system("clear"); // clear screen
-    cout << user.firstname << " " << user.lastname << endl;
-    cout << user.email << endl;
-    cout << accessStr;
 
     if (user.accessLevel > 1)
     {
@@ -76,11 +70,17 @@ int showMainMenu(struct User user)
 int showAdminMenu(struct User user)
 {
     int choice = 0;
+    string accessStr = (user.accessLevel > 1) ? "Administrator Level" : "User Level";
+
     while (choice != 7)
     {
-        cout << "\n=============================\n";
-        cout << "  Vehicle Insurance System\n";
-        cout << "=============================\n";
+        system("clear"); // clear screen
+        cout << user.firstname << " " << user.lastname << endl;
+        cout << user.email << endl;
+        cout << accessStr << endl;
+        cout << "======================================\n";
+        cout << " Vehicle Insurance System - Main Menu\n";
+        cout << "======================================\n";
         cout << "1. Manage Clients\n";
         cout << "2. Manage Insurance Policies\n";
         cout << "3. Manage Premiums\n";
@@ -88,7 +88,7 @@ int showAdminMenu(struct User user)
         cout << "5. System Reports\n";
         cout << "6. System Utilities\n";
         cout << "7. Exit Program\n";
-        cout << "=============================\n";
+        cout << "======================================\n";
         cout << "Choice: ";
         cin >> choice;
         switch (choice)
@@ -123,16 +123,21 @@ int showAdminMenu(struct User user)
 int showUserMenu(struct User user)
 {
     int choice = 0;
+    string accessStr = (user.accessLevel > 1) ? "Administrator Level" : "User Level";
     while (choice != 4)
     {
-        cout << "\n=============================\n";
-        cout << "  Vehicle Insurance System\n";
-        cout << "=============================\n";
+        system("clear"); // clear screen
+        cout << user.firstname << " " << user.lastname << endl;
+        cout << user.email << endl;
+        cout << accessStr << endl;
+        cout << "======================================\n";
+        cout << " Vehicle Insurance System - Main Menu\n";
+        cout << "======================================\n";
         cout << "1. Manage Insurance Policies\n";
         cout << "2. Manage Premiums\n";
         cout << "3. Manage Claims\n";
         cout << "4. Exit Program\n";
-        cout << "=============================\n";
+        cout << "======================================\n";
         cout << "Choice: ";
         cin >> choice;
         switch (choice)
