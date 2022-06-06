@@ -13,9 +13,6 @@
 #include <vector>
 #include <conio.h>
 #include <limits>
-#include <time.h>
-#include <unistd.h>
-#include <crypt.h>
 #include "users.h"
 
 using namespace std;
@@ -45,26 +42,8 @@ struct User
     }
 };
 
-struct UserInfo
-{
-    string username;
-    string fullname;
-    int accessLevel;
-
-    // Constructor
-    UserInfo(string uname = "", string fname = "", int access = 1)
-    {
-        username = uname;
-        fullname = fname;
-        accessLevel = access;
-    }
-};
-
 // Function Prototypes here
-
-// void showLoginMenu(struct UserInfo user);
-
-void doLogin(struct UserInfo &user);
+void doLogin(struct User &user);
 int doRegister();
 void registerUser(struct User user);
 bool checkDuplicate(string email, vector<User> frmUsersFile);
@@ -73,7 +52,7 @@ string doEncrypt(string text);
 vector<User> readFile();
 void writeFile(struct User user);
 
-void showLoginMenu(struct UserInfo &user)
+void showLoginMenu(struct User &user)
 {
     int choice = 0;
 
@@ -114,7 +93,7 @@ void showLoginMenu(struct UserInfo &user)
     }
 }
 
-void doLogin(struct UserInfo &user)
+void doLogin(struct User &user)
 {
     string username = "";
     string password = "";
@@ -137,8 +116,10 @@ void doLogin(struct UserInfo &user)
             if (userFile[i].email == username && userFile[i].password == password)
             {
                 retVal = 1;
-                user.username = username;
-                user.fullname = userFile[i].firstname + " " + userFile[i].lastname;
+                user.email = userFile[i].email;
+                user.firstname = userFile[i].firstname;
+                user.lastname = userFile[i].lastname;
+                user.phone = userFile[i].phone;
                 user.accessLevel = userFile[i].accessLevel;
                 break;
             }
@@ -213,6 +194,7 @@ void registerUser(struct User user)
 
         // Add user to users.csv file
         writeFile(user);
+        cout << "\nCongratulations! Successful registration. You may now login using your username(email) and password.\n";
     }
     else
     {
