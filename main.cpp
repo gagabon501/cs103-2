@@ -8,63 +8,72 @@
 #include <iostream>
 #include <string>
 #include "users.h"
+#include "policies.h"
 
 using namespace std;
 
 // Structure definitions here
-struct UserInfo
+
+struct User
 {
-    string username;
-    string fullname;
+    string email;
+    string password;
+    string firstname;
+    string lastname;
+    string phone;
     int accessLevel;
 
-    // Constructor
-    UserInfo(string uname = "", string fname = "", int access = 1)
+    // Constructor to initialize members
+    User(string em = "", string passwd = "", string fname = "", string lname = "", string ph = "", int access = 1)
     {
-        username = uname;
-        fullname = fname;
+
+        email = em;
+        password = passwd;
+        firstname = fname;
+        lastname = lname;
+        phone = ph;
         accessLevel = access;
     }
 };
 
 // Function prototypes here
-int showMainMenu(struct UserInfo user); // This is inside this main.cpp file
-void showLoginMenu(struct UserInfo &user);
-int showAdminMenu();
-int showUserMenu();
+int showMainMenu(struct User user);    // This is inside this main.cpp file
+void showLoginMenu(struct User &user); // This is inside users.cpp
+int showAdminMenu(struct User user);
+int showUserMenu(struct User user);
 
 int main()
 {
     // int choice = 0;
-    struct UserInfo user;
+    struct User user;
 
     showLoginMenu(user);
     showMainMenu(user);
     return 0;
 }
 
-int showMainMenu(struct UserInfo user)
+int showMainMenu(struct User user)
 {
     int choice = 0;
     string accessStr = (user.accessLevel > 1) ? "Administrator Level" : "User Level";
 
     system("clear"); // clear screen
-    cout << user.fullname << endl;
-    cout << user.username << endl;
+    cout << user.firstname << " " << user.lastname << endl;
+    cout << user.email << endl;
     cout << accessStr;
 
     if (user.accessLevel > 1)
     {
-        choice = showAdminMenu();
+        choice = showAdminMenu(user);
     }
     else
     {
-        choice = showUserMenu();
+        choice = showUserMenu(user);
     }
     return choice;
 }
 
-int showAdminMenu()
+int showAdminMenu(struct User user)
 {
     int choice = 0;
     while (choice != 7)
@@ -82,12 +91,36 @@ int showAdminMenu()
         cout << "=============================\n";
         cout << "Choice: ";
         cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            cout << "1. Manage Clients\n";
+            break;
+        case 2:
+            showPoliciesMenu(user);
+            break;
+        case 3:
+            cout << "3. Manage Premiums\n";
+            break;
+        case 4:
+            cout << "4. Manage Claims\n";
+            break;
+        case 5:
+            cout << "5. System Reports\n";
+            break;
+        case 6:
+            cout << "6. System Utilities\n";
+            break;
+
+        default:
+            break;
+        }
     }
 
     return choice;
 }
 
-int showUserMenu()
+int showUserMenu(struct User user)
 {
     int choice = 0;
     while (choice != 4)
@@ -102,6 +135,20 @@ int showUserMenu()
         cout << "=============================\n";
         cout << "Choice: ";
         cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            showPoliciesMenu(user);
+            break;
+        case 2:
+            cout << "2. Manage Premiums\n";
+            break;
+        case 3:
+            cout << "3. Manage Claims\n";
+            break;
+        default:
+            break;
+        }
     }
 
     return choice;
