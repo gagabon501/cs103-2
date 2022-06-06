@@ -1,1 +1,1 @@
-int showLoginMenu();
+void showLoginMenu(struct UserInfo &user);
