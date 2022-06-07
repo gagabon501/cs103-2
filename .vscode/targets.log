@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jun  7 20:17:52 2022
+# Make data base, printed on Tue Jun  7 21:27:27 2022
 
 # Variables
 
@@ -31,7 +31,7 @@ OBJDIR = obj
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b1fad4cd-77ad-4b95-9ec0-7bc4c1ff9b4c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-135c6226-7ce6-4eaa-894c-52918cea0c64.sock
 # environment
 MANDATORY_PATH = /usr/share/gconf/pop.mandatory.path
 # environment
@@ -121,7 +121,7 @@ MAKEFILE_LIST := Makefile main.d policies.d users.d
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 6346
+VSCODE_PID = 10880
 # environment
 XDG_SESSION_TYPE = x11
 # makefile (from 'Makefile', line 11)
@@ -231,7 +231,7 @@ DEL = del
 # environment
 LC_MEASUREMENT = en_US.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 6346
+GIO_LAUNCHED_DESKTOP_FILE_PID = 10880
 # environment
 _ = /usr/share/code/code
 # environment
@@ -280,17 +280,20 @@ CC = g++
 XDG_MENU_PREFIX = gnome-
  
 # environment
+ 
 GDMSESSION = pop
+ 
 # environment
 LC_IDENTIFICATION = en_US.UTF-8
 # variable set hash-table stats:
-# Load=136/1024=13%, Rehash=0, Collisions=11/195=6%
+# Load=136/1024=13%, Rehash=0, Collisions=11/200=6%
 
 # Pattern-specific Variable Values
 
 # No pattern-specific variable values.
 
 # Directories
+ 
 
 # . (device 2051, inode 7299319): 21 files, no impossibilities.
 # /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2 (device 2051, inode 7299319): 21 files, no impossibilities.
@@ -300,6 +303,7 @@ LC_IDENTIFICATION = en_US.UTF-8
 # Implicit Rules
 
 %.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/%.cpp
+ 
 #  recipe to execute (from 'Makefile', line 40):
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
 
@@ -313,7 +317,8 @@ obj/%.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_S
 users.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'users'
-#  Last modified 2022-06-07 20:17:52.547137447
+ 
+#  Last modified 2022-06-07 21:27:27.491288167
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 40):
@@ -322,7 +327,7 @@ users.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_S
 # Not a target:
 /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-07 06:47:57.888855057
+#  Last modified 2022-06-07 21:05:32.035891923
 #  File has been updated.
 #  Successfully updated.
 
@@ -332,30 +337,51 @@ cleandepw:
 #  File does not exist.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 69):
+ 
 	$(DEL) $(DEP)
+ 
 
-obj/users.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h
-#  Implicit rule search has been done.
-#  Implicit/static pattern stem: 'users'
-#  Last modified 2022-06-07 08:01:24.264045067
-#  File has been updated.
-#  Successfully updated.
-#  recipe to execute (from 'Makefile', line 47):
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+ 
+obj/users.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 # Not a target:
 /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-07 15:05:55.713300398
+ 
+#  Last modified 2022-06-07 21:05:32.035891923
+ 
 #  File has been updated.
+ 
 #  Successfully updated.
 
 obj/main.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2022-06-07 07:22:17.436916247
+ 
+#  Last modified 2022-06-07 20:59:21.295715656
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := obj/main.o
+# automatic
+# * := main
+# automatic
+# < := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp
+# automatic
+# + := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
+# automatic
+# % := 
+# automatic
+# ^ := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
+# automatic
+# ? := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/15=13%
 #  recipe to execute (from 'Makefile', line 47):
 	$(CC) $(CXXFLAGS) -o $@ -c $<
 
@@ -399,7 +425,7 @@ clean:
 policies.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'policies'
-#  Last modified 2022-06-07 20:17:52.67113474
+#  Last modified 2022-06-07 21:27:27.571286747
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 40):
@@ -416,16 +442,14 @@ all: vis
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
 
-obj/policies.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
-#  Implicit rule search has been done.
-#  Implicit/static pattern stem: 'policies'
-#  Last modified 2022-06-07 15:06:03.485627205
-#  File has been updated.
-#  Successfully updated.
-#  recipe to execute (from 'Makefile', line 47):
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+obj/policies.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 cleanw:
 #  Phony target (prerequisite of .PHONY).
@@ -438,8 +462,7 @@ cleanw:
 main.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
- 
-#  Last modified 2022-06-07 20:17:52.735133343
+#  Last modified 2022-06-07 21:27:27.6472854
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 40):
@@ -447,9 +470,11 @@ main.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_St
 
 vis: obj/main.o obj/policies.o obj/users.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-06-07 15:06:03.549629806
+#  Last modified 2022-06-07 21:05:32.035891923
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
 #  recipe to execute (from 'Makefile', line 36):
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
@@ -466,7 +491,8 @@ vis: obj/main.o obj/policies.o obj/users.o
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=21/1024=2%, Rehash=0, Collisions=0/76=0%
+ 
+# Load=21/1024=2%, Rehash=0, Collisions=0/72=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -476,9 +502,9 @@ vis: obj/main.o obj/policies.o obj/users.o
 # strcache buffers: 1 (0) / strings = 46 / storage = 1240 B / avg = 26 B
 # current buf: size = 8162 B / used = 1240 B / count = 46 / avg = 26 B
 
-# strcache performance: lookups = 100 / hit rate = 54%
+# strcache performance: lookups = 94 / hit rate = 51%
 # hash-table stats:
-# Load=46/8192=1%, Rehash=0, Collisions=0/100=0%
-# Finished Make data base on Tue Jun  7 20:17:52 2022
+# Load=46/8192=1%, Rehash=0, Collisions=0/94=0%
+# Finished Make data base on Tue Jun  7 21:27:27 2022
 
  
