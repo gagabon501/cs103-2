@@ -78,13 +78,15 @@ struct Policy
 
 // Function Prototypes here
 int getLastPolicyNum();
-void createPolicy(struct User user);
+void createPolicy(struct User user, bool newPolicy, string policyNo);
 void savePolicy(struct Policy policy);
+void saveEditedPolicy(vector<Policy> policyVector, struct Policy policy);
 void showPolicy(struct Policy policy, string name);
 vector<Policy> readPolicyFile(struct User user);
 void viewPolicy(struct User user);
 void showAdminPolicyMenu(struct User user);
 void showUserPolicyMenu(struct User user);
+void editPolicy(struct User user);
 
 void showPoliciesMenu(struct User user)
 {
@@ -121,13 +123,13 @@ void showAdminPolicyMenu(struct User user)
         switch (choice)
         {
         case 1:
-            createPolicy(user);
+            createPolicy(user, true, ""); // Policy number is taken from policyNum.txt record added by 1
             break;
         case 2:
             viewPolicy(user);
             break;
         case 3:
-            cout << "[3] Edit Policy" << endl;
+            editPolicy(user);
             break;
         case 4:
             cout << "[4] Delete Policy" << endl;
@@ -156,7 +158,7 @@ void showUserPolicyMenu(struct User user)
         switch (choice)
         {
         case 1:
-            createPolicy(user);
+            createPolicy(user, true, "");
             break;
         case 2:
             viewPolicy(user);
@@ -166,27 +168,39 @@ void showUserPolicyMenu(struct User user)
         }
     }
 }
-void createPolicy(struct User user)
+void createPolicy(struct User user, bool newPolicy, string policyNo)
 {
-    int lastPolicyNum = getLastPolicyNum() + 1;
     char ans = 'n';
-
-    // save here the lastPolicyNum to the policy.txt file -- replace existing data
-    fstream policyFile("policyNum.txt", ios::out); // open file in write mode
-    policyFile << lastPolicyNum << endl;
-    policyFile.close();
-
     struct Policy policy;
     string name = user.firstname + " " + user.lastname;
+    string msg = newPolicy ? "Creating New Policy" : "Editing Policy";
+    vector<Policy> policyVector;
 
-    policy.policyNum = to_string(lastPolicyNum);
+    if (newPolicy)
+    {
+        int lastPolicyNum = getLastPolicyNum() + 1;
+
+        // save here the lastPolicyNum to the policy.txt file -- replace existing data
+        fstream policyFile("policyNum.txt", ios::out); // open file in write mode
+        policyFile << lastPolicyNum << endl;
+        policyFile.close();
+
+        policy.policyNum = to_string(lastPolicyNum);
+    }
+    else
+    {
+        policy.policyNum = policyNo;
+        policyVector = readPolicyFile(user); // read the policy file and save the date into memory (vector<Policy>)
+    }
+
+    // policy.policyNum = to_string(lastPolicyNum);
     policy.username = user.email;
 
     while (toupper(ans) != 'Y')
     {
         cout << endl;
-        cout << "               Policy No.: " << lastPolicyNum << endl;
-        cout << "      Creating policy for: " << name << endl;
+        cout << "============================================" << endl;
+        cout << msg << " No.: " << policy.policyNum << endl;
         cout << "============================================" << endl;
         cout << "                 Car Make: ";
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
@@ -243,8 +257,14 @@ void createPolicy(struct User user)
         cout << "Save policy (y/n)? ";
         cin >> ans;
     }
-
-    savePolicy(policy);
+    if (newPolicy)
+    {
+        savePolicy(policy);
+    }
+    else
+    {
+        saveEditedPolicy(policyVector, policy);
+    }
 }
 
 void showPolicy(struct Policy policy, string name)
@@ -271,6 +291,45 @@ void savePolicy(struct Policy policy)
     cout << "Policy No.: " << policy.policyNum;
     fstream policyFile("policy.csv", ios::app); // open file in append mode
     policyFile << policy.policyNum << "," << policy.username << "," << policy.carMake << "," << policy.carColor << "," << policy.carRego << "," << policy.dateInsured << "," << policy.dateExpiry << "," << policy.typeCover << "," << policy.carInsuredAmount << "," << policy.excessAmount << "," << policy.premiumTotalAmount << "," << policy.premiumPayAmount << "," << policy.payFrequency << endl;
+    policyFile.close();
+}
+
+void saveEditedPolicy(vector<Policy> policyVector, struct Policy policy)
+{
+
+    fstream policyFile("policy.csv", ios::out); // overwrite mode
+    for (int i = 0; i < (int)policyVector.size(); i++)
+    {
+        if (policyVector[i].policyNum == policy.policyNum)
+        {
+
+            policyVector[i].carMake = policy.carMake;
+            policyVector[i].carColor = policy.carColor;
+            policyVector[i].carRego = policy.carRego;
+            policyVector[i].dateInsured = policy.dateInsured;
+            policyVector[i].dateExpiry = policy.dateExpiry;
+            policyVector[i].typeCover = policy.typeCover;
+            policyVector[i].carInsuredAmount = policy.carInsuredAmount;
+            policyVector[i].excessAmount = policy.excessAmount;
+            policyVector[i].premiumTotalAmount = policy.premiumTotalAmount;
+            policyVector[i].premiumPayAmount = policy.premiumPayAmount;
+            policyVector[i].payFrequency = policy.payFrequency;
+        }
+        // Overwrite with new data
+        policyFile << policyVector[i].policyNum << ","
+                   << policyVector[i].username << ","
+                   << policyVector[i].carMake << ","
+                   << policyVector[i].carColor << ","
+                   << policyVector[i].carRego << ","
+                   << policyVector[i].dateInsured << ","
+                   << policyVector[i].dateExpiry << ","
+                   << policyVector[i].typeCover << ","
+                   << policyVector[i].carInsuredAmount << ","
+                   << policyVector[i].excessAmount << ","
+                   << policyVector[i].premiumTotalAmount << ","
+                   << policyVector[i].premiumPayAmount << ","
+                   << policyVector[i].payFrequency << endl;
+    }
     policyFile.close();
 }
 
@@ -400,6 +459,15 @@ vector<Policy> readPolicyFile(struct User user)
     return tmpPolicy;
 }
 
+void editPolicy(struct User user)
+{
+    string policyNum;
+    viewPolicy(user);
+    cout << "Enter policy number to edit: ";
+    cin >> policyNum;
+
+    createPolicy(user, false, policyNum); // Using createPolicy() in Edit Mode
+}
 int getLastPolicyNum()
 {
     string txtLine;
