@@ -49,6 +49,7 @@ int main()
 
     showLoginMenu(user);
     showMainMenu(user);
+
     return 0;
 }
 

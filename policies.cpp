@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include <cstring>
 #include <fstream>
 #include <sstream>
@@ -80,18 +81,34 @@ int getLastPolicyNum();
 void createPolicy(struct User user);
 void savePolicy(struct Policy policy);
 void showPolicy(struct Policy policy, string name);
-vector<Policy> readPolicyFile();
+vector<Policy> readPolicyFile(struct User user);
 void viewPolicy(struct User user);
+void showAdminPolicyMenu(struct User user);
+void showUserPolicyMenu(struct User user);
 
 void showPoliciesMenu(struct User user)
 {
+    // int choice = 0;
+    vector<Policy> policy;
+
+    if (user.accessLevel > 1)
+    {
+        showAdminPolicyMenu(user);
+    }
+    else
+    {
+        showUserPolicyMenu(user);
+    }
+}
+
+void showAdminPolicyMenu(struct User user)
+{
     int choice = 0;
     vector<Policy> policy;
-    // struct User user;
 
     while (choice != 5)
     {
-        cout << "\nManaging Policy for: " << user.firstname << " " << user.lastname << endl;
+        cout << "\nManage Insurance Policies" << endl;
         cout << "============================================" << endl;
         cout << "[1] Create New Policy" << endl;
         cout << "[2] View Policy" << endl;
@@ -121,6 +138,34 @@ void showPoliciesMenu(struct User user)
     }
 }
 
+void showUserPolicyMenu(struct User user)
+{
+    int choice = 0;
+    vector<Policy> policy;
+
+    while (choice != 3)
+    {
+        cout << "\nManage Insurance Policy for: " << user.firstname << " " << user.lastname << endl;
+        cout << "============================================" << endl;
+        cout << "[1] Create New Policy" << endl;
+        cout << "[2] View Policy" << endl;
+        cout << "[3] Exit" << endl;
+        cout << "============================================" << endl;
+        cout << "Choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            createPolicy(user);
+            break;
+        case 2:
+            viewPolicy(user);
+            break;
+        default:
+            break;
+        }
+    }
+}
 void createPolicy(struct User user)
 {
     int lastPolicyNum = getLastPolicyNum() + 1;
@@ -233,46 +278,61 @@ void viewPolicy(struct User user)
 {
     vector<Policy> policy;
 
-    policy = readPolicyFile();
+    policy = readPolicyFile(user);
+    string msg = user.accessLevel > 1 ? "Viewing all policies" : "Viewing Policy for: " + user.firstname + " " + user.lastname;
 
     cout << endl;
-    cout << "Viewing all policies" << endl;
-    cout << "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
-    cout << "Policy#"
-         << "\t"
+    cout << msg << endl;
+    cout << "---------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << setw(5)
+         << "Policy"
+         << setw(11)
          << "Email"
-         << "\t\t"
+         << setw(25)
          << "CarMake"
-         << "\t\t"
+         << setw(15)
          << "Color"
-         << "\t\t"
+         << setw(12)
          << "REGO"
-         << "\t"
-         << "Covered Amount"
-         << "\t\t"
+         << setw(12)
+         << "Covered"
+         << setw(6)
          << "Type"
-         << "\t"
+         << setw(8)
          << "Start"
-         << "\t\t"
+         << setw(10)
          << "Expiry"
-         << "\t\t"
+         << setw(12)
          << "T.Premium"
-         << "\t"
+         << setw(8)
          << "Excess"
-         << "\t"
+         << setw(8)
          << "Regular"
-         << "\t"
+         << setw(9)
          << "PayFreq"
          << endl;
-    cout << "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << "---------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
     for (int i = 0; i < (int)policy.size(); i++)
     {
-        cout << "  " << policy[i].policyNum << "\t" << policy[i].username << "\t" << policy[i].carMake << "\t" << policy[i].carColor << "\t" << policy[i].carRego << "\t\t" << policy[i].carInsuredAmount << "\t\t" << policy[i].typeCover << "\t" << policy[i].dateInsured << "\t" << policy[i].dateExpiry << "\t" << policy[i].premiumTotalAmount << "\t\t" << policy[i].excessAmount << "\t" << policy[i].premiumPayAmount << "\t" << policy[i].payFrequency << "\t" << endl;
+        cout << setw(5) << policy[i].policyNum
+             << setw(16) << policy[i].username
+             << setw(25) << policy[i].carMake
+             << setw(15) << policy[i].carColor
+             << setw(10) << policy[i].carRego
+             << setw(10) << policy[i].carInsuredAmount
+             << setw(4) << char(toupper(policy[i].typeCover))
+             << setw(11) << policy[i].dateInsured
+             << setw(11) << policy[i].dateExpiry
+             << setw(6) << policy[i].premiumTotalAmount
+             << setw(10) << policy[i].excessAmount
+             << setw(8) << policy[i].premiumPayAmount
+             << setw(7) << char(toupper(policy[i].payFrequency))
+             << endl;
     }
-    cout << "-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
+    cout << "---------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 }
 
-vector<Policy> readPolicyFile()
+vector<Policy> readPolicyFile(struct User user)
 {
     vector<Policy> tmpPolicy;
     struct Policy policy;
@@ -330,7 +390,10 @@ vector<Policy> readPolicyFile()
         charPayFreq = item.c_str();
         policy.payFrequency = charPayFreq[0];
 
-        tmpPolicy.push_back(policy);
+        if ((user.accessLevel == 1 && policy.username == user.email) || user.accessLevel > 1)
+        {
+            tmpPolicy.push_back(policy); // save only when it meets the condition
+        }
     }
     policyFile.close();
 
