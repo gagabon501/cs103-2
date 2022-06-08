@@ -78,6 +78,8 @@ struct Policy
 // Function Prototypes here
 int getLastPolicyNum();
 void createPolicy(struct User user, bool newPolicy, string policyNo);
+void editPolicy(struct User user);
+void delPolicy(struct User user);
 void savePolicy(struct Policy policy);
 void saveEditedPolicy(vector<Policy> policyVector, struct Policy policy);
 void showPolicy(struct Policy policy, string name);
@@ -85,7 +87,6 @@ vector<Policy> readPolicyFile(struct User user);
 void viewPolicy(struct User user);
 void showAdminPolicyMenu(struct User user);
 void showUserPolicyMenu(struct User user);
-void editPolicy(struct User user);
 int showMenu(vector<string> menu);
 
 void showPoliciesMenu(struct User user)
@@ -135,7 +136,7 @@ void showAdminPolicyMenu(struct User user)
             editPolicy(user);
             break;
         case 4:
-            cout << "[4] Delete Policy" << endl;
+            delPolicy(user);
             break;
         default:
             break;
@@ -468,11 +469,56 @@ void editPolicy(struct User user)
 {
     string policyNum;
     viewPolicy(user);
-    cout << "Enter policy number to edit: ";
+    cout << "Enter policy number to edit (0=ESC): ";
     cin >> policyNum;
 
-    createPolicy(user, false, policyNum); // Using createPolicy() in Edit Mode
+    // Entering "0" will not proceed to delete - sort of ESCaping the process (deleting policy)
+    if (policyNum != "0")
+    {
+        createPolicy(user, false, policyNum); // Using createPolicy() in Edit Mode
+    }
 }
+
+void delPolicy(struct User user)
+{
+    string policyNum;
+    vector<Policy> policyVector;
+
+    viewPolicy(user); // Show the available policies to the user with administrator access
+    cout << "Enter policy number to delete (0=ESC): ";
+    cin >> policyNum;
+
+    // Entering "0" will not proceed to delete - sort of ESCaping the process (deleting policy)
+    if (policyNum != "0")
+    {
+
+        policyVector = readPolicyFile(user); // read the policy file and save the date into memory (vector<Policy>)
+
+        fstream policyFile("policy.csv", ios::out); // overwrite mode
+        for (int i = 0; i < (int)policyVector.size(); i++)
+        {
+            if (policyVector[i].policyNum != policyNum)
+            {
+                // Re-write into the file only those records that do not have the same policyNum (policy being deleted)
+                policyFile << policyVector[i].policyNum << ","
+                           << policyVector[i].username << ","
+                           << policyVector[i].carMake << ","
+                           << policyVector[i].carColor << ","
+                           << policyVector[i].carRego << ","
+                           << policyVector[i].dateInsured << ","
+                           << policyVector[i].dateExpiry << ","
+                           << policyVector[i].typeCover << ","
+                           << policyVector[i].carInsuredAmount << ","
+                           << policyVector[i].excessAmount << ","
+                           << policyVector[i].premiumTotalAmount << ","
+                           << policyVector[i].premiumPayAmount << ","
+                           << policyVector[i].payFrequency << endl;
+            }
+        }
+        policyFile.close();
+    }
+}
+
 int getLastPolicyNum()
 {
     string txtLine;

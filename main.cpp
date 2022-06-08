@@ -78,40 +78,34 @@ int showAdminMenu(struct User user)
         "======================================",
         " Vehicle Insurance System - Main Menu",
         "======================================",
-        "[1] Manage Clients",
-        "[2] Manage Insurance Policies",
-        "[3] Manage Premiums",
-        "[4] Manage Claims"
-        "[5] System Reports",
-        "[6] System Utilities",
-        "[7] Exit Program",
+        "[1] Manage Insurance Policies",
+        "[2] Manage Claims",
+        "[3] System Reports",
+        "[4] User Administration",
+        "[5] Exit Program",
         "======================================"};
-    while (choice != 7)
+    while (choice != 5)
     {
         system("clear"); // clear screen
         cout << user.firstname << " " << user.lastname << endl;
         cout << user.email << endl;
         cout << accessStr << endl;
+
         choice = showMenu(menu);
+
         switch (choice)
         {
         case 1:
-            cout << "1. Manage Clients\n";
-            break;
-        case 2:
             showPoliciesMenu(user);
             break;
+        case 2:
+            cout << "2. Manage Claims\n";
+            break;
         case 3:
-            cout << "3. Manage Premiums\n";
+            cout << "3. System Reports\n";
             break;
         case 4:
-            cout << "4. Manage Claims\n";
-            break;
-        case 5:
-            cout << "5. System Reports\n";
-            break;
-        case 6:
-            cout << "6. System Utilities\n";
+            cout << "4. User Administration\n";
             break;
 
         default:
@@ -131,12 +125,11 @@ int showUserMenu(struct User user)
         " Vehicle Insurance System - Main Menu",
         "======================================",
         "[1] Manage Insurance Policies",
-        "[2] Manage Premiums",
-        "[3] Manage Claims",
-        "[4] Exit Program",
+        "[2] Manage Claims",
+        "[3] Exit Program",
         "======================================"};
 
-    while (choice != 4)
+    while (choice != 3)
     {
         system("clear"); // clear screen
         cout << user.firstname << " " << user.lastname << endl;
@@ -151,10 +144,7 @@ int showUserMenu(struct User user)
             showPoliciesMenu(user);
             break;
         case 2:
-            cout << "2. Manage Premiums\n";
-            break;
-        case 3:
-            cout << "3. Manage Claims\n";
+            cout << "2. Manage Claims\n";
             break;
         default:
             break;
