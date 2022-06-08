@@ -7,13 +7,13 @@
  ************************************************************************************/
 #include <iostream>
 #include <string>
+#include <vector>
 #include "users.h"
 #include "policies.h"
 
 using namespace std;
 
 // Structure definitions here
-
 struct User
 {
     string email;
@@ -41,10 +41,12 @@ int showMainMenu(struct User user);    // This is inside this main.cpp file
 void showLoginMenu(struct User &user); // This is inside users.cpp
 int showAdminMenu(struct User user);
 int showUserMenu(struct User user);
+int showMenu(vector<string> menu);
 
 int main()
 {
-    // int choice = 0;
+    // The following code is interesting. What happens here, is this 'user' variable of type User structure gets updated inside the showLoginMenu(user)
+    // When the system goes into the showMainMenu(user), the 'user' variable is passed with the contents that was stuffed inside showLoginMenu(user)
     struct User user;
 
     showLoginMenu(user);
@@ -72,26 +74,25 @@ int showAdminMenu(struct User user)
 {
     int choice = 0;
     string accessStr = (user.accessLevel > 1) ? "Administrator Level" : "User Level";
-
+    vector<string> menu = {
+        "======================================",
+        " Vehicle Insurance System - Main Menu",
+        "======================================",
+        "[1] Manage Clients",
+        "[2] Manage Insurance Policies",
+        "[3] Manage Premiums",
+        "[4] Manage Claims"
+        "[5] System Reports",
+        "[6] System Utilities",
+        "[7] Exit Program",
+        "======================================"};
     while (choice != 7)
     {
         system("clear"); // clear screen
         cout << user.firstname << " " << user.lastname << endl;
         cout << user.email << endl;
         cout << accessStr << endl;
-        cout << "======================================\n";
-        cout << " Vehicle Insurance System - Main Menu\n";
-        cout << "======================================\n";
-        cout << "1. Manage Clients\n";
-        cout << "2. Manage Insurance Policies\n";
-        cout << "3. Manage Premiums\n";
-        cout << "4. Manage Claims\n";
-        cout << "5. System Reports\n";
-        cout << "6. System Utilities\n";
-        cout << "7. Exit Program\n";
-        cout << "======================================\n";
-        cout << "Choice: ";
-        cin >> choice;
+        choice = showMenu(menu);
         switch (choice)
         {
         case 1:
@@ -125,22 +126,25 @@ int showUserMenu(struct User user)
 {
     int choice = 0;
     string accessStr = (user.accessLevel > 1) ? "Administrator Level" : "User Level";
+    vector<string> menu = {
+        "======================================",
+        " Vehicle Insurance System - Main Menu",
+        "======================================",
+        "[1] Manage Insurance Policies",
+        "[2] Manage Premiums",
+        "[3] Manage Claims",
+        "[4] Exit Program",
+        "======================================"};
+
     while (choice != 4)
     {
         system("clear"); // clear screen
         cout << user.firstname << " " << user.lastname << endl;
         cout << user.email << endl;
         cout << accessStr << endl;
-        cout << "======================================\n";
-        cout << " Vehicle Insurance System - Main Menu\n";
-        cout << "======================================\n";
-        cout << "1. Manage Insurance Policies\n";
-        cout << "2. Manage Premiums\n";
-        cout << "3. Manage Claims\n";
-        cout << "4. Exit Program\n";
-        cout << "======================================\n";
-        cout << "Choice: ";
-        cin >> choice;
+
+        choice = showMenu(menu);
+
         switch (choice)
         {
         case 1:
@@ -158,4 +162,16 @@ int showUserMenu(struct User user)
     }
 
     return choice;
+}
+
+int showMenu(vector<string> menu)
+{
+    int ch = 0;
+    for (int i = 0; i < (int)menu.size(); i++)
+    {
+        cout << menu[i] << endl;
+    }
+    cout << "Choice: ";
+    cin >> ch;
+    return ch;
 }
