@@ -52,7 +52,7 @@ struct Policy
     char typeCover; // C-Comprehensive, F-Fire/Theft/Third Party, T-Third Party Only
     int carInsuredAmount;
     int excessAmount;
-    float premiumTotalAmount; // C=6% of InsuredAmount, F=6% of InsuredAmount, T=10% of InsuredAmount --> for 12-months coverage
+    float premiumTotalAmount; // C=10% of InsuredAmount, F=8% of InsuredAmount, T=6% of InsuredAmount --> for 12-months coverage
     float premiumPayAmount;   // premiumTotalAmount/payFrequency
     char payFrequency;        // W-Weekly, F-Fortnightly, M-Monthly
 
@@ -87,7 +87,8 @@ vector<Policy> readPolicyFile(struct User user);
 void viewPolicy(struct User user);
 void showAdminPolicyMenu(struct User user);
 void showUserPolicyMenu(struct User user);
-int showMenu(vector<string> menu);
+
+int showMenu(vector<string> menu); // This is inside main.cpp
 
 void showPoliciesMenu(struct User user)
 {

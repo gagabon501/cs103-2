@@ -39,13 +39,17 @@ struct User
 // Function prototypes here
 int showMainMenu(struct User user);    // This is inside this main.cpp file
 void showLoginMenu(struct User &user); // This is inside users.cpp
-int showAdminMenu(struct User user);
-int showUserMenu(struct User user);
+
+int showAdminMenu(struct User user); // Main Menu shown to user if the user has admin privileges
+int showUserMenu(struct User user);  // Main Menu show to ordinary users, i.e. clients
+
+// This function resides here in main.cpp but this is also utilised in other files (i.e. policies.cpp and users.cpp).
+// This is a general purpose function. To use inside another file, just declare this in the Function Prototype section.
 int showMenu(vector<string> menu);
 
 int main()
 {
-    // The following code is interesting. What happens here, is this 'user' variable of type User structure gets updated inside the showLoginMenu(user)
+    // The following code is interesting. What happens here, is this 'user' variable of type 'User structure' gets updated inside the showLoginMenu(user)
     // When the system goes into the showMainMenu(user), the 'user' variable is passed with the contents that was stuffed inside showLoginMenu(user)
     struct User user;
 
