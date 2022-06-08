@@ -69,7 +69,7 @@ void showLoginMenu(struct User &user)
     };
     while (choice != 3)
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < (int)(sizeof(menu) / sizeof(menu[0])); i++)
         {
 
             cout << menu[i] << endl;

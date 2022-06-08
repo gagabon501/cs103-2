@@ -9,7 +9,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <cstring>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -87,6 +86,7 @@ void viewPolicy(struct User user);
 void showAdminPolicyMenu(struct User user);
 void showUserPolicyMenu(struct User user);
 void editPolicy(struct User user);
+int showMenu(vector<string> menu);
 
 void showPoliciesMenu(struct User user)
 {
@@ -107,19 +107,22 @@ void showAdminPolicyMenu(struct User user)
 {
     int choice = 0;
     vector<Policy> policy;
+    vector<string> menu = {
+        "Manage Insurance Policies",
+        "============================================",
+        "[1] Create New Policy",
+        "[2] View Policy",
+        "[3] Edit Policy",
+        "[4] Delete Policy",
+        "[5] Exit",
+        "============================================",
+    };
 
     while (choice != 5)
     {
-        cout << "\nManage Insurance Policies" << endl;
-        cout << "============================================" << endl;
-        cout << "[1] Create New Policy" << endl;
-        cout << "[2] View Policy" << endl;
-        cout << "[3] Edit Policy" << endl;
-        cout << "[4] Delete Policy" << endl;
-        cout << "[5] Exit" << endl;
-        cout << "============================================" << endl;
-        cout << "Choice: ";
-        cin >> choice;
+
+        choice = showMenu(menu); // residing in main.cpp - all you have to do to make this function be available here is to include it in the Function Prototypes section
+
         switch (choice)
         {
         case 1:
@@ -144,17 +147,19 @@ void showUserPolicyMenu(struct User user)
 {
     int choice = 0;
     vector<Policy> policy;
+    vector<string> menu = {
+        "Manage Insurance Policy for: " + user.firstname + " " + user.lastname,
+        "==========================================",
+        "[1] Create New Policy",
+        "[2] View Policy",
+        "[3] Exit",
+        "==========================================",
+    };
 
     while (choice != 3)
     {
-        cout << "\nManage Insurance Policy for: " << user.firstname << " " << user.lastname << endl;
-        cout << "============================================" << endl;
-        cout << "[1] Create New Policy" << endl;
-        cout << "[2] View Policy" << endl;
-        cout << "[3] Exit" << endl;
-        cout << "============================================" << endl;
-        cout << "Choice: ";
-        cin >> choice;
+
+        choice = showMenu(menu);
         switch (choice)
         {
         case 1:
