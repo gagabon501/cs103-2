@@ -52,6 +52,7 @@ string doEncrypt(string text);
 vector<User> readFile();
 void writeFile(struct User user);
 
+// The user variable is passed here by reference so that its contents when updated will be available from the calling module.
 void showLoginMenu(struct User &user)
 {
     int choice = 0;
@@ -102,13 +103,18 @@ void doLogin(struct User &user)
     int retVal = 0, tries = 0;
     vector<User> userFile;
 
-    userFile = readFile();
+    userFile = readFile(); // Read contents of 'users.csv' file. readFile() returns a vector with User structure type
 
     while (tries != 3)
     {
         cout << "Enter username (email): ";
         cin >> username;
+
+        // This is to clear the buffer for any newline character ('\n').
+        // Without this the succeeding function does not get executed because it is as if the ENTER key was pressed.
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        // 'password' variable here is passed by reference - hence this gets updated inside getPasswd()function with the encrypted value
         getPasswd(password, "        Enter password: "); // masks wit 'x' the inputted password
 
         for (int i = 0; i < (int)userFile.size(); i++)
@@ -116,6 +122,8 @@ void doLogin(struct User &user)
             if (userFile[i].email == username && userFile[i].password == password)
             {
                 retVal = 1;
+
+                // Store user information into the 'user' variable and make it available to the calling function
                 user.email = userFile[i].email;
                 user.firstname = userFile[i].firstname;
                 user.lastname = userFile[i].lastname;
@@ -134,11 +142,13 @@ void doLogin(struct User &user)
         {
             cout << "\nWrong user name or password. Try again.\n";
         }
+
         tries++;
     }
     if (tries > 2)
     {
         cout << "\nMaximum tries exceeded. Username or password incorrect.\n";
+        exit(1);
     }
 }
 
@@ -165,7 +175,9 @@ void registerUser(struct User user)
     cout << "           Email: ";
     cin >> user.email;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called inside checkDuplicate() to do its job (get input from user) instead of skipping it.
+    // This clears the input buffer - helps in getting the getline() function called inside checkDuplicate() to do its job (get input from user)
+    // instead of skipping it.
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (!checkDuplicate(user.email, userFile))
     {
@@ -194,6 +206,7 @@ void registerUser(struct User user)
 
         // Add user to users.csv file
         writeFile(user);
+
         cout << "\nCongratulations! Successful registration. You may now login using your username(email) and password.\n";
     }
     else
@@ -212,31 +225,30 @@ string getPasswd(string &passwd, string textPrompt)
 
     while (true)
     {
-        ch = getch();
-        if (ch == 10)
+        ch = getch(); // this is from conio.h
+        if (ch == 10) // This is the ENTER key (LF-Line Feed character).
         {
             break;
         }
         else
         {
-            textInput.push_back(ch);
+            textInput.push_back(ch); // save every character to the textInput variable of type string
         }
-        cout << 'x';
+        cout << 'x'; // Display an 'x' instead of the actual text that is typed
     }
 
-    // cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    passwd = doEncrypt(textInput);
+    passwd = doEncrypt(textInput); // simple encryption only (Caesar cipher)
 
     return passwd; // returned string is encrypted already
 }
 
 string doEncrypt(string text)
-// Simple encryption of the text input (just adding 10 to the ascii code of the every character)
+// Simple encryption of the text input (Caesar cipher)
 {
 
     for (int i = 0; i < (int)sizeof(text); i++)
     {
-        text[i] += 10;
+        text[i] = (text[i] + 3) % 26;
     }
 
     return text;
@@ -299,6 +311,6 @@ bool checkDuplicate(string email, vector<User> frmUsersFile)
 void writeFile(struct User user)
 {
     fstream userFile("users.csv", ios::app); // open file in append mode
-    userFile << user.email << "," << user.password << "," << user.lastname << "," << user.firstname << "," << user.phone << "," << user.accessLevel << endl;
+    userFile << user.email << "," << user.password << "," << user.lastname << "," << user.firstname << "," << user.phone << "," << user.accessLevel << "\n";
     userFile.close();
 }
