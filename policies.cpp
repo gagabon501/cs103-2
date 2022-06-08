@@ -230,13 +230,13 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
         switch (toupper(policy.typeCover))
         {
         case 'C':
-            policy.premiumTotalAmount = policy.carInsuredAmount * 0.06;
+            policy.premiumTotalAmount = policy.carInsuredAmount * 0.10;
             break;
         case 'F':
             policy.premiumTotalAmount = policy.carInsuredAmount * 0.08;
             break;
         case 'T':
-            policy.premiumTotalAmount = policy.carInsuredAmount * 0.10;
+            policy.premiumTotalAmount = policy.carInsuredAmount * 0.06;
             break;
 
         default:
