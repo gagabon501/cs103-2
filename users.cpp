@@ -248,7 +248,7 @@ string doEncrypt(string text)
 
     for (int i = 0; i < (int)sizeof(text); i++)
     {
-        text[i] = (text[i] + 3) % 26;
+        text[i] = (text[i] + 3) % 26; // Caesar Cipher here
     }
 
     return text;
