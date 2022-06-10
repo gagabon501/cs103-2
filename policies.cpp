@@ -15,6 +15,13 @@
 #include <limits>
 #include "policies.h"
 
+#define COMPREHENSIVE 0.10
+#define FIRE 0.08
+#define THIRDPARTY 0.06
+#define WEEKLY 48
+#define FORTHNIGHTLY 24
+#define MONTHLY 12
+
 using namespace std;
 
 // Structure definitions here
@@ -87,8 +94,9 @@ vector<Policy> readPolicyFile(struct User user);
 void viewPolicy(struct User user);
 void showAdminPolicyMenu(struct User user);
 void showUserPolicyMenu(struct User user);
-
 int showMenu(vector<string> menu); // This is inside main.cpp
+struct Policy getUserPolicy(string policyNo);
+void getPolicyData(struct Policy &policy, string msg);
 
 void showPoliciesMenu(struct User user)
 {
@@ -178,7 +186,8 @@ void showUserPolicyMenu(struct User user)
 void createPolicy(struct User user, bool newPolicy, string policyNo)
 {
     char ans = 'n';
-    struct Policy policy;
+    struct Policy policy, policyData;
+
     string name = user.firstname + " " + user.lastname;
     string msg = newPolicy ? "Creating New Policy" : "Editing Policy";
     vector<Policy> policyVector;
@@ -193,84 +202,48 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
         policyFile.close();
 
         policy.policyNum = to_string(lastPolicyNum);
-    }
-    else
-    {
-        policy.policyNum = policyNo;
-        policyVector = readPolicyFile(user); // read the policy file and save the date into memory (vector<Policy>)
-    }
+        policy.username = user.email;
 
-    // policy.policyNum = to_string(lastPolicyNum);
-    policy.username = user.email;
-
-    while (toupper(ans) != 'Y')
-    {
-        cout << endl;
-        cout << "============================================" << endl;
-        cout << msg << " No.: " << policy.policyNum << endl;
-        cout << "============================================" << endl;
-        cout << "                 Car Make: ";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
-        getline(cin, policy.carMake);
-        cout << "                Car Color: ";
-        getline(cin, policy.carColor);
-        cout << "                 Car REGO: ";
-        getline(cin, policy.carRego);
-        cout << "               Start Date: ";
-        getline(cin, policy.dateInsured);
-        cout << "              Expiry Date: ";
-        getline(cin, policy.dateExpiry);
-        cout << "         Coverage (C/F/T): ";
-        cin >> policy.typeCover;
-        cout << "           Insured Amount: ";
-        cin >> policy.carInsuredAmount;
-        cout << "            Excess Amount: ";
-        cin >> policy.excessAmount;
-        cout << "Payment Frequency (W/F/M): ";
-        cin >> policy.payFrequency;
-
-        switch (toupper(policy.typeCover))
+        while (toupper(ans) != 'Y')
         {
-        case 'C':
-            policy.premiumTotalAmount = policy.carInsuredAmount * 0.10;
-            break;
-        case 'F':
-            policy.premiumTotalAmount = policy.carInsuredAmount * 0.08;
-            break;
-        case 'T':
-            policy.premiumTotalAmount = policy.carInsuredAmount * 0.06;
-            break;
 
-        default:
-            break;
+            getPolicyData(policy, msg); // Take user inputs of policy data
+
+            showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
+
+            cout << "Save policy (y/n)? ";
+            cin >> ans;
         }
 
-        switch (toupper(policy.payFrequency))
-        {
-        case 'W':
-            policy.premiumPayAmount = policy.premiumTotalAmount / 48;
-            break;
-        case 'F':
-            policy.premiumPayAmount = policy.premiumTotalAmount / 24;
-            break;
-        case 'M':
-            policy.premiumPayAmount = policy.premiumTotalAmount / 12;
-            break;
-
-        default:
-            break;
-        }
-        showPolicy(policy, name);
-        cout << "Save policy (y/n)? ";
-        cin >> ans;
-    }
-    if (newPolicy)
-    {
         savePolicy(policy);
     }
     else
     {
-        saveEditedPolicy(policyVector, policy);
+
+        policy = getUserPolicy(policyNo); // get policy data of user to edit
+
+        if (policy.policyNum != "") // Check if policy number is on file. Only proceed with the Edit Process if policy is on file.
+        {
+            policyVector = readPolicyFile(user); // read the policy file and save the date into memory (vector<Policy>). Need to do this for the updating of the whole file.
+
+            policy.policyNum = policyNo;
+            policy.username = user.email;
+
+            while (toupper(ans) != 'Y')
+            {
+                getPolicyData(policy, msg); // Take user inputs of policy data
+
+                showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
+
+                cout << "Save policy (y/n)? ";
+                cin >> ans;
+            }
+            saveEditedPolicy(policyVector, policy);
+        }
+        else
+        {
+            cout << "Policy number: " << policyNo << " not on file." << endl;
+        }
     }
 }
 
@@ -279,7 +252,7 @@ void showPolicy(struct Policy policy, string name)
     cout << endl;
     cout << "============================================" << endl;
     cout << "               Policy No.: " << policy.policyNum << endl;
-    cout << "      Creating policy for: " << name << endl;
+    cout << "            Policy Holder: " << name << endl;
     cout << "============================================" << endl;
     cout << "                 Car Make: " << policy.carMake << endl;
     cout << "                Car Color: " << policy.carColor << endl;
@@ -291,6 +264,71 @@ void showPolicy(struct Policy policy, string name)
     cout << "            Excess Amount: " << policy.excessAmount << endl;
     cout << "Payment Frequency (W/F/M): " << policy.payFrequency << endl;
     cout << "============================================" << endl;
+}
+
+void getPolicyData(struct Policy &policy, string msg)
+{
+    cout << endl;
+    cout << "============================================" << endl;
+    cout << msg << " No.: " << policy.policyNum << endl;
+    cout << "============================================" << endl;
+    cout << "                 Car Make: ";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+    getline(cin, policy.carMake);
+    cout << "                Car Color: ";
+    getline(cin, policy.carColor);
+    cout << "                 Car REGO: ";
+    getline(cin, policy.carRego);
+    cout << "               Start Date: ";
+    getline(cin, policy.dateInsured);
+    cout << "              Expiry Date: ";
+    getline(cin, policy.dateExpiry);
+    cout << "         Coverage (C/F/T): ";
+    cin >> policy.typeCover;
+    cout << "           Insured Amount: ";
+    cin >> policy.carInsuredAmount;
+    cout << "            Excess Amount: ";
+    cin >> policy.excessAmount;
+    cout << "Payment Frequency (W/F/M): ";
+    cin >> policy.payFrequency;
+
+    switch (toupper(policy.typeCover))
+    {
+    case 'C':
+        // policy.premiumTotalAmount = policy.carInsuredAmount * 0.10;
+        policy.premiumTotalAmount = policy.carInsuredAmount * COMPREHENSIVE;
+        break;
+    case 'F':
+        // policy.premiumTotalAmount = policy.carInsuredAmount * 0.08;
+        policy.premiumTotalAmount = policy.carInsuredAmount * FIRE;
+        break;
+    case 'T':
+        // policy.premiumTotalAmount = policy.carInsuredAmount * 0.06;
+        policy.premiumTotalAmount = policy.carInsuredAmount * THIRDPARTY;
+        break;
+
+    default:
+        break;
+    }
+
+    switch (toupper(policy.payFrequency))
+    {
+    case 'W':
+        // policy.premiumPayAmount = policy.premiumTotalAmount / 48;
+        policy.premiumPayAmount = policy.premiumTotalAmount / WEEKLY;
+        break;
+    case 'F':
+        // policy.premiumPayAmount = policy.premiumTotalAmount / 24;
+        policy.premiumPayAmount = policy.premiumTotalAmount / FORTHNIGHTLY;
+        break;
+    case 'M':
+        // policy.premiumPayAmount = policy.premiumTotalAmount / 12;
+        policy.premiumPayAmount = policy.premiumTotalAmount / MONTHLY;
+        break;
+
+    default:
+        break;
+    }
 }
 
 void savePolicy(struct Policy policy)
@@ -398,6 +436,82 @@ void viewPolicy(struct User user)
     cout << "---------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 }
 
+struct Policy getUserPolicy(string policyNo)
+// Returns the policy information of a user for a particular policy number
+{
+
+    struct Policy policy;
+    string txtLine;
+
+    const char *charTypeCover;
+    const char *charPayFreq;
+
+    bool found = false;
+
+    fstream policyFile("policy.csv", ios::in);
+
+    while (getline(policyFile, txtLine))
+    {
+        istringstream linestream(txtLine); // to split the row into columns/properties
+
+        string item;
+
+        getline(linestream, item, ',');
+        policy.policyNum = item;
+
+        getline(linestream, item, ',');
+        policy.username = item;
+
+        getline(linestream, item, ',');
+        policy.carMake = item;
+
+        getline(linestream, item, ',');
+        policy.carColor = item;
+
+        getline(linestream, item, ',');
+        policy.carRego = item;
+
+        getline(linestream, item, ',');
+        policy.dateInsured = item;
+
+        getline(linestream, item, ',');
+        policy.dateExpiry = item;
+
+        getline(linestream, item, ',');
+        charTypeCover = item.c_str();
+        policy.typeCover = charTypeCover[0];
+
+        getline(linestream, item, ',');
+        policy.carInsuredAmount = stoi(item);
+
+        getline(linestream, item, ',');
+        policy.excessAmount = stoi(item);
+
+        getline(linestream, item, ',');
+        policy.premiumTotalAmount = stoi(item);
+
+        getline(linestream, item, ',');
+        policy.premiumPayAmount = stoi(item);
+
+        getline(linestream, item, ',');
+        charPayFreq = item.c_str();
+        policy.payFrequency = charPayFreq[0];
+
+        if (policy.policyNum == policyNo)
+        {
+            found = true;
+            break;
+        }
+    }
+    policyFile.close();
+    if (!found)
+    {
+        policy.policyNum = ""; // just to signal to the calling function that policy was not found by returning a blank policy number
+    }
+
+    return policy;
+}
+
 vector<Policy> readPolicyFile(struct User user)
 {
     vector<Policy> tmpPolicy;
@@ -484,6 +598,9 @@ void delPolicy(struct User user)
 {
     string policyNum;
     vector<Policy> policyVector;
+    struct Policy policy;
+    string name = user.firstname + " " + user.lastname;
+    char ans = 'N';
 
     viewPolicy(user); // Show the available policies to the user with administrator access
     cout << "Enter policy number to delete (0=ESC): ";
@@ -492,31 +609,47 @@ void delPolicy(struct User user)
     // Entering "0" will not proceed to delete - sort of ESCaping the process (deleting policy)
     if (policyNum != "0")
     {
+        policy = getUserPolicy(policyNum); // get the user's policy information
 
-        policyVector = readPolicyFile(user); // read the policy file and save the date into memory (vector<Policy>)
-
-        fstream policyFile("policy.csv", ios::out); // overwrite mode
-        for (int i = 0; i < (int)policyVector.size(); i++)
+        if (policy.policyNum != "") // Check if Policy Number is on file. Proceed only if it is on file.
         {
-            if (policyVector[i].policyNum != policyNum)
+
+            showPolicy(policy, policy.username);
+            cout << "Delete policy (y/n)? ";
+            cin >> ans;
+
+            if (toupper(ans) == 'Y')
             {
-                // Re-write into the file only those records that do not have the same policyNum (policy being deleted)
-                policyFile << policyVector[i].policyNum << ","
-                           << policyVector[i].username << ","
-                           << policyVector[i].carMake << ","
-                           << policyVector[i].carColor << ","
-                           << policyVector[i].carRego << ","
-                           << policyVector[i].dateInsured << ","
-                           << policyVector[i].dateExpiry << ","
-                           << policyVector[i].typeCover << ","
-                           << policyVector[i].carInsuredAmount << ","
-                           << policyVector[i].excessAmount << ","
-                           << policyVector[i].premiumTotalAmount << ","
-                           << policyVector[i].premiumPayAmount << ","
-                           << policyVector[i].payFrequency << endl;
+                policyVector = readPolicyFile(user); // read the policy file and save the date into memory (vector<Policy>)
+
+                fstream policyFile("policy.csv", ios::out); // overwrite mode
+                for (int i = 0; i < (int)policyVector.size(); i++)
+                {
+                    if (policyVector[i].policyNum != policyNum)
+                    {
+                        // Re-write into the file only those records that do not have the same policyNum (policy being deleted)
+                        policyFile << policyVector[i].policyNum << ","
+                                   << policyVector[i].username << ","
+                                   << policyVector[i].carMake << ","
+                                   << policyVector[i].carColor << ","
+                                   << policyVector[i].carRego << ","
+                                   << policyVector[i].dateInsured << ","
+                                   << policyVector[i].dateExpiry << ","
+                                   << policyVector[i].typeCover << ","
+                                   << policyVector[i].carInsuredAmount << ","
+                                   << policyVector[i].excessAmount << ","
+                                   << policyVector[i].premiumTotalAmount << ","
+                                   << policyVector[i].premiumPayAmount << ","
+                                   << policyVector[i].payFrequency << endl;
+                    }
+                }
+                policyFile.close();
             }
         }
-        policyFile.close();
+        else
+        {
+            cout << "Policy number: " << policyNum << " not on file." << endl;
+        }
     }
 }
 
