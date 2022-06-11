@@ -11,8 +11,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <conio.h>
 #include <limits>
+#include <conio.h>
 #include "users.h"
 
 using namespace std;
@@ -51,6 +51,8 @@ string getPasswd(string &passwd, string textPrompt);
 string doEncrypt(string text);
 vector<User> readFile();
 void writeFile(struct User user);
+void dateFormat(string &date);
+void validateCode(char &code, char validEntries[]);
 
 // The user variable is passed here by reference so that its contents when updated will be available from the calling module.
 void showLoginMenu(struct User &user)
@@ -313,4 +315,60 @@ void writeFile(struct User user)
     fstream userFile("users.csv", ios::app); // open file in append mode
     userFile << user.email << "," << user.password << "," << user.lastname << "," << user.firstname << "," << user.phone << "," << user.accessLevel << "\n";
     userFile.close();
+}
+
+void dateFormat(string &date)
+{
+    int ch, ctr = 0;
+
+    // clear contents first of the date string - otherwise you will end up adding the new date data into the existing one
+    date.clear();
+
+    while (true)
+    {
+        ctr++; // input character counter
+
+        if (ctr == 3 || ctr == 6)
+        {
+            ch = 45; // dash (-) character
+        }
+        else
+        {
+            ch = getch();             // this is from conio.h
+            if (ch == 10 || ctr > 10) // This is the ENTER key (LF-Line Feed character).
+            {
+                break;
+            }
+        }
+        date.push_back(ch);            // save every character to the textInput variable of type string
+        cout << static_cast<char>(ch); // need to cast this, otherwise the ASCII code will be displayed instead of the character
+    }
+}
+
+void validateCode(char &code, char validEntries[])
+{
+    char ch;
+    bool isValid = false;
+
+    while (true)
+    {
+        ch = getch();
+        cout << static_cast<char>(ch);
+        for (int i = 0; i < (int)(sizeof(validEntries) / sizeof(validEntries[0])); i++)
+        {
+            if (toupper(ch) == toupper(validEntries[i]))
+            {
+                isValid = true;
+                break;
+            }
+        }
+        if (!isValid)
+        {
+            cout << "\nInvalid entry. Please re-enter: ";
+        }
+        else
+        {
+            break;
+        }
+    }
 }

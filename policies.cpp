@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <cstdio>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -97,6 +98,8 @@ void showUserPolicyMenu(struct User user);
 int showMenu(vector<string> menu); // This is inside main.cpp
 struct Policy getUserPolicy(string policyNo);
 void getPolicyData(struct Policy &policy, string msg);
+void dateFormat(string &date);
+void validateCode(char &code, char validEntries[]);
 
 void showPoliciesMenu(struct User user)
 {
@@ -196,11 +199,6 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
     {
         int lastPolicyNum = getLastPolicyNum() + 1;
 
-        // save here the lastPolicyNum to the policy.txt file -- replace existing data
-        fstream policyFile("policyNum.txt", ios::out); // open file in write mode
-        policyFile << lastPolicyNum << endl;
-        policyFile.close();
-
         policy.policyNum = to_string(lastPolicyNum);
         policy.username = user.email;
 
@@ -216,6 +214,11 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
         }
 
         savePolicy(policy);
+
+        // save here the lastPolicyNum to the policy.txt file -- replace existing data
+        fstream policyFile("policyNum.txt", ios::out); // open file in write mode
+        policyFile << lastPolicyNum << endl;
+        policyFile.close();
     }
     else
     {
@@ -268,6 +271,9 @@ void showPolicy(struct Policy policy, string name)
 
 void getPolicyData(struct Policy &policy, string msg)
 {
+    char coverType[] = {'C', 'F', 'T'};
+    char payFreq[] = {'W', 'F', 'M'};
+
     cout << endl;
     cout << "============================================" << endl;
     cout << msg << " No.: " << policy.policyNum << endl;
@@ -279,18 +285,26 @@ void getPolicyData(struct Policy &policy, string msg)
     getline(cin, policy.carColor);
     cout << "                 Car REGO: ";
     getline(cin, policy.carRego);
-    cout << "               Start Date: ";
-    getline(cin, policy.dateInsured);
-    cout << "              Expiry Date: ";
-    getline(cin, policy.dateExpiry);
+    cout << "  Start Date (DD-MM-YYYY): ";
+    dateFormat(policy.dateInsured);
+    cout << endl;
+    cout << "  Expiry Date(DD-MM-YYYY): "; // Actually user need not enter this. System will create the expiry which is one year from start date.
+    dateFormat(policy.dateExpiry);
+    cout << endl;
     cout << "         Coverage (C/F/T): ";
-    cin >> policy.typeCover;
+
+    validateCode(policy.typeCover, coverType); // policy.typeCover is passed here by reference - hence it gets updated inside validateCode()
+
+    cout << endl;
     cout << "           Insured Amount: ";
     cin >> policy.carInsuredAmount;
     cout << "            Excess Amount: ";
     cin >> policy.excessAmount;
     cout << "Payment Frequency (W/F/M): ";
-    cin >> policy.payFrequency;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the validateCode() function be called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+
+    validateCode(policy.payFrequency, payFreq); // policy.payFrequency is passed here by reference - hence it gets updated inside validateCode()
 
     switch (toupper(policy.typeCover))
     {
