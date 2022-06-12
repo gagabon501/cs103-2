@@ -99,7 +99,7 @@ int showMenu(vector<string> menu); // This is inside main.cpp
 struct Policy getUserPolicy(string policyNo);
 void getPolicyData(struct Policy &policy, string msg);
 void dateFormat(string &date);
-void validateCode(char &code, char validEntries[]);
+void validateCode(char &code, string validEntries);
 
 void showPoliciesMenu(struct User user)
 {
@@ -271,8 +271,8 @@ void showPolicy(struct Policy policy, string name)
 
 void getPolicyData(struct Policy &policy, string msg)
 {
-    char coverType[] = {'C', 'F', 'T'};
-    char payFreq[] = {'W', 'F', 'M'};
+    string coverType = "CFT";
+    string payFreq = "WFM";
 
     cout << endl;
     cout << "============================================" << endl;
