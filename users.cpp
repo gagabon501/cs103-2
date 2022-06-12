@@ -52,7 +52,7 @@ string doEncrypt(string text);
 vector<User> readFile();
 void writeFile(struct User user);
 void dateFormat(string &date);
-void validateCode(char &code, char validEntries[]);
+void validateCode(char &code, string validEntries);
 
 // The user variable is passed here by reference so that its contents when updated will be available from the calling module.
 void showLoginMenu(struct User &user)
@@ -326,37 +326,43 @@ void dateFormat(string &date)
 
     while (true)
     {
-        ctr++; // input character counter
 
-        if (ctr == 3 || ctr == 6)
+        if (ctr == 2 || ctr == 5)
         {
-            ch = 45; // dash (-) character
+            ctr++;                         // increment character counter only when entry is a digit
+            ch = 45;                       // dash (-) character
+            date.push_back(ch);            // save every character to the date variable of type string
+            cout << static_cast<char>(ch); // need to cast this, otherwise the ASCII code will be displayed instead of the character
         }
         else
         {
-            ch = getch();             // this is from conio.h
-            if (ch == 10 || ctr > 10) // This is the ENTER key (LF-Line Feed character).
+            ch = getch();            // this is from conio.h
+            if (ch == 10 || ctr > 9) // This is the ENTER key (LF-Line Feed character).
             {
                 break;
             }
+            else if (isdigit(ch))
+            {
+                ctr++;                         // increment character counter only when entry is a digit
+                date.push_back(ch);            // save every character to the date variable of type string
+                cout << static_cast<char>(ch); // need to cast this, otherwise the ASCII code will be displayed instead of the character
+            }
         }
-        date.push_back(ch);            // save every character to the textInput variable of type string
-        cout << static_cast<char>(ch); // need to cast this, otherwise the ASCII code will be displayed instead of the character
     }
 }
 
-void validateCode(char &code, char validEntries[])
+void validateCode(char &code, string validEntries)
 {
-    char ch;
+
     bool isValid = false;
 
     while (true)
     {
-        ch = getch();
-        cout << static_cast<char>(ch);
-        for (int i = 0; i < (int)(sizeof(validEntries) / sizeof(validEntries[0])); i++)
+        code = getch();
+        cout << static_cast<char>(code);
+        for (int i = 0; i < (int)validEntries.size(); i++)
         {
-            if (toupper(ch) == toupper(validEntries[i]))
+            if (toupper(code) == toupper(validEntries[i]))
             {
                 isValid = true;
                 break;
