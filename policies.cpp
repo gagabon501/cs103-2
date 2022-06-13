@@ -100,6 +100,7 @@ struct Policy getUserPolicy(string policyNo);
 void getPolicyData(struct Policy &policy, string msg);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
+void newDateExpiry(string &dateExpiry, string dateStart);
 
 void showPoliciesMenu(struct User user)
 {
@@ -289,7 +290,9 @@ void getPolicyData(struct Policy &policy, string msg)
     dateFormat(policy.dateInsured);
     cout << endl;
     cout << "  Expiry Date(DD-MM-YYYY): "; // Actually user need not enter this. System will create the expiry which is one year from start date.
-    dateFormat(policy.dateExpiry);
+    // dateFormat(policy.dateExpiry);
+    newDateExpiry(policy.dateExpiry, policy.dateInsured);
+
     cout << endl;
     cout << "         Coverage (C/F/T): ";
 
@@ -684,4 +687,29 @@ int getLastPolicyNum()
     policyNumFile.close();
 
     return policyNo;
+}
+
+void newDateExpiry(string &dateExpiry, string dateStart)
+{
+
+    string oldExpiryYear, strNewYear;
+    for (int i = 0; i < (int)dateStart.length(); i++)
+    {
+        if (i >= 6)
+        {
+            oldExpiryYear.push_back(dateStart[i]); // save the year portion of the dateExpiry
+        }
+    }
+
+    strNewYear = to_string(stoi(oldExpiryYear) + 1);
+
+    for (int i = 0; i < 6; i++)
+    {
+        dateExpiry.push_back(dateStart[i]);
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        dateExpiry.push_back(strNewYear[i]);
+    }
+    cout << dateExpiry;
 }

@@ -341,7 +341,7 @@ void dateFormat(string &date)
             {
                 break;
             }
-            else if (isdigit(ch))
+            else if (isdigit(ch)) // check if the typed character is a digit. Only accept digit entries.
             {
                 ctr++;                         // increment character counter only when entry is a digit
                 date.push_back(ch);            // save every character to the date variable of type string
