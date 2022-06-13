@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Jun 13 12:00:09 2022
+# Make data base, printed on Tue Jun 14 07:07:19 2022
 
 # Variables
 
@@ -31,7 +31,7 @@ OBJDIR = obj
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-dee491fe-e310-4f3c-9dd0-e7d423e10e25.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-50032e32-1cca-4662-841d-ddd2a140b91f.sock
 # environment
 MANDATORY_PATH = /usr/share/gconf/pop.mandatory.path
 # environment
@@ -115,13 +115,13 @@ XDG_CONFIG_DIRS = /etc/xdg/xdg-pop:/etc/xdg
 # environment
 XDG_SESSION_DESKTOP = pop
 # makefile (from 'users.d', line 1)
-MAKEFILE_LIST := Makefile main.d policies.d users.d
+MAKEFILE_LIST := Makefile claims.d main.d policies.d users.d
 # automatic
 @F = $(notdir $@)
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 4932
+VSCODE_PID = 4691
 # environment
 XDG_SESSION_TYPE = x11
 # makefile (from 'Makefile', line 11)
@@ -129,7 +129,7 @@ APPNAME = vis
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/pop-os:@/tmp/.ICE-unix/2014,unix/pop-os:/tmp/.ICE-unix/2014
+SESSION_MANAGER = local/pop-os:@/tmp/.ICE-unix/1938,unix/pop-os:/tmp/.ICE-unix/1938
 # automatic
 *F = $(notdir $*)
 # environment
@@ -173,7 +173,7 @@ LC_MONETARY = en_US.UTF-8
 # environment
 LC_TIME = en_US.UTF-8
 # environment
-INVOCATION_ID = cf8253d3410840fd9739bd7ab55a8c91
+INVOCATION_ID = 6ae49a197d6f4cbc8223bf40fe64a8f1
 # environment
 VSCODE_LOG_NATIVE = false
 # environment
@@ -209,7 +209,7 @@ EXE = .exe
 # makefile
 .DEFAULT_GOAL := all
 # environment
-SYSTEMD_EXEC_PID = 2033
+SYSTEMD_EXEC_PID = 1957
 # makefile (from 'Makefile', line 21)
 RM = rm
 # environment
@@ -225,13 +225,13 @@ MAKE_VERSION := 4.3
 # makefile (from 'Makefile', line 8)
 LDFLAGS = 
 # environment
-MANAGERPID = 1693
+MANAGERPID = 1637
 # makefile (from 'Makefile', line 24)
 DEL = del
 # environment
 LC_MEASUREMENT = en_US.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4932
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4691
 # environment
 _ = /usr/share/code/code
 # environment
@@ -245,7 +245,7 @@ nodebook_jwtPrivateKey = Wakoy1298
 # environment
 NVM_CD_FLAGS = 
 # environment
-JOURNAL_STREAM = 8:39091
+JOURNAL_STREAM = 8:37992
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -284,7 +284,7 @@ GDMSESSION = pop
 LC_IDENTIFICATION = en_US.UTF-8
 # variable set hash-table stats:
  
-# Load=136/1024=13%, Rehash=0, Collisions=11/195=6%
+# Load=136/1024=13%, Rehash=0, Collisions=11/202=5%
 
 # Pattern-specific Variable Values
 
@@ -292,10 +292,10 @@ LC_IDENTIFICATION = en_US.UTF-8
 
 # Directories
 
-# . (device 2051, inode 7299319): 21 files, no impossibilities.
-# /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2 (device 2051, inode 7299319): 21 files, no impossibilities.
+# . (device 2051, inode 7299319): 26 files, no impossibilities.
+# /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2 (device 2051, inode 7299319): 26 files, no impossibilities.
 
-# 42 files, no impossibilities in 2 directories.
+# 52 files, no impossibilities in 2 directories.
 
 # Implicit Rules
 
@@ -313,7 +313,7 @@ obj/%.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_S
 users.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'users'
-#  Last modified 2022-06-13 12:00:09.010679065
+#  Last modified 2022-06-14 07:07:18.693900215
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 40):
@@ -334,30 +334,31 @@ cleandepw:
 #  recipe to execute (from 'Makefile', line 69):
 	$(DEL) $(DEP)
 
-obj/users.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h
+obj/users.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+claims.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp
 #  Implicit rule search has been done.
-#  Implicit/static pattern stem: 'users'
-#  Last modified 2022-06-13 07:58:59.116094351
+#  Implicit/static pattern stem: 'claims'
+#  Last modified 2022-06-14 07:07:18.885863779
 #  File has been updated.
 #  Successfully updated.
-#  recipe to execute (from 'Makefile', line 47):
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+#  recipe to execute (from 'Makefile', line 40):
+	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
 
 # Not a target:
 /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-13 08:05:33.348509965
+#  Last modified 2022-06-14 07:06:49.004113228
 #  File has been updated.
 #  Successfully updated.
 
-obj/main.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
-#  Implicit rule search has been done.
-#  Implicit/static pattern stem: 'main'
-#  Last modified 2022-06-11 13:40:57.10815745
-#  File has been updated.
-#  Successfully updated.
-#  recipe to execute (from 'Makefile', line 47):
-	$(CC) $(CXXFLAGS) -o $@ -c $<
+obj/main.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 cleandep:
 #  Phony target (prerequisite of .PHONY).
@@ -377,7 +378,7 @@ Makefile:
 # Not a target:
 /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-13 07:40:19.642076753
+#  Last modified 2022-06-14 07:06:49.004113228
 #  File has been updated.
 #  Successfully updated.
 
@@ -391,15 +392,14 @@ clean:
 
 # Not a target:
 /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/users.h:
-#  Implicit rule search has been done.
-#  Last modified 2022-06-07 06:47:57.888855057
-#  File has been updated.
-#  Successfully updated.
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 policies.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'policies'
-#  Last modified 2022-06-13 12:00:09.110622991
+#  Last modified 2022-06-14 07:07:18.761887311
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 40):
@@ -408,6 +408,7 @@ policies.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrate
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
+ 
 #  Modification time never checked.
 #  File has not been updated.
 
@@ -416,16 +417,41 @@ all: vis
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
 
-obj/policies.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
+obj/claims.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp
 #  Implicit rule search has been done.
-#  Implicit/static pattern stem: 'policies'
-#  Last modified 2022-06-13 08:05:38.304806608
+#  Implicit/static pattern stem: 'claims'
+#  File does not exist.
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := obj/claims.o
+# automatic
+# * := claims
+# automatic
+# < := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp
+# automatic
+# + := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp
+# automatic
+# % := 
+# automatic
+# ^ := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp
+# automatic
+# ? := /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp
+# automatic
+# | := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/15=13%
 #  recipe to execute (from 'Makefile', line 47):
 	$(CC) $(CXXFLAGS) -o $@ -c $<
+
+obj/policies.o: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.cpp /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 cleanw:
 #  Phony target (prerequisite of .PHONY).
@@ -438,46 +464,54 @@ cleanw:
 main.d: /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/main.cpp
 #  Implicit rule search has been done.
 #  Implicit/static pattern stem: 'main'
-#  Last modified 2022-06-13 12:00:09.190578134
+#  Last modified 2022-06-14 07:07:18.817876683
 #  File has been updated.
 #  Successfully updated.
 #  recipe to execute (from 'Makefile', line 40):
 	@$(CPP) $(CFLAGS) $< -MM -MT $(@:%.d=$(OBJDIR)/%.o) >$@
 
-vis: obj/main.o obj/policies.o obj/users.o
+vis: obj/claims.o obj/main.o obj/policies.o obj/users.o
 #  Implicit rule search has not been done.
-#  Last modified 2022-06-13 08:05:38.368810414
+#  Last modified 2022-06-14 07:06:49.004113228
 #  File has been updated.
-#  Successfully updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/5=0%
 #  recipe to execute (from 'Makefile', line 36):
 	$(CC) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 # Not a target:
 /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/policies.h:
-#  Implicit rule search has been done.
-#  Last modified 2022-06-07 06:47:57.888855057
-#  File has been updated.
-#  Successfully updated.
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
 
 .PHONY: clean cleandep cleanw cleandepw
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
+# Not a target:
+/home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2/claims.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-14 07:06:49.000114146
+#  File has been updated.
+#  Successfully updated.
+
 # files hash-table stats:
-# Load=21/1024=2%, Rehash=0, Collisions=0/76=0%
+# Load=24/1024=2%, Rehash=0, Collisions=0/82=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 46 / storage = 1240 B / avg = 26 B
-# current buf: size = 8162 B / used = 1240 B / count = 46 / avg = 26 B
+# strcache buffers: 1 (0) / strings = 54 / storage = 1443 B / avg = 26 B
+# current buf: size = 8162 B / used = 1443 B / count = 54 / avg = 26 B
 
-# strcache performance: lookups = 100 / hit rate = 54%
+# strcache performance: lookups = 108 / hit rate = 50%
 # hash-table stats:
-# Load=46/8192=1%, Rehash=0, Collisions=0/100=0%
-# Finished Make data base on Mon Jun 13 12:00:09 2022
+# Load=54/8192=1%, Rehash=0, Collisions=0/108=0%
+# Finished Make data base on Tue Jun 14 07:07:19 2022
 
  
