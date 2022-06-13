@@ -1,7 +1,7 @@
-gi/***********************************************************************************
+/***********************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * File         : claims.cpp
- * Purpose      : Program file to manage Insurance Claims in the Vehicle Insurance System
+ * Purpose      : Program file to manage Claims in the Vehicle Insurance System
  * Parameters   : struct User user
  * Returns      : None
  ************************************************************************************/
@@ -10,10 +10,12 @@ gi/*****************************************************************************
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <cstdio>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <limits>
+#include "claims.h"
 
 using namespace std;
 
@@ -35,6 +37,7 @@ struct User
 
 struct Claim
 {
+    string username;
     string policyNum;
     string claimNum;
     string dateBirth;
@@ -43,9 +46,10 @@ struct Claim
     float payClaim; // pay user claim $$
 
     // Constructor to initialize members
-    Claim(string claimno = "", string policyno = "", string dbirth = "", string dincident = "", char tcover = 'C', float pclaim = 0.00)
+    Claim(string claimno = "", string policyno = "", string uname = "", string dbirth = "", string dincident = "", char tcover = 'C', float pclaim = 0.00)
     
     {
+        username = uname;
         claimNum = claimno;
         policyNum = policyno;
         dateBirth = dbirth;
@@ -55,27 +59,30 @@ struct Claim
     }
 };
 
-// Function Prototypes here
-int getLastClaimNum();
-void createClaim(struct User user, bool newClaim, string claimno);
-void savePolicy(struct Claim claim);
-void saveEditedClaim(vector<Claim> claimVector, struct Claim claim);
-void showClaim(struct Claim claim, string name);
-vector<Claim> readClaimFile(struct User user);
-void viewClaim(struct User user);
-void showAdminClaimyMenu(struct User user);
-void showUserClaimMenu(struct User user);
-void editClaim(struct User user);
-int showMenu(vector<string> menu);
+//Function prototypes here
+void createClaim();
+void editClaim();
+void viewClaim();
+void inputClaim(); // This it the total amount customer is claiming
+void payClaim();
+void saveClaim();
+vector <Claim> readClaimsFile (struct User user);
+void deleteClaim();
 
+//Menus 
+void viewClaim(struct User user);
+void showAdminClaimMenu(struct User user);
+void showUserClaimMenu(struct User user);
+int showMenu(vector<string> menu); // This is inside main.cpp
 void showClaimMenu(struct User user)
+
 {
     // int choice = 0;
-    vector <Claim> claim;
+    vector<Claim> claim;
 
-if (user.accessLevel > 1)
+    if (user.accessLevel > 1)
     {
-        showClaimMenu(user);
+        showAdminClaimMenu(user);
     }
     else
     {
@@ -88,33 +95,34 @@ void showAdminClaimMenu(struct User user)
     int choice = 0;
     vector<Claim> claim;
     vector<string> menu = {
-        "Manage Insurance Claims",
+        "Manage Insurance Policies",
         "============================================",
-        "[1] Make a claim",
-        "[2] New claim",
-        "[3] Review claim",
-        "[4] Pay claim",
+        "[1] Create New Policy",
+        "[2] View Policy",
+        "[3] Edit Policy",
+        "[4] Delete Policy",
         "[5] Exit",
         "============================================",
     };
 
-    while (choice != 5)
+  while (choice != 5)
     {
 
-        choice = showMenu(menu); 
+        choice = showMenu(menu); // residing in main.cpp 
 
         switch (choice)
         {
         case 1:
-            createClaim(user, true, ""); 
+            createClaim(); //******trish delete note (may need to add in user to call to functions)
+            break;
         case 2:
-            viewClaim(user);
+            viewClaim();
             break;
         case 3:
-            editClaim(user);
+            editClaim();
             break;
         case 4:
-            cout << "[4] Delete Claim" << endl;
+            deleteClaim();
             break;
         default:
             break;
@@ -122,15 +130,16 @@ void showAdminClaimMenu(struct User user)
     }
 }
 
+
 void showUserClaimMenu(struct User user)
 {
     int choice = 0;
     vector<Claim> claim;
     vector<string> menu = {
-        "Start new Claim for: " + user.firstname + " " + user.lastname,
+        "Manage Insurance Policy for: " + user.firstname + " " + user.lastname,
         "==========================================",
-        "[1] Create New Claim",
-        "[2] View Claim",
+        "[1] Create New Policy",
+        "[2] View Policy",
         "[3] Exit",
         "==========================================",
     };
@@ -139,14 +148,13 @@ void showUserClaimMenu(struct User user)
     {
 
         choice = showMenu(menu);
-        
         switch (choice)
         {
         case 1:
-            createClaim(user, true, "");
+            createClaim(); //******trish delete note (may need to add in user to call to functions)
             break;
         case 2:
-            viewClaim(user);
+            viewClaim();
             break;
         default:
             break;
@@ -154,4 +162,13 @@ void showUserClaimMenu(struct User user)
     }
 }
 
-   
+void createClaim(struct User user, bool newClaim, string claimNo)
+{
+    char ans = 'n';
+    struct Claim claim, claimInfo;
+
+    string name = user.firstname + " " + user.lastname;
+    string msg = newClaim ? "Creating New Claim" : "Editing Claim";
+    vector<Claim> claimVector;
+}
+
