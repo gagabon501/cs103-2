@@ -66,8 +66,10 @@ void viewClaim();
 void inputClaim(); // This it the total amount customer is claiming
 void payClaim();
 void saveClaim();
-vector <Claim> readClaimsFile (struct User user);
+vector <Claim> readClaimFile (struct User user);
 void deleteClaim();
+void readClaimData();
+void getClaimData();
 
 //Menus 
 void viewClaim(struct User user);
@@ -95,7 +97,7 @@ void showAdminClaimMenu(struct User user)
     int choice = 0;
     vector<Claim> claim;
     vector<string> menu = {
-        "Manage Insurance Policies",
+        "Manage Insurance Claims",
         "============================================",
         "[1] Create New Policy",
         "[2] View Policy",
@@ -136,10 +138,10 @@ void showUserClaimMenu(struct User user)
     int choice = 0;
     vector<Claim> claim;
     vector<string> menu = {
-        "Manage Insurance Policy for: " + user.firstname + " " + user.lastname,
+        "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
         "==========================================",
-        "[1] Create New Policy",
-        "[2] View Policy",
+        "[1] Create New Claim",
+        "[2] View Claim",
         "[3] Exit",
         "==========================================",
     };
@@ -171,4 +173,57 @@ void createClaim(struct User user, bool newClaim, string claimNo)
     string msg = newClaim ? "Creating New Claim" : "Editing Claim";
     vector<Claim> claimVector;
 }
+    if (createClaim)
+    {
+        int inputClaim = inputClaim() + 1;
 
+        claim.claimNo = to_string(inputClaim);
+        claim.username = user.email;
+
+        while (toupper(ans) != 'Y')
+        {
+
+            readClaimData(claim, msg); // Take user inputs of claim data
+
+            showClaim(claim, createClaim ? name : claim.username); // Show the claim data that was just entered to the user for confirmation.
+
+            cout << "Save claim or reject (y/n)? ";
+            cin >> ans;
+        }
+
+        saveClaim(claim);
+
+        // save the claim to the claim.txt file
+        fstream claimFile("claims.txt", ios::out); // open file in write mode
+        claimsFile << lastClaimsNo << endl;
+        readClaimFile.close();
+    }
+    else
+    {
+
+        claim = getUserClaim(claimsNo); // get claim data of user to edit
+
+        if (claim.claimNo != "") // Check if claim number is on file. Only proceed with the Edit Process if claim is on file.
+        {
+            claimVector = getClaimFile(user); // read the claim file and save the date into memory (vector<Claim>). Need to do this for the updating of the whole file.
+
+            claim.claimNo = claimNo;
+            claim.username = user.email;
+
+            while (toupper(ans) != 'Y')
+            {
+                getClaimData(claim, msg); // Take user inputs of claim data
+
+                showClaim(claim, newClaim ? name : claim.username); // Show the claim data that was just entered to the user for confirmation.
+
+                cout << "Save policy (y/n)? ";
+                cin >> ans;
+            }
+            saveEditedClaim(claimVector, claim);
+        }
+        else
+        {
+            cout << "Claim number: " << ClaimNo << " not on file." << endl;
+        }
+    }
+}
