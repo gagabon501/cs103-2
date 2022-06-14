@@ -1,11 +1,10 @@
-gi/***********************************************************************************
+/***********************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * File         : claims.cpp
  * Purpose      : Program file to manage Insurance Claims in the Vehicle Insurance System
  * Parameters   : struct User user
  * Returns      : None
  ************************************************************************************/
-
 
 #include <iostream>
 #include <string>
@@ -44,14 +43,14 @@ struct Claim
 
     // Constructor to initialize members
     Claim(string claimno = "", string policyno = "", string dbirth = "", string dincident = "", char tcover = 'C', float pclaim = 0.00)
-    
+
     {
         claimNum = claimno;
         policyNum = policyno;
         dateBirth = dbirth;
         dateIncident = dincident;
         typeCover = tcover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
-        payClaim = pclaim; // pay user claim $$
+        payClaim = pclaim;  // pay user claim $$
     }
 };
 
@@ -71,9 +70,9 @@ int showMenu(vector<string> menu);
 void showClaimMenu(struct User user)
 {
     // int choice = 0;
-    vector <Claim> claim;
+    vector<Claim> claim;
 
-if (user.accessLevel > 1)
+    if (user.accessLevel > 1)
     {
         showClaimMenu(user);
     }
@@ -101,12 +100,12 @@ void showAdminClaimMenu(struct User user)
     while (choice != 5)
     {
 
-        choice = showMenu(menu); 
+        choice = showMenu(menu);
 
         switch (choice)
         {
         case 1:
-            createClaim(user, true, ""); 
+            createClaim(user, true, "");
         case 2:
             viewClaim(user);
             break;
@@ -139,7 +138,7 @@ void showUserClaimMenu(struct User user)
     {
 
         choice = showMenu(menu);
-        
+
         switch (choice)
         {
         case 1:
@@ -153,5 +152,3 @@ void showUserClaimMenu(struct User user)
         }
     }
 }
-
-   

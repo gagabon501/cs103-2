@@ -4,6 +4,7 @@
  * Purpose      : Program file to manage users in the Vehicle Insurance System
  * Parameters   : None
  * Returns      : Status of program execution: 0=Success Non-zero=Error
+ * Author       : Gilberto Gabon
  ************************************************************************************/
 
 #include <iostream>
@@ -56,6 +57,14 @@ void validateCode(char &code, string validEntries);
 
 // The user variable is passed here by reference so that its contents when updated will be available from the calling module.
 void showLoginMenu(struct User &user)
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void showLoginMenu(struct User &user)
+ * Purpose      : Function to show the Login Menu of the Vehicle Insurance System application. This is the first function called by the system.
+ * Parameters   : A structure of type User. Parameter is passed by reference as the passed variable is updated inside this function.
+ * Returns      : No return value. However, the passed parameter is updated inside this function.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 {
     int choice = 0;
 
@@ -97,6 +106,14 @@ void showLoginMenu(struct User &user)
 }
 
 void doLogin(struct User &user)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void doLogin(struct User &user)
+ * Purpose      : Function to get login the user into the system. This asks for the usernamen and password. Called when the user selects "1. Login" from the menu.
+ * Parameters   : A structure of type User. Parameter is passed by reference as the passed variable is updated inside this function.
+ * Returns      : No return value. However, the passed parameter is updated inside this function.
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
     string username = "";
     string password = "";
@@ -155,6 +172,14 @@ void doLogin(struct User &user)
 }
 
 int doRegister()
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: int doRegister()
+ * Purpose      : Main function to register the user into the system. On successful registration, user is added into "users.csv" file.
+ * Parameters   : None.
+ * Returns      : Returns an int - returned value is used by the calling function to indicate what number in the menu that was chosen by the user.
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
     struct User user;
 
@@ -164,10 +189,18 @@ int doRegister()
 
     registerUser(user);
 
-    return 2;
+    return 2; // Just an indication that "2. Register" was chosen by the user.
 }
 
 void registerUser(struct User user)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void registerUser(struct User user)
+ * Purpose      : Function that does the actual user registration - asks for the user information and add the user into the "users.csv".
+ * Parameters   : A structure of type User. Parameter is passed by reference as the passed variable is updated inside this function.
+ * Returns      : No return value. However, the passed parameter is updated inside this function.
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
     vector<User> userFile;
     string confirmPassword = "confirmpassword";
@@ -218,34 +251,51 @@ void registerUser(struct User user)
 }
 
 string getPasswd(string &passwd, string textPrompt)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: string getPasswd(string &passwd, string textPrompt)
+ * Purpose      : Function to accept the user's password.
+ * Parameters   : A string for the password - passed by reference and a string for the text prompt displayed when asking the user to enter the password.
+ * Returns      : Returns a string which contains the encrypted value of the password.
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
-    int ch;
-
-    string textInput = "";
-
-    cout << textPrompt;
-
-    while (true)
     {
-        ch = getch(); // this is from conio.h
-        if (ch == 10) // This is the ENTER key (LF-Line Feed character).
+        int ch;
+
+        string textInput = "";
+
+        cout << textPrompt;
+
+        while (true)
         {
-            break;
+            ch = getch(); // this is from conio.h
+            if (ch == 10) // This is the ENTER key (LF-Line Feed character).
+            {
+                break;
+            }
+            else
+            {
+                textInput.push_back(ch); // save every character to the textInput variable of type string
+            }
+            cout << 'x'; // Display an 'x' instead of the actual text that is typed
         }
-        else
-        {
-            textInput.push_back(ch); // save every character to the textInput variable of type string
-        }
-        cout << 'x'; // Display an 'x' instead of the actual text that is typed
+
+        passwd = doEncrypt(textInput); // simple encryption only (Caesar cipher)
+
+        return passwd; // returned string is encrypted already
     }
-
-    passwd = doEncrypt(textInput); // simple encryption only (Caesar cipher)
-
-    return passwd; // returned string is encrypted already
 }
 
 string doEncrypt(string text)
-// Simple encryption of the text input (Caesar cipher)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: string doEncrypt(string text)
+ * Purpose      : Function that does the actual encryption of the plaintext string.
+ * Parameters   : A string for the text to be encrypted.
+ * Returns      : Returns the encrypted text.
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
 
     for (int i = 0; i < (int)sizeof(text); i++)
@@ -257,6 +307,14 @@ string doEncrypt(string text)
 }
 
 vector<User> readFile()
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: vector<User> readFile()
+ * Purpose      : Function that does the actual reading of the "users.csv" file.
+ * Parameters   : None.
+ * Returns      : Returns a vector of type User structure (an array of structures of type User) - basically the contents of the "users.csv" file.
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
     vector<User> tmpUser;
     struct User user;
@@ -296,6 +354,14 @@ vector<User> readFile()
 }
 
 bool checkDuplicate(string email, vector<User> frmUsersFile)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: bool checkDuplicate(string email, vector<User> frmUsersFile)
+ * Purpose      : Function that checks for duplicate user record in the "users.csv" file.
+ * Parameters   : string email -> this is the email of the user to be checked, vector<User> frmUsersFile) -> the contents of the users.csv file saved in a vector of type User.
+ * Returns      : Returns a boolean - indicating if there is a duplicate (true) or not (false).
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
     bool retVal = false;
 
@@ -311,6 +377,14 @@ bool checkDuplicate(string email, vector<User> frmUsersFile)
 }
 
 void writeFile(struct User user)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void writeFile(struct User user)
+ * Purpose      : Function that does the actual writing to the "users.csv" file.
+ * Parameters   : struct User user --> the contents to be written to "users.csv" file.
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
     fstream userFile("users.csv", ios::app); // open file in append mode
     userFile << user.email << "," << user.password << "," << user.lastname << "," << user.firstname << "," << user.phone << "," << user.accessLevel << "\n";
@@ -318,6 +392,14 @@ void writeFile(struct User user)
 }
 
 void dateFormat(string &date)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void dateFormat(string &date)
+ * Purpose      : Function that formats the string to a date format (DD-MM-YYYY)
+ * Parameters   : string &date --> the date string to be formatted. String is passed by reference and updated here accordingly.
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
     int ch, ctr = 0;
 
@@ -352,13 +434,21 @@ void dateFormat(string &date)
 }
 
 void validateCode(char &code, string validEntries)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void validateCode(char &code, string validEntries)
+ * Purpose      : General purpose function to get input from the user (a code) and it is validated againts a string of acceptable entries. Each letter in the string represents the acceptable entry.
+ * Parameters   : char &code -> this is the code to be validated against - passed here by reference, string validEntries --> this is the string that contains the valid entries.
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
 {
 
     bool isValid = false;
 
     while (true)
     {
-        code = getch();
+        code = getch(); // the variable 'code' here is passed by reference and hence get updated based on the input  entry of the user.
         cout << static_cast<char>(code);
         for (int i = 0; i < (int)validEntries.size(); i++)
         {
