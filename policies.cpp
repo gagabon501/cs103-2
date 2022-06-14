@@ -103,6 +103,15 @@ void validateCode(char &code, string validEntries);
 void newDateExpiry(string &dateExpiry, string dateStart);
 
 void showPoliciesMenu(struct User user)
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void showPoliciesMenu(struct User user)
+ * Purpose      : Function to show the Policies Menu of the Vehicle Insurance System application. This is the main menu for the Policies Module.
+ * Parameters   : A structure of type User. The variable contains information about the current user. This parameter is passed further down to the
+ *                showAdminPolicyMenu(user) and showUserPolicyMenu(user)
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 {
     // int choice = 0;
     vector<Policy> policy;
@@ -118,6 +127,14 @@ void showPoliciesMenu(struct User user)
 }
 
 void showAdminPolicyMenu(struct User user)
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void showAdminPolicyMenu(struct User user)
+ * Purpose      : Function to show the Policies Menu for an Admin user of the Vehicle Insurance System application.
+ * Parameters   : A structure of type User. The variable contains information about the current user.
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 {
     int choice = 0;
     vector<Policy> policy;
