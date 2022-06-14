@@ -102,7 +102,6 @@ void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
 void newDateExpiry(string &dateExpiry, string dateStart);
 
-void showPoliciesMenu(struct User user)
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void showPoliciesMenu(struct User user)
@@ -112,6 +111,7 @@ void showPoliciesMenu(struct User user)
  * Returns      : No return value.
  * Author       : Gilberto Gabon
  *************************************************************************************************************************************************/
+void showPoliciesMenu(struct User user)
 {
     // int choice = 0;
     vector<Policy> policy;
@@ -126,7 +126,6 @@ void showPoliciesMenu(struct User user)
     }
 }
 
-void showAdminPolicyMenu(struct User user)
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void showAdminPolicyMenu(struct User user)
@@ -135,6 +134,7 @@ void showAdminPolicyMenu(struct User user)
  * Returns      : No return value.
  * Author       : Gilberto Gabon
  *************************************************************************************************************************************************/
+void showAdminPolicyMenu(struct User user)
 {
     int choice = 0;
     vector<Policy> policy;
@@ -174,6 +174,14 @@ void showAdminPolicyMenu(struct User user)
     }
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void showUserPolicyMenu(struct User user)
+ * Purpose      : Function to show the Policies Menu for an ordinary user (client) of the Vehicle Insurance System application.
+ * Parameters   : A structure of type User. The variable contains information about the current user.
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void showUserPolicyMenu(struct User user)
 {
     int choice = 0;
@@ -204,6 +212,19 @@ void showUserPolicyMenu(struct User user)
         }
     }
 }
+
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void createPolicy(struct User user, bool newPolicy, string policyNo)
+ * Purpose      : Function to create the insurance policy. Normally, it is the ordinary user (client) who executes this function. This function is
+ *              : shared by the editPolicy() function/module. The boolean variable (newPolicy) passed to this function, determines if this function
+ *              : is in Create Mode or Edit Mode.
+ * Parameters   : struct User user --> contains information about the user, bool newPolicy --> this determines if this function is in Create Mode or
+ *              : Edit mode, string policyNo --> the policy number. This is used in the Edit Mode as a flag when searching for the record to edit in
+ *              : the "policy.csv" file.
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void createPolicy(struct User user, bool newPolicy, string policyNo)
 {
     char ans = 'n';
@@ -268,6 +289,14 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
     }
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void showPolicy(struct Policy policy, string name)
+ * Purpose      : This is a general purpose function to display the details of a certain policy.
+ * Parameters   : struct Policy policy --> contains the information of the policy to display, string name --> the name of the policy holder
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void showPolicy(struct Policy policy, string name)
 {
     cout << endl;
@@ -287,6 +316,15 @@ void showPolicy(struct Policy policy, string name)
     cout << "============================================" << endl;
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void getPolicyData(struct Policy &policy, string msg)
+ * Purpose      : This function takes data input from the user when creating or editing a policy.
+ * Parameters   : struct Policy &policy --> the variable that holds the policy information. This is passed by reference and gets updated accordingly,
+ *              : string msg --> the message to display in the header.
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void getPolicyData(struct Policy &policy, string msg)
 {
     string coverType = "CFT";
@@ -365,6 +403,14 @@ void getPolicyData(struct Policy &policy, string msg)
     }
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void savePolicy(struct Policy policy)
+ * Purpose      : This function saves the contents of the 'policy' structure variable into the "policy.csv" file.
+ * Parameters   : struct Policy &policy --> the variable that holds the policy information.
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void savePolicy(struct Policy policy)
 {
     cout << "Policy No.: " << policy.policyNum;
@@ -373,6 +419,15 @@ void savePolicy(struct Policy policy)
     policyFile.close();
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void saveEditedPolicy(vector<Policy> policyVector, struct Policy policy)
+ * Purpose      : This function saves the contents of the 'policy' structure variable into the "policy.csv" file. This is called when editing a policy.
+ * Parameters   : vector<Policy> policyVector --> an array of policies - this is used when saving the data into the "policy.csv" file,
+ *              : struct Policy policy --> contains the policy information to be saved into "policy.csv" file
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void saveEditedPolicy(vector<Policy> policyVector, struct Policy policy)
 {
 
@@ -412,6 +467,15 @@ void saveEditedPolicy(vector<Policy> policyVector, struct Policy policy)
     policyFile.close();
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void viewPolicy(struct User user)
+ * Purpose      : This function lists the contents of the "policy.csv" file. Depending on the user, for admins, all contents of the file is displayed,
+ *              : for ordinary user (client), the contents display only policies that belong to the particular user.
+ * Parameters   : struct User user --> user information
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void viewPolicy(struct User user)
 {
     vector<Policy> policy;
@@ -470,8 +534,15 @@ void viewPolicy(struct User user)
     cout << "---------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: struct Policy getUserPolicy(string policyNo)
+ * Purpose      : This functions reads the "policy.csv" file and returns the policy information of a user for a particular policy number
+ * Parameters   : string policyNo --> the policy number to get the information of
+ * Returns      : Returns a structure of type Policy -- contains the information of a particular policy number
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 struct Policy getUserPolicy(string policyNo)
-// Returns the policy information of a user for a particular policy number
 {
 
     struct Policy policy;
@@ -546,6 +617,14 @@ struct Policy getUserPolicy(string policyNo)
     return policy;
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: vector<Policy> readPolicyFile(struct User user)
+ * Purpose      : This functions reads the "policy.csv" file and returns all its contents saved in a vector variable of type Policy
+ * Parameters   : struct User user --> the user information
+ * Returns      : Returns an array of structure of type Policy -- contains the contents of the "policy.csv" file.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 vector<Policy> readPolicyFile(struct User user)
 {
     vector<Policy> tmpPolicy;
@@ -614,6 +693,14 @@ vector<Policy> readPolicyFile(struct User user)
     return tmpPolicy;
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void editPolicy(struct User user)
+ * Purpose      : This functions edits the contents of a particular policy record
+ * Parameters   : struct User user --> the user information
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void editPolicy(struct User user)
 {
     string policyNum;
@@ -628,6 +715,14 @@ void editPolicy(struct User user)
     }
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void delPolicy(struct User user)
+ * Purpose      : This functions deletes a policy record from "policy.csv".
+ * Parameters   : struct User user --> the user information
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void delPolicy(struct User user)
 {
     string policyNum;
@@ -687,6 +782,14 @@ void delPolicy(struct User user)
     }
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: int getLastPolicyNum()
+ * Purpose      : This functions reads the last policy number saved in the "policyNum.txt" file and returns it to the calling function
+ * Parameters   : None
+ * Returns      : Returns the policy number based on the record inside "policyNum.txt"
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 int getLastPolicyNum()
 {
     string txtLine;
@@ -706,8 +809,19 @@ int getLastPolicyNum()
     return policyNo;
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void newDateExpiry(string &dateExpiry, string dateStart)
+ * Purpose      : This functions returns a formatted expiry date that is one year from the dateStart
+ * Parameters   : string &dateExpiry --> the variable holder for the new expiry date - passed by reference, string dateStart --> the dateStart
+ * Returns      : Returns the formatted date (DD-MM-YYYY) of the expiry date
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void newDateExpiry(string &dateExpiry, string dateStart)
 {
+
+    // clear contents first of the date string - otherwise you will end up adding the new date data into the existing one
+    dateExpiry.clear();
 
     string oldExpiryYear, strNewYear;
     for (int i = 0; i < (int)dateStart.length(); i++)
