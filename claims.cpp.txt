@@ -73,8 +73,27 @@ void viewClaim(struct User user);
 void showAdminClaimMenu(struct User user);
 void showUserClaimMenu(struct User user);
 int showMenu(vector<string> menu); // This is inside main.cpp
-void showClaimMenu(struct User user)
 
+void createClaim()
+{
+    cout << "createClaim() function here";
+}
+void editClaim()
+{
+    cout << "editClaim() function here";
+}
+
+void deleteClaim()
+{
+    cout << "deleteClaim() function here";
+}
+
+void viewClaim()
+{
+    cout << "createClaim() function here";
+}
+
+void showClaimMenu(struct User user)
 {
     // int choice = 0;
     vector<Claim> claim;
@@ -162,7 +181,7 @@ void showUserClaimMenu(struct User user)
 
 void createClaim(struct User user, bool newClaim, string claimNo)
 {
-    char ans = 'n';
+    // char ans = 'n';
     struct Claim claim, claimInfo;
 
     string name = user.firstname + " " + user.lastname;

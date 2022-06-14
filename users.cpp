@@ -55,8 +55,6 @@ void writeFile(struct User user);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
 
-// The user variable is passed here by reference so that its contents when updated will be available from the calling module.
-void showLoginMenu(struct User &user)
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void showLoginMenu(struct User &user)
@@ -65,6 +63,7 @@ void showLoginMenu(struct User &user)
  * Returns      : No return value. However, the passed parameter is updated inside this function.
  * Author       : Gilberto Gabon
  *************************************************************************************************************************************************/
+void showLoginMenu(struct User &user)
 {
     int choice = 0;
 
@@ -105,7 +104,6 @@ void showLoginMenu(struct User &user)
     }
 }
 
-void doLogin(struct User &user)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void doLogin(struct User &user)
@@ -114,6 +112,7 @@ void doLogin(struct User &user)
  * Returns      : No return value. However, the passed parameter is updated inside this function.
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+void doLogin(struct User &user)
 {
     string username = "";
     string password = "";
@@ -140,6 +139,7 @@ void doLogin(struct User &user)
         {
             if (userFile[i].email == username && userFile[i].password == password)
             {
+                cout << "Yehey!";
                 retVal = 1;
 
                 // Store user information into the 'user' variable and make it available to the calling function
@@ -171,7 +171,6 @@ void doLogin(struct User &user)
     }
 }
 
-int doRegister()
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: int doRegister()
@@ -180,6 +179,7 @@ int doRegister()
  * Returns      : Returns an int - returned value is used by the calling function to indicate what number in the menu that was chosen by the user.
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+int doRegister()
 {
     struct User user;
 
@@ -192,7 +192,6 @@ int doRegister()
     return 2; // Just an indication that "2. Register" was chosen by the user.
 }
 
-void registerUser(struct User user)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void registerUser(struct User user)
@@ -201,6 +200,7 @@ void registerUser(struct User user)
  * Returns      : No return value. However, the passed parameter is updated inside this function.
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+void registerUser(struct User user)
 {
     vector<User> userFile;
     string confirmPassword = "confirmpassword";
@@ -250,7 +250,6 @@ void registerUser(struct User user)
     };
 }
 
-string getPasswd(string &passwd, string textPrompt)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: string getPasswd(string &passwd, string textPrompt)
@@ -259,6 +258,7 @@ string getPasswd(string &passwd, string textPrompt)
  * Returns      : Returns a string which contains the encrypted value of the password.
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+string getPasswd(string &passwd, string textPrompt)
 {
     {
         int ch;
@@ -287,7 +287,6 @@ string getPasswd(string &passwd, string textPrompt)
     }
 }
 
-string doEncrypt(string text)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: string doEncrypt(string text)
@@ -296,17 +295,18 @@ string doEncrypt(string text)
  * Returns      : Returns the encrypted text.
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+string doEncrypt(string text)
 {
 
     for (int i = 0; i < (int)sizeof(text); i++)
     {
-        text[i] = (text[i] + 3) % 26; // Caesar Cipher here
+        // text[i] = (text[i] + 3) % 26; // Caesar Cipher here
+        text[i] = (text[i] + 10); // Caesar Cipher here
     }
 
     return text;
 }
 
-vector<User> readFile()
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: vector<User> readFile()
@@ -315,6 +315,7 @@ vector<User> readFile()
  * Returns      : Returns a vector of type User structure (an array of structures of type User) - basically the contents of the "users.csv" file.
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+vector<User> readFile()
 {
     vector<User> tmpUser;
     struct User user;
@@ -353,7 +354,6 @@ vector<User> readFile()
     return tmpUser;
 }
 
-bool checkDuplicate(string email, vector<User> frmUsersFile)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: bool checkDuplicate(string email, vector<User> frmUsersFile)
@@ -362,6 +362,7 @@ bool checkDuplicate(string email, vector<User> frmUsersFile)
  * Returns      : Returns a boolean - indicating if there is a duplicate (true) or not (false).
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+bool checkDuplicate(string email, vector<User> frmUsersFile)
 {
     bool retVal = false;
 
@@ -376,7 +377,6 @@ bool checkDuplicate(string email, vector<User> frmUsersFile)
     return retVal;
 }
 
-void writeFile(struct User user)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void writeFile(struct User user)
@@ -385,13 +385,13 @@ void writeFile(struct User user)
  * Returns      : None
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+void writeFile(struct User user)
 {
     fstream userFile("users.csv", ios::app); // open file in append mode
     userFile << user.email << "," << user.password << "," << user.lastname << "," << user.firstname << "," << user.phone << "," << user.accessLevel << "\n";
     userFile.close();
 }
 
-void dateFormat(string &date)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void dateFormat(string &date)
@@ -400,6 +400,7 @@ void dateFormat(string &date)
  * Returns      : None
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+void dateFormat(string &date)
 {
     int ch, ctr = 0;
 
@@ -433,7 +434,6 @@ void dateFormat(string &date)
     }
 }
 
-void validateCode(char &code, string validEntries)
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: void validateCode(char &code, string validEntries)
@@ -442,6 +442,7 @@ void validateCode(char &code, string validEntries)
  * Returns      : None
  * Author       : Gilberto Gabon
  ******************************************************************************************************************************************************************/
+void validateCode(char &code, string validEntries)
 {
 
     bool isValid = false;
