@@ -10,9 +10,12 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+
+#include <fstream>
 #include <sstream>
 #include <vector>
-#include <fstream>
+
+
 
 using namespace std;
 
@@ -41,15 +44,16 @@ struct Claim
     string policyNum;
     string dateBirth;
     string dateIncident;
-    string typeCover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
+
     float claimExcess; // total amount user has
+    char typeCover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
+
     float payClaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
     float claimBal; // total balance after paying if any from the pay claim
 
-    // Constructor to initialize members
-    Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
-    string tcover = "", float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
-    
+
+    Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", char tcover = 'C', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
+
     {
         typeCover = tcover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
         payClaim = pclaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
@@ -74,6 +78,7 @@ vector <Claim> readClaimFile (struct User user); // done
 void deleteClaim();
 void readClaimData();
 void getClaimData(); // new claim - done
+
 //Menus prototypes
 void reviewClaim(struct User user);
 void showAdminClaimMenu(struct User user); //done
@@ -84,13 +89,16 @@ void dateFormat(string &date);
 
 
 //Admin menu starts here
+
 void showPoliciesMenu(struct User user)
+
 {
     // int choice = 0;
     vector<Claim> claim;
 
-    if (user.accessLevel > 2)
-    {
+
+    if (user.accessLevel > 1)
+
         showAdminClaimMenu(user);
     }
     else
@@ -117,12 +125,15 @@ void showAdminClaimMenu(struct User user)
   while (choice != 5)
     {
 
-        choice = showMenu(menu);
+
+        choice = showMenu(menu); // residing in main.cpp 
 
         switch (choice)
         {
         case 1:
-            createClaim();
+
+            createClaim(); //******trish delete note (may need to add in user to call to functions)
+
             break;
         case 2:
             viewClaim();
@@ -174,9 +185,9 @@ void showUserClaimMenu(struct User user, string name)
 
 //Get claim information 
 
-void getClaimData(struct Claim claim, struct User user, string msg, int sum)
+
+void getClaimData(struct Claim claim)
 {
-    char ans = 'N';
 
     cin.ignore(); 
     getline(cin, claim.policyNum);
@@ -186,6 +197,7 @@ void getClaimData(struct Claim claim, struct User user, string msg, int sum)
     getline(cin, claim.dateIncident);
     cout << "     Date of (DD-MM-YYYY): /n";
     getline(cin, claim.typeCover);
+
     cout << "     Excess type (C/F/T): /n";
     cout << "     Excess Amount: /n";
     cin >> claim.claimExcess;
