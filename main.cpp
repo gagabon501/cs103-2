@@ -46,6 +46,8 @@ int showUserMenu(struct User user);  // Main Menu show to ordinary users, i.e. c
 // This function resides here in main.cpp but this is also utilised in other files (i.e. policies.cpp and users.cpp).
 // This is a general purpose function. To use inside another file, just declare this in the Function Prototype section.
 int showMenu(vector<string> menu);
+int updateProfileMenu(struct User user); // resides in users.cpp
+void gotoXY(int row, int col, string text);
 
 int main()
 {
@@ -87,13 +89,18 @@ int showAdminMenu(struct User user)
         "[3] System Reports",
         "[4] User Administration",
         "[5] Exit Program",
-        "======================================"};
+        "======================================",
+        ""};
     while (choice != 5)
     {
         system("clear"); // clear screen
-        cout << user.firstname << " " << user.lastname << endl;
-        cout << user.email << endl;
-        cout << accessStr << endl;
+        gotoXY(5, 65, user.firstname + " " + user.lastname);
+        gotoXY(1, 65, user.email);
+        gotoXY(1, 65, accessStr);
+
+        // cout << user.firstname << " " << user.lastname << endl;
+        // cout << user.email << endl;
+        // cout << accessStr << endl;
 
         choice = showMenu(menu);
 
@@ -109,7 +116,7 @@ int showAdminMenu(struct User user)
             cout << "3. System Reports\n";
             break;
         case 4:
-            cout << "4. User Administration\n";
+            updateProfileMenu(user);
             break;
 
         default:
@@ -130,10 +137,11 @@ int showUserMenu(struct User user)
         "======================================",
         "[1] Manage Insurance Policies",
         "[2] Manage Claims",
-        "[3] Exit Program",
+        "[3] Update Profile",
+        "[4] Exit Program",
         "======================================"};
 
-    while (choice != 3)
+    while (choice != 4)
     {
         system("clear"); // clear screen
         cout << user.firstname << " " << user.lastname << endl;
@@ -148,8 +156,12 @@ int showUserMenu(struct User user)
             showPoliciesMenu(user);
             break;
         case 2:
-            cout << "2. Manage Claims\n";
+            cout << "[2] Manage Claims\n";
             break;
+        case 3:
+            updateProfileMenu(user);
+            break;
+
         default:
             break;
         }
@@ -161,11 +173,26 @@ int showUserMenu(struct User user)
 int showMenu(vector<string> menu)
 {
     int ch = 0;
+
     for (int i = 0; i < (int)menu.size(); i++)
     {
-        cout << menu[i] << endl;
+        gotoXY(1, 65, menu[i]);
+        // cout << menu[i] << endl;
     }
     cout << "Choice: ";
     cin >> ch;
     return ch;
+}
+
+void gotoXY(int row, int col, string text)
+{
+    for (int i = 0; i < row; i++)
+    {
+        cout << endl;
+    }
+    for (int i = 0; i < col; i++)
+    {
+        cout << " ";
+    }
+    cout << text;
 }

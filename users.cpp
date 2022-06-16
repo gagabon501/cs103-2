@@ -54,6 +54,11 @@ vector<User> readFile();
 void writeFile(struct User user);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
+int updateProfileMenu(struct User user);
+int showMenu(vector<string> menu);
+void saveEditedUser(vector<User> userVector, struct User user);
+void changePassword(struct User &user);
+void gotoXY(int row, int col, string text);
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -69,7 +74,7 @@ void showLoginMenu(struct User &user)
 
     system("clear"); // clear screen
 
-    string menu[] = {
+    vector<string> menu = {
         "===================================",
         "Welcome to Vehicle Insurance System",
         "===================================",
@@ -77,16 +82,13 @@ void showLoginMenu(struct User &user)
         "2. Register                        ",
         "3. Exit                            ",
         "===================================",
-    };
+        ""};
     while (choice != 3)
     {
-        for (int i = 0; i < (int)(sizeof(menu) / sizeof(menu[0])); i++)
-        {
+        system("clear"); // clear screen
 
-            cout << menu[i] << endl;
-        }
-        cout << "Choice: ";
-        cin >> choice;
+        gotoXY(12, 65, "");
+        choice = showMenu(menu);
 
         if (choice == 1)
         {
@@ -123,10 +125,14 @@ void doLogin(struct User &user)
 
     userFile = readFile(); // Read contents of 'users.csv' file. readFile() returns a vector with User structure type
 
+    // gotoXY(1, 65, "");
+
     while (tries != 3)
     {
+        gotoXY(1, 65, "");
         cout << "Enter username (email): ";
         cin >> username;
+        gotoXY(0, 65, "");
 
         // This is to clear the buffer for any newline character ('\n').
         // Without this the succeeding function does not get executed because it is as if the ENTER key was pressed.
@@ -139,7 +145,7 @@ void doLogin(struct User &user)
         {
             if (userFile[i].email == username && userFile[i].password == password)
             {
-                cout << "Yehey!";
+
                 retVal = 1;
 
                 // Store user information into the 'user' variable and make it available to the calling function
@@ -148,6 +154,7 @@ void doLogin(struct User &user)
                 user.lastname = userFile[i].lastname;
                 user.phone = userFile[i].phone;
                 user.accessLevel = userFile[i].accessLevel;
+                user.password = userFile[i].password;
                 break;
             }
         }
@@ -468,4 +475,157 @@ void validateCode(char &code, string validEntries)
             break;
         }
     }
+}
+
+int updateProfileMenu(struct User user)
+{
+    int choice = 0, exitChoice = 0;
+    string accessStr = "";
+    vector<string> menu;
+
+    if (user.accessLevel > 1)
+    {
+        accessStr = "Administrator Level";
+
+        menu = {
+            "==========================================",
+            " Vehicle Insurance System - Update Profile",
+            "==========================================",
+            "[1] Change Password",
+            "[2] Update User Info",
+            "[3] Delete User",
+            "[4] Exit Module",
+            "======================================",
+            ""};
+        exitChoice = 4;
+    }
+    else
+    {
+
+        accessStr = "User";
+        menu = {
+            "==========================================",
+            " Vehicle Insurance System - Update Profile",
+            "==========================================",
+            "[1] Change Password",
+            "[2] Update User Info",
+            "[3] Exit Module",
+            "======================================",
+            ""};
+
+        exitChoice = 3;
+    }
+
+    while (choice != exitChoice)
+    {
+        // system("clear"); // clear screen
+        gotoXY(1, 65, user.firstname + " " + user.lastname);
+        gotoXY(1, 65, user.email);
+        gotoXY(1, 65, accessStr);
+
+        choice = showMenu(menu);
+
+        switch (choice)
+        {
+        case 1:
+            changePassword(user);
+
+            break;
+        case 2:
+            cout << "[2] Update User Info\n";
+            break;
+        case 3:
+            cout << "[3] Update Profile\n";
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    return choice;
+}
+
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: changePassword(struct User &user)
+ * Purpose      : Function to change password of the currently logged in user.
+ * Parameters   : struct User &user --> user information - 'user' variable is passed here by reference hence user.password data is updated here accordingly.
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
+void changePassword(struct User &user)
+{
+    vector<User> userVector;
+    userVector = readFile();
+    string oldPassword = "", newPassword = "", confirmPassword = "";
+    gotoXY(1, 65, "Change user password for: " + user.firstname + " " + user.lastname);
+    gotoXY(1, 65, "=====================================================");
+    gotoXY(1, 65, "");
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+
+    getPasswd(oldPassword, "   Enter old password: "); // masks wit 'x' the inputted password
+
+    if (oldPassword != user.password)
+    {
+        gotoXY(2, 65, "*** Sorry, wrong password. Please re-enter correct password. ***");
+        gotoXY(1, 65, "");
+    }
+    else
+    {
+        gotoXY(1, 65, "");
+        getPasswd(newPassword, "   Enter new password: "); // masks wit 'x' the inputted password
+        gotoXY(1, 65, "");
+        getPasswd(confirmPassword, "Re-enter new password: "); // masks wit 'x' the inputted password
+
+        if (newPassword == confirmPassword)
+        {
+            user.password = newPassword;
+            saveEditedUser(userVector, user);
+            gotoXY(2, 65, "*** Password successfuly changed ***");
+            gotoXY(1, 65, "");
+        }
+        else
+        {
+
+            gotoXY(2, 65, "*** Passwords do not match. Please re-enter passwords. ***");
+            gotoXY(1, 65, "");
+        }
+    }
+}
+
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: saveEditedUser(vector<User> userVector, struct User user)
+ * Purpose      : This function saves the contents of the 'user' structure variable into the "users.csv" file. This is called when editing user information.
+ * Parameters   : vector<User> userVector --> an array of user records - this is used when saving the data into the "users.csv" file,
+ *              : struct User user --> contains the user information to be saved into "user.csv" file
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
+void saveEditedUser(vector<User> userVector, struct User user)
+{
+
+    fstream userFile("users.csv", ios::out); // overwrite mode
+    for (int i = 0; i < (int)userVector.size(); i++)
+    {
+        if (userVector[i].email == user.email)
+        {
+
+            userVector[i].email = user.email;
+            userVector[i].password = user.password;
+            userVector[i].firstname = user.firstname;
+            userVector[i].lastname = user.lastname;
+            userVector[i].accessLevel = user.accessLevel;
+        }
+        // Overwrite with new data
+        userFile << userVector[i].email << ","
+                 << userVector[i].password << ","
+                 << userVector[i].firstname << ","
+                 << userVector[i].lastname << ","
+                 << userVector[i].phone << ","
+                 << userVector[i].accessLevel << endl;
+    }
+    userFile.close();
 }
