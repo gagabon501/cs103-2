@@ -5,4 +5,3 @@ Group Members:
 
 1. Gilberto Gabon
 2. Trish Cribb-lankey
-3. George Soriano Alvis
