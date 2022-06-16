@@ -9,7 +9,6 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <cstdio>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -101,6 +100,7 @@ void getPolicyData(struct Policy &policy, string msg);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
 void newDateExpiry(string &dateExpiry, string dateStart);
+void gotoXY(int row, int col, string text);
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -147,6 +147,7 @@ void showAdminPolicyMenu(struct User user)
         "[4] Delete Policy",
         "[5] Exit",
         "============================================",
+        "",
     };
 
     while (choice != 5)
@@ -193,6 +194,7 @@ void showUserPolicyMenu(struct User user)
         "[2] View Policy",
         "[3] Exit",
         "==========================================",
+        "",
     };
 
     while (choice != 3)
@@ -299,21 +301,21 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
  *************************************************************************************************************************************************/
 void showPolicy(struct Policy policy, string name)
 {
-    cout << endl;
-    cout << "============================================" << endl;
-    cout << "               Policy No.: " << policy.policyNum << endl;
-    cout << "            Policy Holder: " << name << endl;
-    cout << "============================================" << endl;
-    cout << "                 Car Make: " << policy.carMake << endl;
-    cout << "                Car Color: " << policy.carColor << endl;
-    cout << "                 Car REGO: " << policy.carRego << endl;
-    cout << "               Start Date: " << policy.dateInsured << endl;
-    cout << "              Expiry Date: " << policy.dateExpiry << endl;
-    cout << "         Coverage (C/F/T): " << policy.typeCover << endl;
-    cout << "           Insured Amount: " << policy.carInsuredAmount << endl;
-    cout << "            Excess Amount: " << policy.excessAmount << endl;
-    cout << "Payment Frequency (W/F/M): " << policy.payFrequency << endl;
-    cout << "============================================" << endl;
+
+    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, "               Policy No.: " + policy.policyNum);
+    gotoXY(1, 65, "            Policy Holder: " + name);
+    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, "                 Car Make: " + policy.carMake);
+    gotoXY(1, 65, "                Car Color: " + policy.carColor);
+    gotoXY(1, 65, "                 Car REGO: " + policy.carRego);
+    gotoXY(1, 65, "               Start Date: " + policy.dateInsured);
+    gotoXY(1, 65, "              Expiry Date: " + policy.dateExpiry);
+    gotoXY(1, 65, "         Coverage (C/F/T): " + policy.typeCover);
+    gotoXY(1, 65, "           Insured Amount: " + policy.carInsuredAmount);
+    gotoXY(1, 65, "            Excess Amount: " + policy.excessAmount);
+    gotoXY(1, 65, "Payment Frequency (W/F/M): " + policy.payFrequency);
+    gotoXY(1, 65, "============================================");
 }
 
 /***********************************************************************************************************************************************
@@ -330,35 +332,35 @@ void getPolicyData(struct Policy &policy, string msg)
     string coverType = "CFT";
     string payFreq = "WFM";
 
-    cout << endl;
-    cout << "============================================" << endl;
-    cout << msg << " No.: " << policy.policyNum << endl;
-    cout << "============================================" << endl;
-    cout << "                 Car Make: ";
+    gotoXY(1, 65, ""); // just to position the cursor for the next set of screen outputs
+
+    // gotoXY(1,65,endl;
+    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, msg + " No.: " + policy.policyNum);
+    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, "                 Car Make: ");
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
     getline(cin, policy.carMake);
-    cout << "                Car Color: ";
+    gotoXY(0, 65, "                Car Color: ");
     getline(cin, policy.carColor);
-    cout << "                 Car REGO: ";
+    gotoXY(0, 65, "                 Car REGO: ");
     getline(cin, policy.carRego);
-    cout << "  Start Date (DD-MM-YYYY): ";
+    gotoXY(0, 65, "  Start Date (DD-MM-YYYY): ");
     dateFormat(policy.dateInsured);
-    cout << endl;
-    cout << "  Expiry Date(DD-MM-YYYY): "; // Actually user need not enter this. System will create the expiry which is one year from start date.
-    // dateFormat(policy.dateExpiry);
+
+    gotoXY(1, 65, "  Expiry Date(DD-MM-YYYY): "); // Actually user need not enter this. System will create the expiry which is one year from start date.
+
     newDateExpiry(policy.dateExpiry, policy.dateInsured);
 
-    cout << endl;
-    cout << "         Coverage (C/F/T): ";
+    gotoXY(1, 65, "         Coverage (C/F/T): ");
 
     validateCode(policy.typeCover, coverType); // policy.typeCover is passed here by reference - hence it gets updated inside validateCode()
 
-    cout << endl;
-    cout << "           Insured Amount: ";
+    gotoXY(1, 65, "           Insured Amount: ");
     cin >> policy.carInsuredAmount;
-    cout << "            Excess Amount: ";
+    gotoXY(0, 65, "            Excess Amount: ");
     cin >> policy.excessAmount;
-    cout << "Payment Frequency (W/F/M): ";
+    gotoXY(0, 65, "Payment Frequency (W/F/M): ");
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the validateCode() function be called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
 
@@ -413,7 +415,7 @@ void getPolicyData(struct Policy &policy, string msg)
  *************************************************************************************************************************************************/
 void savePolicy(struct Policy policy)
 {
-    cout << "Policy No.: " << policy.policyNum;
+    gotoXY(1, 65, "Policy No.: " + policy.policyNum);
     fstream policyFile("policy.csv", ios::app); // open file in append mode
     policyFile << policy.policyNum << "," << policy.username << "," << policy.carMake << "," << policy.carColor << "," << policy.carRego << "," << policy.dateInsured << "," << policy.dateExpiry << "," << policy.typeCover << "," << policy.carInsuredAmount << "," << policy.excessAmount << "," << policy.premiumTotalAmount << "," << policy.premiumPayAmount << "," << policy.payFrequency << endl;
     policyFile.close();
@@ -482,6 +484,8 @@ void viewPolicy(struct User user)
 
     policy = readPolicyFile(user);
     string msg = user.accessLevel > 1 ? "Viewing all policies" : "Viewing Policy for: " + user.firstname + " " + user.lastname;
+
+    gotoXY(1, 65, "");
 
     cout << endl;
     cout << msg << endl;
