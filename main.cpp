@@ -46,8 +46,9 @@ int showUserMenu(struct User user);  // Main Menu show to ordinary users, i.e. c
 // This function resides here in main.cpp but this is also utilised in other files (i.e. policies.cpp and users.cpp).
 // This is a general purpose function. To use inside another file, just declare this in the Function Prototype section.
 int showMenu(vector<string> menu);
-int updateProfileMenu(struct User user); // resides in users.cpp
-void gotoXY(int row, int col, string text);
+int updateProfileMenu(struct User user);      // resides in users.cpp
+void gotoXY(int row, int col, string text);   // display characters/string at specific row, col
+string repl(char charToDisplay, int dispQty); // returns a string of characters
 
 int main()
 {
@@ -139,14 +140,16 @@ int showUserMenu(struct User user)
         "[2] Manage Claims",
         "[3] Update Profile",
         "[4] Exit Program",
-        "======================================"};
+        "======================================",
+        ""};
 
     while (choice != 4)
     {
         system("clear"); // clear screen
-        cout << user.firstname << " " << user.lastname << endl;
-        cout << user.email << endl;
-        cout << accessStr << endl;
+
+        gotoXY(5, 65, user.firstname + " " + user.lastname);
+        gotoXY(1, 65, user.email);
+        gotoXY(1, 65, accessStr);
 
         choice = showMenu(menu);
 
@@ -195,4 +198,14 @@ void gotoXY(int row, int col, string text)
         cout << " ";
     }
     cout << text;
+}
+
+string repl(char charToDisplay, int dispQty)
+{
+    string returnedString = "";
+    for (int i = 0; i < dispQty; i++)
+    {
+        returnedString.push_back(charToDisplay);
+    }
+    return returnedString;
 }

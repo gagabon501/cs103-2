@@ -58,7 +58,10 @@ int updateProfileMenu(struct User user);
 int showMenu(vector<string> menu);
 void saveEditedUser(vector<User> userVector, struct User user);
 void changePassword(struct User &user);
-void gotoXY(int row, int col, string text);
+void gotoXY(int row, int col, string text); // display characters/string at specific row, col
+void updateUserInfo(struct User &user);
+string repl(char charToDisplay, int dispQty); // returns a string of characters
+void listUsers();
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -83,11 +86,13 @@ void showLoginMenu(struct User &user)
         "3. Exit                            ",
         "===================================",
         ""};
+
+    gotoXY(12, 65, "");
+
     while (choice != 3)
     {
-        system("clear"); // clear screen
+        // system("clear"); // clear screen
 
-        gotoXY(12, 65, "");
         choice = showMenu(menu);
 
         if (choice == 1)
@@ -190,9 +195,9 @@ int doRegister()
 {
     struct User user;
 
-    cout << "=======================================================\n";
-    cout << "Welcome to Vehicle Insurance System - User Registration\n";
-    cout << "=======================================================\n";
+    gotoXY(1, 65, "=======================================================");
+    gotoXY(1, 65, "Welcome to Vehicle Insurance System - User Registration");
+    gotoXY(1, 65, "=======================================================");
 
     registerUser(user);
 
@@ -211,49 +216,62 @@ void registerUser(struct User user)
 {
     vector<User> userFile;
     string confirmPassword = "confirmpassword";
+    char ans = 'N';
 
     userFile = readFile();
 
-    cout << "           Email: ";
+    gotoXY(1, 65, "              Email: ");
     cin >> user.email;
-
-    // This clears the input buffer - helps in getting the getline() function called inside checkDuplicate() to do its job (get input from user)
-    // instead of skipping it.
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (!checkDuplicate(user.email, userFile))
     {
+        // This clears the input buffer - helps in getting the getline() function called inside checkDuplicate() to do its job (get input from user)
+        // instead of skipping it.
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         while (true)
         {
-            getPasswd(user.password, "        Password: "); // masks wit 'x' the inputted password
-            cout << endl;
-            getPasswd(confirmPassword, "Re-type Password: "); // masks wit 'x' the inputted password
-            cout << endl;
+            gotoXY(1, 65, "");
+            getPasswd(user.password, "           Password: "); // masks wit 'x' the inputted password
+            gotoXY(1, 65, "");
+            getPasswd(confirmPassword, "   Re-type Password: "); // masks wit 'x' the inputted password
+
             if (user.password == confirmPassword)
             {
                 break;
             }
             else
             {
-                cout << "Passwords do not match. Please re-enter password.\n";
+                // cout << "Passwords do not match. Please re-enter password.\n";
+                gotoXY(2, 65, "*** Passwords do not match. Please re-enter password. ***");
             }
         }
 
-        cout << "        Lastname: ";
-        cin >> user.lastname;
-        cout << "       Firstname: ";
-        cin >> user.firstname;
-        cout << "           Phone: ";
-        cin >> user.phone;
+        gotoXY(1, 65, "           Lastname: ");
+        getline(cin, user.lastname);
+        gotoXY(0, 65, "          Firstname: ");
+        getline(cin, user.firstname);
+        gotoXY(0, 65, "              Phone: ");
+        getline(cin, user.phone);
 
-        // Add user to users.csv file
-        writeFile(user);
+        gotoXY(1, 65, "   Save data (Y/N)?: ");
+        cin >> ans;
+        if (toupper(ans) == 'Y')
+        {
+            // Add user to users.csv file
+            writeFile(user); // append mode
 
-        cout << "\nCongratulations! Successful registration. You may now login using your username(email) and password.\n";
+            gotoXY(2, 35, "*** Congratulations! Successful registration. You may now login using your username(email) and password. ***");
+            gotoXY(1, 35, "");
+        }
+
+        // cout << "\nCongratulations! Successful registration. You may now login using your username(email) and password.\n";
     }
     else
     {
-        cout << "\nUsername (email) already existing in the database. Please use another email to sign-up\n";
+        // cout << "\nUsername (email) already existing in the database. Please use another email to sign-up\n";
+        gotoXY(2, 35, "*** Username (email) already existing in the database. Please use another email to sign-up ***");
+        gotoXY(1, 35, "");
     };
 }
 
@@ -419,7 +437,7 @@ void dateFormat(string &date)
 
         if (ctr == 2 || ctr == 5)
         {
-            ctr++;                         // increment character counter only when entry is a digit
+            ctr++;
             ch = 45;                       // dash (-) character
             date.push_back(ch);            // save every character to the date variable of type string
             cout << static_cast<char>(ch); // need to cast this, otherwise the ASCII code will be displayed instead of the character
@@ -493,11 +511,12 @@ int updateProfileMenu(struct User user)
             "==========================================",
             "[1] Change Password",
             "[2] Update User Info",
-            "[3] Delete User",
-            "[4] Exit Module",
+            "[3] List Users",
+            "[4] Delete User",
+            "[5] Exit Module",
             "======================================",
             ""};
-        exitChoice = 4;
+        exitChoice = 5;
     }
     else
     {
@@ -528,14 +547,14 @@ int updateProfileMenu(struct User user)
         switch (choice)
         {
         case 1:
-            changePassword(user);
+            changePassword(user); //'user' variable here is passed by reference, hence this gets updated.
 
             break;
         case 2:
-            cout << "[2] Update User Info\n";
+            updateUserInfo(user); //'user' variable here is passed by reference, hence this gets updated.
             break;
         case 3:
-            cout << "[3] Update Profile\n";
+            listUsers();
             break;
 
         default:
@@ -597,6 +616,41 @@ void changePassword(struct User &user)
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: changePassword(struct User &user)
+ * Purpose      : Function to change password of the currently logged in user.
+ * Parameters   : struct User &user --> user information - 'user' variable is passed here by reference hence user.password data is updated here accordingly.
+ * Returns      : No return value.
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
+void updateUserInfo(struct User &user)
+{
+    vector<User> userVector;
+    userVector = readFile();
+    char ans = 'n';
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+
+    gotoXY(1, 65, "Update User Information for: " + user.firstname + " " + user.lastname);
+    gotoXY(1, 65, "===================================================================");
+    gotoXY(1, 65, "           Lastname: ");
+    getline(cin, user.lastname);
+    gotoXY(1, 65, "          Firstname: ");
+    getline(cin, user.firstname);
+    gotoXY(1, 65, "              Phone: ");
+    getline(cin, user.phone);
+
+    gotoXY(1, 65, "Save updates (Y/N)?:");
+    cin >> ans;
+    if (toupper(ans) == 'Y')
+    {
+        saveEditedUser(userVector, user);
+        gotoXY(2, 65, "*** User information successfuly updated ***");
+        gotoXY(1, 65, "");
+    }
+}
+
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: saveEditedUser(vector<User> userVector, struct User user)
  * Purpose      : This function saves the contents of the 'user' structure variable into the "users.csv" file. This is called when editing user information.
  * Parameters   : vector<User> userVector --> an array of user records - this is used when saving the data into the "users.csv" file,
@@ -628,4 +682,24 @@ void saveEditedUser(vector<User> userVector, struct User user)
                  << userVector[i].accessLevel << endl;
     }
     userFile.close();
+}
+
+void listUsers()
+{
+    vector<User> userVector;
+    userVector = readFile();
+    string userLine = "";
+
+    gotoXY(1, 65, "");
+    gotoXY(1, 65, "List of users");
+    gotoXY(1, 65, repl('-', 50));
+    for (int i = 0; i < (int)userVector.size(); i++)
+    {
+        // cout << userVector[i].email << " " << userVector[i].firstname << " " << userVector[i].lastname << " " << userVector[i].phone << endl;
+        userLine = to_string(i + 1) + ". " + userVector[i].email + " " + userVector[i].firstname + " " + userVector[i].lastname + " " + userVector[i].phone + " " + (userVector[i].accessLevel > 1 ? "Administrator" : "User");
+
+        gotoXY(1, 65, userLine);
+    }
+    gotoXY(1, 65, repl('-', 50));
+    gotoXY(1, 65, "");
 }
