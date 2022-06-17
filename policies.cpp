@@ -100,7 +100,8 @@ void getPolicyData(struct Policy &policy, string msg);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
 void newDateExpiry(string &dateExpiry, string dateStart);
-void gotoXY(int row, int col, string text);
+void gotoXY(int row, int col, string text);   // display characters/string at specific row, col
+string repl(char charToDisplay, int dispQty); // returns a string of characters
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -247,10 +248,9 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
         {
 
             getPolicyData(policy, msg); // Take user inputs of policy data
+                                        // showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
 
-            showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
-
-            cout << "Save policy (y/n)? ";
+            gotoXY(1, 65, "Save policy (y/n)? ");
             cin >> ans;
         }
 
@@ -277,9 +277,9 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
             {
                 getPolicyData(policy, msg); // Take user inputs of policy data
 
-                showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
+                // showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
 
-                cout << "Save policy (y/n)? ";
+                gotoXY(1, 65, "Save policy (y/n)? ");
                 cin >> ans;
             }
             saveEditedPolicy(policyVector, policy);
@@ -301,6 +301,13 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
  *************************************************************************************************************************************************/
 void showPolicy(struct Policy policy, string name)
 {
+    string strPolicyCover = "         Coverage (C/F/T): ";
+    strPolicyCover.push_back(policy.typeCover); // Needs to do this to concatenate this into the field descprtion string because policy.typeCover is of type char
+                                                // Otherwise if you just concatenate 'string' and a 'char' data type, it causes "segmentation fault" error.
+
+    string strPaymentFreq = "Payment Frequency (W/F/M): ";
+    strPaymentFreq.push_back(policy.payFrequency); // Needs to do this to concatenate this into the field descprtion string because policy.payFrequency is of type char
+                                                   // Otherwise if you just concatenate 'string' and a 'char' data type, it causes "segmentation fault" error.
 
     gotoXY(1, 65, "============================================");
     gotoXY(1, 65, "               Policy No.: " + policy.policyNum);
@@ -311,12 +318,32 @@ void showPolicy(struct Policy policy, string name)
     gotoXY(1, 65, "                 Car REGO: " + policy.carRego);
     gotoXY(1, 65, "               Start Date: " + policy.dateInsured);
     gotoXY(1, 65, "              Expiry Date: " + policy.dateExpiry);
-    gotoXY(1, 65, "         Coverage (C/F/T): " + policy.typeCover);
-    gotoXY(1, 65, "           Insured Amount: " + policy.carInsuredAmount);
-    gotoXY(1, 65, "            Excess Amount: " + policy.excessAmount);
-    gotoXY(1, 65, "Payment Frequency (W/F/M): " + policy.payFrequency);
+    gotoXY(1, 65, strPolicyCover);
+    gotoXY(1, 65, "           Insured Amount: " + to_string(policy.carInsuredAmount)); // Convert 'float' to 'string' here too to avoid "segmentation fault" error
+    gotoXY(1, 65, "            Excess Amount: " + to_string(policy.excessAmount));     // Convert 'float' to 'string' here too to avoid "segmentation fault" error
+    gotoXY(1, 65, strPaymentFreq);
     gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, ""); // to put a newline
 }
+
+// void showPolicy(struct Policy policy, string name)
+// {
+//     cout << endl;
+//     cout << "============================================" << endl;
+//     cout << "               Policy No.: " << policy.policyNum << endl;
+//     cout << "            Policy Holder: " << name << endl;
+//     cout << "============================================" << endl;
+//     cout << "                 Car Make: " << policy.carMake << endl;
+//     cout << "                Car Color: " << policy.carColor << endl;
+//     cout << "                 Car REGO: " << policy.carRego << endl;
+//     cout << "               Start Date: " << policy.dateInsured << endl;
+//     cout << "              Expiry Date: " << policy.dateExpiry << endl;
+//     cout << "         Coverage (C/F/T): " << policy.typeCover << endl;
+//     cout << "           Insured Amount: " << policy.carInsuredAmount << endl;
+//     cout << "            Excess Amount: " << policy.excessAmount << endl;
+//     cout << "Payment Frequency (W/F/M): " << policy.payFrequency << endl;
+//     cout << "============================================" << endl;
+// }
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -365,6 +392,8 @@ void getPolicyData(struct Policy &policy, string msg)
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the validateCode() function be called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
 
     validateCode(policy.payFrequency, payFreq); // policy.payFrequency is passed here by reference - hence it gets updated inside validateCode()
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the validateCode() function be called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
 
     switch (toupper(policy.typeCover))
     {
