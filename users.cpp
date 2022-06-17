@@ -61,7 +61,8 @@ void changePassword(struct User &user);
 void gotoXY(int row, int col, string text); // display characters/string at specific row, col
 void updateUserInfo(struct User &user);
 string repl(char charToDisplay, int dispQty); // returns a string of characters
-void listUsers();
+void listUsers(string msg);
+void deleteUser();
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -554,7 +555,10 @@ int updateProfileMenu(struct User user)
             updateUserInfo(user); //'user' variable here is passed by reference, hence this gets updated.
             break;
         case 3:
-            listUsers();
+            listUsers("List of users:");
+            break;
+        case 4:
+            deleteUser();
             break;
 
         default:
@@ -684,14 +688,14 @@ void saveEditedUser(vector<User> userVector, struct User user)
     userFile.close();
 }
 
-void listUsers()
+void listUsers(string msg)
 {
     vector<User> userVector;
     userVector = readFile();
     string userLine = "";
 
     gotoXY(1, 65, "");
-    gotoXY(1, 65, "List of users");
+    gotoXY(1, 65, msg);
     gotoXY(1, 65, repl('-', 50));
     for (int i = 0; i < (int)userVector.size(); i++)
     {
@@ -702,4 +706,44 @@ void listUsers()
     }
     gotoXY(1, 65, repl('-', 50));
     gotoXY(1, 65, "");
+}
+
+void deleteUser()
+{
+    vector<User> userVector;
+    userVector = readFile();
+    int choice = 0;
+    string userEmail = "";
+    listUsers("User list - select number to delete");
+    gotoXY(1, 65, "Choice: ");
+    cin >> choice;
+    if (choice > (int)userVector.size() || choice <= 0)
+    {
+        gotoXY(1, 65, "*** Invalid choice. Select only a number from the list. ***");
+        gotoXY(1, 65, "");
+    }
+    else
+    {
+        userEmail = userVector[choice - 1].email;
+
+        gotoXY(1, 65, "*** Deleting user number: " + to_string(choice) + " " + userEmail + " ***");
+        gotoXY(1, 65, "");
+        fstream userFile("users.csv", ios::out); // overwrite mode
+
+        for (int i = 0; i < (int)userVector.size(); i++)
+        {
+            if (userVector[i].email != userEmail)
+            {
+                userFile << userVector[i].email << ","
+                         << userVector[i].password << ","
+                         << userVector[i].firstname << ","
+                         << userVector[i].lastname << ","
+                         << userVector[i].phone << ","
+                         << userVector[i].accessLevel << endl;
+            }
+        }
+        userFile.close();
+        gotoXY(1, 65, "*** User " + userEmail + " successfully deleted ***");
+        gotoXY(1, 65, "");
+    }
 }
