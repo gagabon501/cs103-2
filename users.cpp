@@ -573,13 +573,26 @@ int updateProfileMenu(struct User user)
             {
                 listUsers("List of users:");
             }
+            else
+            {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            }
 
             break;
         case '4':
-            deleteUser();
+            if (user.accessLevel > 1)
+            {
+                deleteUser();
+            }
+            else
+            {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            }
+
             break;
 
         default:
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
             break;
         }
     }

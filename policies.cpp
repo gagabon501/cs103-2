@@ -229,6 +229,7 @@ void showUserPolicyMenu(struct User user)
             viewPolicy(user);
             break;
         default:
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
             break;
         }
     }
