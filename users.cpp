@@ -55,7 +55,7 @@ void writeFile(struct User user);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
 int updateProfileMenu(struct User user);
-int showMenu(vector<string> menu);
+char showMenu(vector<string> menu);
 void saveEditedUser(vector<User> userVector, struct User user);
 void changePassword(struct User &user);
 void gotoXY(int row, int col, string text); // display characters/string at specific row, col
@@ -63,6 +63,27 @@ void updateUserInfo(struct User &user);
 string repl(char charToDisplay, int dispQty); // returns a string of characters
 void listUsers(string msg);
 void deleteUser();
+void showHeader();
+int displayLoginScreen();
+void waitKey(string msg);
+
+int displayLoginScreen()
+{
+    int choice = 0;
+
+    showHeader();
+
+    gotoXY(12, 65, "");
+
+    gotoXY(1, 65, repl('-', 50));
+    gotoXY(1, 67, "\033[1;32m[1]\033[0m Login");
+    gotoXY(0, 5, "\033[1;32m[2]\033[0m Register");
+    gotoXY(0, 5, "\033[1;32m[3]\033[0m Exit Program");
+    gotoXY(1, 65, repl('-', 50));
+    gotoXY(1, 65, "Choice: ");
+    cin >> choice;
+    return choice;
+}
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -76,25 +97,9 @@ void showLoginMenu(struct User &user)
 {
     int choice = 0;
 
-    system("clear"); // clear screen
-
-    vector<string> menu = {
-        "===================================",
-        "Welcome to Vehicle Insurance System",
-        "===================================",
-        "1. Login                           ",
-        "2. Register                        ",
-        "3. Exit                            ",
-        "===================================",
-        ""};
-
-    gotoXY(12, 65, "");
-
     while (choice != 3)
     {
-        // system("clear"); // clear screen
-
-        choice = showMenu(menu);
+        choice = displayLoginScreen(); // start screen - displays the menu horizontally
 
         if (choice == 1)
         {
@@ -172,14 +177,17 @@ void doLogin(struct User &user)
         }
         else
         {
-            cout << "\nWrong user name or password. Try again.\n";
+            gotoXY(2, 58, "*** Wrong username or password. Try again. ***");
+            gotoXY(1, 58, "");
         }
 
         tries++;
     }
+    // cout << tries;
     if (tries > 2)
     {
-        cout << "\nMaximum tries exceeded. Username or password incorrect.\n";
+        gotoXY(2, 51, "*** Maximum tries exceeded. Username or password incorrect. ***");
+        gotoXY(1, 51, "");
         exit(1);
     }
 }
@@ -197,7 +205,7 @@ int doRegister()
     struct User user;
 
     gotoXY(1, 65, "=======================================================");
-    gotoXY(1, 65, "Welcome to Vehicle Insurance System - User Registration");
+    gotoXY(1, 65, "      Vehicle Insurance System - User Registration");
     gotoXY(1, 65, "=======================================================");
 
     registerUser(user);
@@ -260,19 +268,20 @@ void registerUser(struct User user)
         if (toupper(ans) == 'Y')
         {
             // Add user to users.csv file
-            writeFile(user); // append mode
-
-            gotoXY(2, 35, "*** Congratulations! Successful registration. You may now login using your username(email) and password. ***");
-            gotoXY(1, 35, "");
+            writeFile(user);   // append mode
+            gotoXY(2, 35, ""); // Position cursor for the next display
+            waitKey("*** Congratulations! Successful registration. You may now login using your username(email) and password. ***");
         }
-
-        // cout << "\nCongratulations! Successful registration. You may now login using your username(email) and password.\n";
+        else
+        {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
     }
     else
     {
-        // cout << "\nUsername (email) already existing in the database. Please use another email to sign-up\n";
-        gotoXY(2, 35, "*** Username (email) already existing in the database. Please use another email to sign-up ***");
-        gotoXY(1, 35, "");
+
+        gotoXY(1, 45, ""); // Position cursor for the next display
+        waitKey("*** Username (email) already existing in the database. Please use another email to sign-up ***");
     };
 }
 
@@ -498,7 +507,8 @@ void validateCode(char &code, string validEntries)
 
 int updateProfileMenu(struct User user)
 {
-    int choice = 0, exitChoice = 0;
+
+    char choice = ' ', exitChoice = ' ';
     string accessStr = "";
     vector<string> menu;
 
@@ -510,14 +520,14 @@ int updateProfileMenu(struct User user)
             "==========================================",
             " Vehicle Insurance System - Update Profile",
             "==========================================",
-            "[1] Change Password",
-            "[2] Update User Info",
-            "[3] List Users",
-            "[4] Delete User",
-            "[5] Exit Module",
+            "\033[1;32m[1]\033[0m Change Password",
+            "\033[1;32m[2]\033[0m Update User Info",
+            "\033[1;32m[3]\033[0m List Users",
+            "\033[1;32m[4]\033[0m Delete User",
+            "\033[1;32m[5]\033[0m Exit Module",
             "======================================",
             ""};
-        exitChoice = 5;
+        exitChoice = '5';
     }
     else
     {
@@ -527,18 +537,22 @@ int updateProfileMenu(struct User user)
             "==========================================",
             " Vehicle Insurance System - Update Profile",
             "==========================================",
-            "[1] Change Password",
-            "[2] Update User Info",
-            "[3] Exit Module",
+            "\033[1;32m[1]\033[0m Change Password",
+            "\033[1;32m[2]\033[0m Update User Info",
+            "\033[1;32m[3]\033[0m Exit Module",
             "======================================",
             ""};
 
-        exitChoice = 3;
+        exitChoice = '3';
     }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
 
     while (choice != exitChoice)
     {
         // system("clear"); // clear screen
+        showHeader();
+
         gotoXY(1, 65, user.firstname + " " + user.lastname);
         gotoXY(1, 65, user.email);
         gotoXY(1, 65, accessStr);
@@ -547,17 +561,21 @@ int updateProfileMenu(struct User user)
 
         switch (choice)
         {
-        case 1:
+        case '1':
             changePassword(user); //'user' variable here is passed by reference, hence this gets updated.
 
             break;
-        case 2:
+        case '2':
             updateUserInfo(user); //'user' variable here is passed by reference, hence this gets updated.
             break;
-        case 3:
-            listUsers("List of users:");
+        case '3':
+            if (user.accessLevel > 1)
+            {
+                listUsers("List of users:");
+            }
+
             break;
-        case 4:
+        case '4':
             deleteUser();
             break;
 
@@ -635,21 +653,27 @@ void updateUserInfo(struct User &user)
     cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
 
     gotoXY(1, 65, "Update User Information for: " + user.firstname + " " + user.lastname);
-    gotoXY(1, 65, "===================================================================");
-    gotoXY(1, 65, "           Lastname: ");
+    gotoXY(1, 65, repl('-', 60));
+    gotoXY(1, 65, "            Lastname: ");
     getline(cin, user.lastname);
-    gotoXY(1, 65, "          Firstname: ");
+    gotoXY(0, 65, "           Firstname: ");
     getline(cin, user.firstname);
-    gotoXY(1, 65, "              Phone: ");
+    gotoXY(0, 65, "               Phone: ");
     getline(cin, user.phone);
-
-    gotoXY(1, 65, "Save updates (Y/N)?:");
+    gotoXY(0, 65, repl('-', 60));
+    gotoXY(1, 65, "Save updates (Y/N)? : ");
     cin >> ans;
     if (toupper(ans) == 'Y')
     {
         saveEditedUser(userVector, user);
-        gotoXY(2, 65, "*** User information successfuly updated ***");
+
         gotoXY(1, 65, "");
+
+        waitKey("*** User information successfuly updated ***");
+    }
+    else
+    {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
     }
 }
 
@@ -706,6 +730,7 @@ void listUsers(string msg)
     }
     gotoXY(1, 65, repl('-', 50));
     gotoXY(1, 65, "");
+    waitKey("Press any key to continue...");
 }
 
 void deleteUser()
@@ -713,37 +738,72 @@ void deleteUser()
     vector<User> userVector;
     userVector = readFile();
     int choice = 0;
+    char ans = 'N';
     string userEmail = "";
+
     listUsers("User list - select number to delete");
     gotoXY(1, 65, "Choice: ");
     cin >> choice;
     if (choice > (int)userVector.size() || choice <= 0)
     {
-        gotoXY(1, 65, "*** Invalid choice. Select only a number from the list. ***");
         gotoXY(1, 65, "");
+        waitKey("*** Invalid choice. Select only a number from the list. ***");
+        // gotoXY(1, 65, "*** Invalid choice. Select only a number from the list. ***");
     }
     else
     {
         userEmail = userVector[choice - 1].email;
 
-        gotoXY(1, 65, "*** Deleting user number: " + to_string(choice) + " " + userEmail + " ***");
-        gotoXY(1, 65, "");
-        fstream userFile("users.csv", ios::out); // overwrite mode
-
-        for (int i = 0; i < (int)userVector.size(); i++)
+        gotoXY(1, 65, "\033[1;32mAre you sure to delete this user (Y/N)? \033[0m");
+        cin >> ans;
+        if (toupper(ans) == 'Y')
         {
-            if (userVector[i].email != userEmail)
+            gotoXY(1, 65, "*** Deleting user number: " + to_string(choice) + " " + userEmail + " ***");
+            gotoXY(1, 65, "");
+            fstream userFile("users.csv", ios::out); // overwrite mode
+
+            for (int i = 0; i < (int)userVector.size(); i++)
             {
-                userFile << userVector[i].email << ","
-                         << userVector[i].password << ","
-                         << userVector[i].firstname << ","
-                         << userVector[i].lastname << ","
-                         << userVector[i].phone << ","
-                         << userVector[i].accessLevel << endl;
+                if (userVector[i].email != userEmail)
+                {
+                    userFile << userVector[i].email << ","
+                             << userVector[i].password << ","
+                             << userVector[i].firstname << ","
+                             << userVector[i].lastname << ","
+                             << userVector[i].phone << ","
+                             << userVector[i].accessLevel << endl;
+                }
             }
+            userFile.close();
+            waitKey("*** User " + userEmail + " successfully deleted ***");
+            // gotoXY(1, 65, "*** User " + userEmail + " successfully deleted ***");
+            // gotoXY(1, 65, "");
         }
-        userFile.close();
-        gotoXY(1, 65, "*** User " + userEmail + " successfully deleted ***");
-        gotoXY(1, 65, "");
+        else
+        {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+        }
     }
+}
+
+void waitKey(string msg)
+{
+    cout << "\033[1;32m" << msg << "\033[0m";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    getch();
+}
+
+char showMenu(vector<string> menu)
+{
+    char ch = ' ';
+
+    for (int i = 0; i < (int)menu.size(); i++)
+    {
+        gotoXY(1, 65, menu[i]);
+    }
+
+    cout << "Choice: ";
+    ch = (char)getchar();
+
+    return ch;
 }
