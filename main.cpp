@@ -123,15 +123,18 @@ int showAdminMenu(struct User user)
             break;
         case '2':
             cout << "2. Manage Claims\n";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
             break;
         case '3':
             cout << "3. System Reports\n";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
             break;
         case '4':
             updateProfileMenu(user);
             break;
 
         default:
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
             break;
         }
     }
@@ -171,12 +174,14 @@ int showUserMenu(struct User user)
             break;
         case '2':
             cout << "[2] Manage Claims\n";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
             break;
         case '3':
             updateProfileMenu(user);
             break;
 
         default:
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
             break;
         }
     }
