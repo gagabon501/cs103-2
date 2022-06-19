@@ -94,15 +94,14 @@ vector<Policy> readPolicyFile(struct User user);
 void viewPolicy(struct User user);
 void showAdminPolicyMenu(struct User user);
 void showUserPolicyMenu(struct User user);
-
-char showMenu(vector<string> menu); // This is inside main.cpp
+char showMenu(vector<string> menu);
 struct Policy getUserPolicy(string policyNo);
 void getPolicyData(struct Policy &policy, string msg);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
 void newDateExpiry(string &dateExpiry, string dateStart);
-void gotoXY(int row, int col, string text);   // display characters/string at specific row, col
-string repl(char charToDisplay, int dispQty); // returns a string of characters
+void gotoXY(int row, int col, string text);
+string repl(char charToDisplay, int dispQty);
 void showHeader();
 void waitKey(string msg);
 
