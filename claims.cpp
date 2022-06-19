@@ -66,21 +66,21 @@ struct Claim
 
 //Function prototypes here
 void createClaim(struct User user, bool newClaim, string claimNo);
-void editClaim( struct User user);
+void editClaim(struct User user);
 void viewClaim(struct User user);
-void inputClaim(); // This it the total amount customer is claiming - done
+void inputClaim(); // This it the total amount customer is claiming 
 void payClaim();
 void saveClaim();
 vector <Claim> readClaimFile (struct User user);
 void deleteClaim(struct User user);
 void readClaimData();
-void getClaimData(); // new claim - done
+void getClaimData(); // new claim 
 //Menus prototypes
 void reviewClaim(struct User user);
-void showAdminClaimMenu(struct User user); //done
-void showUserClaimMenu(struct User user);//done
+void showAdminClaimMenu(struct User user); 
+void showUserClaimMenu(struct User user);
 int showMenu(vector<string> menu); 
-void showClaimMenu(struct User user);//done
+void showClaimMenu(struct User user);
 void dateFormat(string &date);
 
 
@@ -104,7 +104,7 @@ void showAdminClaimMenu(struct User user)
 {
     int choice = 0;
     vector<Claim> claim;
-    vector<string> menu = {
+    vector<string> menu {
             "Manage Insurance Claims",
             "============================================",
             "[1] Create New Claim",
@@ -146,7 +146,7 @@ void showUserClaimMenu(struct User user, string name)
 {
     int choice = 0;
     vector<Claim> claim;
-    vector<string> menu = {
+    vector<string> menu {
             "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
             "==========================================",
             "[1] Create New Claim",
@@ -233,8 +233,6 @@ void savePolicy(struct Claim claim)
 void reviewClaim(struct Claim claim, string name)
 {
 
-    char ans = 'N';
-
     cout << endl;
     cout << "============================================" << endl;
     cout << "Username: " << claim.username << endl;
@@ -246,21 +244,30 @@ void reviewClaim(struct Claim claim, string name)
     cout << "Expiry Date: " << claim.payClaim<< endl;
     cout <<" Claim description: " << claim. accDescription<<endl;
     cout << "============================================" << endl;
-    cout << "Do you want to edit the claim information? (y/n" << endl;
-
-            while (toupper(ans) == 'Y')
-            {
-               return editClaim;
-            }
-            
-            if (toupper(ans) == 'N')
-            {
-            return 0;
-            }
-};
-
-void deleteClaim(struct User user)
-{
 
 }
 
+void deleteClaim(struct User user){
+ 
+    // Open FIle pointers
+    fstream fin, fout;
+  
+    // Open the existing file
+    fin.open("claims.csv", ios::in);
+  
+    // Create a new file to store the non-deleted data
+    fout.open("claimsNew.csv", ios::out);
+  
+  
+    // user name to be deleted decide the data to be deleted
+    cout << "User name for the claim"
+         << "for the record to be deleted: ";
+     cin >> user.firstname, user.lastname; 
+
+    // removing the existing file
+    remove("claims.csv");
+  
+    // renaming the new file with the existing file name
+    rename("claimsNew.csv", "reportcard.csv");
+    
+}
