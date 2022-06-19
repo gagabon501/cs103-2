@@ -54,13 +54,13 @@ vector<User> readFile();
 void writeFile(struct User user);
 void dateFormat(string &date);
 void validateCode(char &code, string validEntries);
-int updateProfileMenu(struct User user);
+void updateProfileMenu(struct User user);
 char showMenu(vector<string> menu);
 void saveEditedUser(vector<User> userVector, struct User user);
 void changePassword(struct User &user);
-void gotoXY(int row, int col, string text); // display characters/string at specific row, col
+void gotoXY(int row, int col, string text);
 void updateUserInfo(struct User &user);
-string repl(char charToDisplay, int dispQty); // returns a string of characters
+string repl(char charToDisplay, int dispQty);
 void listUsers(string msg);
 void deleteUser();
 void showHeader();
@@ -505,7 +505,15 @@ void validateCode(char &code, string validEntries)
     }
 }
 
-int updateProfileMenu(struct User user)
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void updateProfileMenu(struct User user)
+ * Purpose      : Function to display the updating of profile information of the user
+ * Parameters   : struct User user --> user information
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
+void updateProfileMenu(struct User user)
 {
 
     char choice = ' ', exitChoice = ' ';
@@ -596,8 +604,6 @@ int updateProfileMenu(struct User user)
             break;
         }
     }
-
-    return choice;
 }
 
 /***********************************************************************************************************************************************
@@ -651,8 +657,8 @@ void changePassword(struct User &user)
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: changePassword(struct User &user)
- * Purpose      : Function to change password of the currently logged in user.
+ * Function Name: void updateUserInfo(struct User &user)
+ * Purpose      : Function to update the user info
  * Parameters   : struct User &user --> user information - 'user' variable is passed here by reference hence user.password data is updated here accordingly.
  * Returns      : No return value.
  * Author       : Gilberto Gabon
@@ -725,6 +731,14 @@ void saveEditedUser(vector<User> userVector, struct User user)
     userFile.close();
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void listUsers(string msg)
+ * Purpose      : Function to list users of the system. Only admins have access to this module. This reads the "users.csv" file
+ * Parameters   : string msg --> message to display
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void listUsers(string msg)
 {
     vector<User> userVector;
@@ -736,7 +750,7 @@ void listUsers(string msg)
     gotoXY(1, 65, repl('-', 50));
     for (int i = 0; i < (int)userVector.size(); i++)
     {
-        // cout << userVector[i].email << " " << userVector[i].firstname << " " << userVector[i].lastname << " " << userVector[i].phone << endl;
+
         userLine = to_string(i + 1) + ". " + userVector[i].email + " " + userVector[i].firstname + " " + userVector[i].lastname + " " + userVector[i].phone + " " + (userVector[i].accessLevel > 1 ? "Administrator" : "User");
 
         gotoXY(1, 65, userLine);
@@ -746,6 +760,14 @@ void listUsers(string msg)
     waitKey("Press any key to continue...");
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void deleteUser()
+ * Purpose      : Function to delete users of the system. Only admins have access to this module. This reads the "users.csv" file
+ * Parameters   : None
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void deleteUser()
 {
     vector<User> userVector;
@@ -754,18 +776,19 @@ void deleteUser()
     char ans = 'N';
     string userEmail = "";
 
-    listUsers("User list - select number to delete");
+    listUsers("User list - select number to delete"); // display users from the "users.csv" file
+
     gotoXY(1, 65, "Choice: ");
     cin >> choice;
+
     if (choice > (int)userVector.size() || choice <= 0)
     {
         gotoXY(1, 65, "");
         waitKey("*** Invalid choice. Select only a number from the list. ***");
-        // gotoXY(1, 65, "*** Invalid choice. Select only a number from the list. ***");
     }
     else
     {
-        userEmail = userVector[choice - 1].email;
+        userEmail = userVector[choice - 1].email; // get user email address from the displayed list
 
         gotoXY(1, 65, "\033[1;32mAre you sure to delete this user (Y/N)? \033[0m");
         cin >> ans;
@@ -789,23 +812,37 @@ void deleteUser()
             }
             userFile.close();
             waitKey("*** User " + userEmail + " successfully deleted ***");
-            // gotoXY(1, 65, "*** User " + userEmail + " successfully deleted ***");
-            // gotoXY(1, 65, "");
         }
         else
         {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
         }
     }
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void waitKey(string msg)
+ * Purpose      : General purpose function to display a message and wait for key press. Sort of suspending the system and display the message.
+ * Parameters   : string msg --> message to display
+ * Returns      : None
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 void waitKey(string msg)
 {
     cout << "\033[1;32m" << msg << "\033[0m";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
     getch();
 }
 
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: char showMenu(vector<string> menu)
+ * Purpose      : General purpose function to display a menu list based on the passed parameter
+ * Parameters   : vector<string> menu --> an array of strings to display as a menu
+ * Returns      : Returns the character pressed by the user
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
 char showMenu(vector<string> menu)
 {
     char ch = ' ';
