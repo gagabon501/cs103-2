@@ -10,9 +10,12 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+
+#include <fstream>
 #include <sstream>
 #include <vector>
-#include <fstream>
+
+
 
 using namespace std;
 
@@ -44,6 +47,7 @@ struct Claim
     string typeCover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
     char accDescription;
     float claimExcess; // total amount user has
+
     float payClaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
     float claimBal; // total balance after paying if any from the pay claim
 
@@ -75,6 +79,7 @@ vector <Claim> readClaimFile (struct User user);
 void deleteClaim(struct User user);
 void readClaimData();
 void getClaimData(); // new claim 
+
 //Menus prototypes
 void reviewClaim(struct User user);
 void showAdminClaimMenu(struct User user); 
@@ -90,8 +95,9 @@ void showClaimMenu(struct User user)
     // int choice = 0;
     vector<Claim> claim;
 
-    if (user.accessLevel > 2)
-    {
+
+    if (user.accessLevel > 1)
+
         showAdminClaimMenu(user);
     }
     else
@@ -118,7 +124,8 @@ void showAdminClaimMenu(struct User user)
   while (choice != 5)
     {
 
-        choice = showMenu(menu);
+
+        choice = showMenu(menu); // residing in main.cpp 
 
         switch (choice)
         {
@@ -175,7 +182,8 @@ void showUserClaimMenu(struct User user, string name)
 
 //Get claim information 
 
-void getClaimData(struct Claim claim, struct User user, string msg, int sum)
+
+void getClaimData(struct Claim claim)
 {
     char ans = 'N';
     
