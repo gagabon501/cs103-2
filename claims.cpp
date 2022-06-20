@@ -9,11 +9,10 @@
 #include "claims.h"
 #include <iostream>
 #include <string>
-#include <cstdio>
-
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <limits>
 
 
 
@@ -79,25 +78,23 @@ vector <Claim> readClaimFile (struct User user);
 void deleteClaim(struct User user);
 void readClaimData();
 void getClaimData(); // new claim 
+void reviewClaim(struct User user);
 
 //Menus prototypes
-void reviewClaim(struct User user);
 void showAdminClaimMenu(struct User user); 
 void showUserClaimMenu(struct User user);
-int showMenu(vector<string> menu); 
+string repl(char charToDisplay, int dispQty);
+char showMenu(vector<string> menu);
 void showClaimMenu(struct User user);
 void dateFormat(string &date);
 
 
 //Admin menu starts here
-void showClaimMenu(struct User user)
+void showMainMenu(struct User user)
 {
-    // int choice = 0;
-    vector<Claim> claim;
-
 
     if (user.accessLevel > 1)
-
+    {
         showAdminClaimMenu(user);
     }
     else
@@ -105,40 +102,44 @@ void showClaimMenu(struct User user)
         showUserClaimMenu(user);
     }
 }
-
+  
 void showAdminClaimMenu(struct User user)
 {
-    int choice = 0;
+    // int choice = 0;
+    char choice = ' ';
     vector<Claim> claim;
-    vector<string> menu {
-            "Manage Insurance Claims",
-            "============================================",
-            "[1] Create New Claim",
-            "[2] View Claim",
-            "[3] Edit Claim",
-            "[4] Delete Claim",
-            "[5] Exit",
-            "============================================",
+    vector<string> menu = {
+        "Manage Insurance Claims",
+        "============================================",
+        "\033[1;32m[1]\033[0m Create New Claim",
+        "\033[1;32m[2]\033[0m View Claim",
+        "\033[1;32m[3]\033[0m Edit Claim",
+        "\033[1;32m[4]\033[0m Delete Claim",
+        "\033[1;32m[5]\033[0m Exit",
+        "============================================",
+        "",
     };
+
 
   while (choice != 5)
     {
-
-
+        
         choice = showMenu(menu); // residing in main.cpp 
 
         switch (choice)
         {
-        case 1:
-            createClaim(user, true, "");
+        case '1':
+            createClaim(user, true, ""); // Policy number is taken from policyNum.txt record added by 1
             break;
-        case 2:
+        case '2':
             viewClaim(user);
             break;
-        case 3:
+        case '3':
+
             editClaim(user);
             break;
-        case 4:
+        case '4':
+
             deleteClaim(user);
             break;
         default:
@@ -149,17 +150,20 @@ void showAdminClaimMenu(struct User user)
 
 //User menu starts here
 
-void showUserClaimMenu(struct User user, string name)
-{
-    int choice = 0;
-    vector<Claim> claim;
-    vector<string> menu {
-            "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
-            "==========================================",
-            "[1] Create New Claim",
-            "[2] View Claim",
-            "[3] Exit",
-            "==========================================",
+    void showUserClaimMenu(struct User user)
+    {
+        // int choice = 0;
+        char choice = ' ';
+        vector<Claim> claim;
+        vector<string> menu = {
+          "Manage Insurance Claims",
+         "============================================",
+         "\033[1;32m[1]\033[0m Create New Claim",
+         "\033[1;32m[2]\033[0m View Claim",
+         "\033[1;32m[3]\033[0m Delete Policy",
+         "\033[1;32m[4]\033[0m Exit",
+        "============================================",
+        "",
     };
 
     while (choice != 3)
@@ -186,6 +190,7 @@ void showUserClaimMenu(struct User user, string name)
 void getClaimData(struct Claim claim)
 {
     char ans = 'N';
+    int sum;
     
     cout << "==================================================================================" << endl;
     cin.ignore(); 
@@ -268,10 +273,11 @@ void deleteClaim(struct User user){
   
   
     // user name to be deleted decide the data to be deleted
-    cout << "User name for the claim"
-         << "for the record to be deleted: ";
-     cin >> user.firstname, user.lastname; 
+    cout << "User first and last name for the claim"
+         << "for the record to be deleted: /n";
+     cin >> user.firstname; 
 
+     
     // removing the existing file
     remove("claims.csv");
   

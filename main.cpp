@@ -13,6 +13,7 @@
 #include <limits>
 #include "users.h"
 #include "policies.h"
+#include "claims.h"
 
 using namespace std;
 
