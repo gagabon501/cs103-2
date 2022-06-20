@@ -256,7 +256,7 @@ void showHeader()
     system("clear");
     gotoXY(1, 1, repl('-', w.ws_col - 1));                                 // w.ws_col --> number of columns of the terminal
     gotoXY(1, 1, "\033[1;32mVehicle Insurance System v1.0\033[0m");        // Green bold text
-    gotoXY(0, 50, "\033[1;32mABC Insurance System Company Ltd\033[0m");    // Green bold text
-    gotoXY(0, 40, "\033[1;32mDeveloped by TGG Software Solutions\033[0m"); // Green bold text
+    gotoXY(0, 50, "\033[1;32mABC Insurance Company Ltd\033[0m");           // Green bold text
+    gotoXY(0, 47, "\033[1;32mDeveloped by TGG Software Solutions\033[0m"); // Green bold text
     gotoXY(1, 1, repl('-', w.ws_col - 1));
 }
