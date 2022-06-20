@@ -64,12 +64,12 @@ string repl(char charToDisplay, int dispQty);
 void listUsers(string msg);
 void deleteUser();
 void showHeader();
-int displayLoginScreen();
+char displayLoginScreen();
 void waitKey(string msg);
 
-int displayLoginScreen()
+char displayLoginScreen()
 {
-    int choice = 0;
+    char choice = ' ';
 
     showHeader();
 
@@ -81,8 +81,8 @@ int displayLoginScreen()
     gotoXY(0, 5, "\033[1;32m[3]\033[0m Exit Program");
     gotoXY(1, 65, repl('-', 50));
     gotoXY(1, 65, "Choice: ");
-    cin >> choice;
-    return choice;
+    choice = getchar();
+    return (char)choice;
 }
 
 /***********************************************************************************************************************************************
@@ -95,23 +95,27 @@ int displayLoginScreen()
  *************************************************************************************************************************************************/
 void showLoginMenu(struct User &user)
 {
-    int choice = 0;
+    char choice = ' ';
 
-    while (choice != 3)
+    while (choice != '3')
     {
         choice = displayLoginScreen(); // start screen - displays the menu horizontally
 
-        if (choice == 1)
+        if (choice == '1')
         {
             doLogin(user);
             break;
         }
-        else if (choice == 2)
+        else if (choice == '2')
         {
             choice = doRegister();
         }
+        else
+        {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear the input buffer to avoid displaying the 'Choice:' prompt at the top of the screen
+        }
     }
-    if (choice == 3)
+    if (choice == '3')
     {
         exit(0);
     }
@@ -140,8 +144,11 @@ void doLogin(struct User &user)
 
     while (tries != 3)
     {
-        gotoXY(1, 65, "");
-        cout << "Enter username (email): ";
+        showHeader();
+        gotoXY(12, 65, "");
+        gotoXY(1, 65, "\033[1;32mLogin\033[0m");
+        gotoXY(1, 65, repl('-', 40));
+        gotoXY(1, 65, "Enter username: ");
         cin >> username;
         gotoXY(0, 65, "");
 
@@ -150,7 +157,7 @@ void doLogin(struct User &user)
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         // 'password' variable here is passed by reference - hence this gets updated inside getPasswd()function with the encrypted value
-        getPasswd(password, "        Enter password: "); // masks wit 'x' the inputted password
+        getPasswd(password, "      password: "); // masks wit 'x' the inputted password
 
         for (int i = 0; i < (int)userFile.size(); i++)
         {
@@ -204,6 +211,8 @@ int doRegister()
 {
     struct User user;
 
+    showHeader();
+
     gotoXY(1, 65, "=======================================================");
     gotoXY(1, 65, "      Vehicle Insurance System - User Registration");
     gotoXY(1, 65, "=======================================================");
@@ -229,7 +238,7 @@ void registerUser(struct User user)
 
     userFile = readFile();
 
-    gotoXY(1, 65, "              Email: ");
+    gotoXY(1, 65, "              Email: "); // 20-06-22: Create a validation checks for email (check if the @ character is present)
     cin >> user.email;
 
     if (!checkDuplicate(user.email, userFile))
@@ -241,7 +250,7 @@ void registerUser(struct User user)
         while (true)
         {
             gotoXY(1, 65, "");
-            getPasswd(user.password, "           Password: "); // masks wit 'x' the inputted password
+            getPasswd(user.password, "           Password: "); // masks wit 'x' the inputted password -- put validation - should contain at least 6-chars containing lowercase, uppercase, and numbers
             gotoXY(1, 65, "");
             getPasswd(confirmPassword, "   Re-type Password: "); // masks wit 'x' the inputted password
 
