@@ -9,11 +9,11 @@
 #include "claims.h"
 #include <iostream>
 #include <iomanip>
-#include <string>
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <limits>
+#include <string>
 
 using namespace std;
 
@@ -51,7 +51,7 @@ struct Claim
     float claimBal; // total balance after paying if any from the pay claim
 
     // Constructor to initialize members
-    Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
+   Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
     string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
     
     {
@@ -74,7 +74,6 @@ void viewClaim(struct User user);
 void inputClaim(); // This it the total amount customer is claiming 
 void payClaim();
 void saveClaim();
-vector <Claim> readClaimFile (struct User user);
 void deleteClaim(struct User user);
 void readClaimData();
 void getClaimData(); // new claim 
