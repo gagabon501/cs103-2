@@ -8,14 +8,12 @@
 
 #include "claims.h"
 #include <iostream>
-#include <string>
-#include <cstdio>
-
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <vector>
-
-
+#include <limits>
+#include <string>
 
 using namespace std;
 
@@ -23,6 +21,7 @@ struct User
 {
     string firstname;
     string lastname;
+    string phone;
     int accessLevel;
 
     // Constructor to initialize members
@@ -44,16 +43,17 @@ struct Claim
     string policyNum;
     string dateBirth;
     string dateIncident;
-
+    string typeCover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
+    char accDescription;
     float claimExcess; // total amount user has
-    char typeCover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
 
     float payClaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
     float claimBal; // total balance after paying if any from the pay claim
 
-
-    Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", char tcover = 'C', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
-
+    // Constructor to initialize members
+   Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
+    string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
+    
     {
         typeCover = tcover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
         payClaim = pclaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
@@ -63,42 +63,40 @@ struct Claim
         policyNum = policyno;
         dateBirth = dbirth;
         dateIncident = dincident;
-      
+        accDescription = descript;
     }
 };
 
 //Function prototypes here
-void createClaim();
-void editClaim();
-void viewClaim();
-void inputClaim(); // This it the total amount customer is claiming - done
-void payClaim(); // done
+void createClaim(struct User user, bool newClaim, string claimNo);
+void editClaim(struct User user);
+void viewClaim(struct User user);
+void inputClaim(); // This it the total amount customer is claiming 
+void payClaim();
 void saveClaim();
-vector <Claim> readClaimFile (struct User user); // done
-void deleteClaim();
+void deleteClaim(struct User user);
 void readClaimData();
-void getClaimData(); // new claim - done
+void getClaimData(); // new claim 
 
 //Menus prototypes
 void reviewClaim(struct User user);
-void showAdminClaimMenu(struct User user); //done
-void showUserClaimMenu(struct User user);//done
-int showMenu(vector<string> menu); // main.cpp
-void showClaimMenu(struct User user);//done
+void showAdminClaimMenu(struct User user); 
+void showUserClaimMenu(struct User user);
+char showMenu(vector<string> menu);
+void showClaimMenu(struct User user);
 void dateFormat(string &date);
 
 
 //Admin menu starts here
-
-void showPoliciesMenu(struct User user)
-
+void showClaimMenu(struct User user)
 {
     // int choice = 0;
     vector<Claim> claim;
 
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (user.accessLevel > 1)
-
+    {
         showAdminClaimMenu(user);
     }
     else
@@ -109,7 +107,8 @@ void showPoliciesMenu(struct User user)
 
 void showAdminClaimMenu(struct User user)
 {
-    int choice = 0;
+    // int choice = 0;
+    char choice = ' ';
     vector<Claim> claim;
     vector<string> menu = {
             "Manage Insurance Claims",
@@ -131,18 +130,16 @@ void showAdminClaimMenu(struct User user)
         switch (choice)
         {
         case 1:
-
-            createClaim(); //******trish delete note (may need to add in user to call to functions)
-
+            createClaim(user, true, "");
             break;
         case 2:
-            viewClaim();
+            viewClaim(user);
             break;
         case 3:
-            editClaim();
+            editClaim(user);
             break;
         case 4:
-            deleteClaim();
+            deleteClaim(user);
             break;
         default:
             break;
@@ -154,7 +151,7 @@ void showAdminClaimMenu(struct User user)
 
 void showUserClaimMenu(struct User user, string name)
 {
-    int choice = 0;
+    char choice = ' ';
     vector<Claim> claim;
     vector<string> menu = {
             "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
@@ -172,10 +169,10 @@ void showUserClaimMenu(struct User user, string name)
         switch (choice)
         {
         case 1:
-            createClaim();
+            createClaim(user, true, "");
             break;
         case 2:
-            viewClaim();
+            viewClaim(user);
             break;
         default:
             break;
@@ -188,27 +185,33 @@ void showUserClaimMenu(struct User user, string name)
 
 void getClaimData(struct Claim claim)
 {
+    char ans = 'N';
+    int sum;
 
+    cout << "==================================================================================" << endl;
     cin.ignore(); 
     getline(cin, claim.policyNum);
-    cout << "     Current policy number: /n";
+    cout << "Current policy number: /n";
     getline(cin, claim.dateBirth);
-    cout << "     Date of (DD-MM-YYYY): /n";
+    cout << "Date of (DD-MM-YYYY): /n";
     getline(cin, claim.dateIncident);
-    cout << "     Date of (DD-MM-YYYY): /n";
+    cout << "Date of (DD-MM-YYYY): /n";
     getline(cin, claim.typeCover);
-
-    cout << "     Excess type (C/F/T): /n";
-    cout << "     Excess Amount: /n";
+    cout << "Excess type (C/F/T): /n";
+    cin>> claim.accDescription;
+    cout << "Claim description: /n";
     cin >> claim.claimExcess;
-    cout << "     Claim amount: /n";
+    cout << "Excess Amount: /n";
     cin >>claim.claimBal;
+    cout << "Claim amount: /n";
     sum = claim.claimBal - claim.claimExcess;
     cout << "Total amount to pay is: " << sum;
     cout << endl;
     cout << "Approve claim and proceed (Y/N)" << endl;
-    cout << "If you choose N, yoour balance will be stored and you will returm to the main menu"<< endl;
+    cout << "If you choose N, your balance will be stored and you will return to the main menu"<< endl;
     cin >> ans;
+    cout << "==================================================================================" << endl;
+
 
             while (toupper(ans) == 'Y')
             {
@@ -222,8 +225,6 @@ void getClaimData(struct Claim claim)
             {
             claim.payClaim = claim.claimBal;
             }
-            return claim;
-
 };
 
 // this section will feed into the csv file
@@ -231,14 +232,52 @@ void savePolicy(struct Claim claim)
 {
     cout << "Claim Amount: " << claim.claimBal;
     fstream claimsFile("claims.csv", ios::app);
-    claimsFile << claim.username << ","  << claim.policyNum << "," << claim.dateBirth << "," << claim.dateIncident << "," << claim.typeCover << "," << claim.claimExcess << "," << claim.payClaim << "," <<claim.claimBal << endl;
+    claimsFile << claim.username << ","  << claim.policyNum << "," << claim.dateBirth << "," << claim.dateIncident << "," << claim.typeCover << "," << claim.claimExcess << "," << claim.payClaim << "," <<claim.claimBal << claim.accDescription <<","<< endl;
     claimsFile.close();
 }
 
 
-// review and edit claim - admin
+// review claim - admin
 
+void reviewClaim(struct Claim claim, string name)
+{
 
+    cout << endl;
+    cout << "============================================" << endl;
+    cout << "Username: " << claim.username << endl;
+    cout << "Policy Holder: " << claim. policyNum << endl;
+    cout << "Date of birth: " << claim.dateBirth << endl;
+    cout << "Date of incident: " << claim.dateIncident << endl;
+    cout << "Type cover: " << claim.typeCover << endl;
+    cout << "Claim excess: " << claim.claimExcess << endl;
+    cout << "Expiry Date: " << claim.payClaim<< endl;
+    cout <<" Claim description: " << claim. accDescription<<endl;
+    cout << "============================================" << endl;
 
+}
 
+void deleteClaim(struct User user){
+ 
+    // Open FIle pointers
+    fstream fin, fout;
+  
+    // Open the existing file
+    fin.open("claims.csv", ios::in);
+  
+    // Create a new file to store the non-deleted data
+    fout.open("claimsNew.csv", ios::out);
+  
+  
+    // user name to be deleted decide the data to be deleted
+    cout << "User name for the claim"
+         << "for the record to be deleted: ";
+     cin >> user.firstname; 
+
+    // removing the existing file
+    remove("claims.csv");
+  
+    // renaming the new file with the existing file name
+    rename("claimsNew.csv", "reportcard.csv");
+    
+}
 
