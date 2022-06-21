@@ -8,14 +8,12 @@
 
 #include "claims.h"
 #include <iostream>
-#include <string>
-#include <cstdio>
-
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <vector>
-
-
+#include <limits>
+#include <string>
 
 using namespace std;
 
@@ -23,6 +21,7 @@ struct User
 {
     string firstname;
     string lastname;
+    string phone;
     int accessLevel;
 
     // Constructor to initialize members
@@ -52,7 +51,7 @@ struct Claim
     float claimBal; // total balance after paying if any from the pay claim
 
     // Constructor to initialize members
-    Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
+   Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
     string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
     
     {
@@ -75,7 +74,6 @@ void viewClaim(struct User user);
 void inputClaim(); // This it the total amount customer is claiming 
 void payClaim();
 void saveClaim();
-vector <Claim> readClaimFile (struct User user);
 void deleteClaim(struct User user);
 void readClaimData();
 void getClaimData(); // new claim 
@@ -84,7 +82,7 @@ void getClaimData(); // new claim
 void reviewClaim(struct User user);
 void showAdminClaimMenu(struct User user); 
 void showUserClaimMenu(struct User user);
-int showMenu(vector<string> menu); 
+char showMenu(vector<string> menu);
 void showClaimMenu(struct User user);
 void dateFormat(string &date);
 
@@ -95,9 +93,10 @@ void showClaimMenu(struct User user)
     // int choice = 0;
     vector<Claim> claim;
 
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (user.accessLevel > 1)
-
+    {
         showAdminClaimMenu(user);
     }
     else
@@ -108,9 +107,10 @@ void showClaimMenu(struct User user)
 
 void showAdminClaimMenu(struct User user)
 {
-    int choice = 0;
+    // int choice = 0;
+    char choice = ' ';
     vector<Claim> claim;
-    vector<string> menu {
+    vector<string> menu = {
             "Manage Insurance Claims",
             "============================================",
             "[1] Create New Claim",
@@ -151,9 +151,9 @@ void showAdminClaimMenu(struct User user)
 
 void showUserClaimMenu(struct User user, string name)
 {
-    int choice = 0;
+    char choice = ' ';
     vector<Claim> claim;
-    vector<string> menu {
+    vector<string> menu = {
             "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
             "==========================================",
             "[1] Create New Claim",
@@ -186,7 +186,8 @@ void showUserClaimMenu(struct User user, string name)
 void getClaimData(struct Claim claim)
 {
     char ans = 'N';
-    
+    int sum;
+
     cout << "==================================================================================" << endl;
     cin.ignore(); 
     getline(cin, claim.policyNum);
@@ -270,7 +271,7 @@ void deleteClaim(struct User user){
     // user name to be deleted decide the data to be deleted
     cout << "User name for the claim"
          << "for the record to be deleted: ";
-     cin >> user.firstname, user.lastname; 
+     cin >> user.firstname; 
 
     // removing the existing file
     remove("claims.csv");
