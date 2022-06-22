@@ -35,7 +35,6 @@ struct User
 };
 
 // Each Claim should have the username, date of birth, policy number (will have car details etc), date of incident, and incident description.
-// It will then have the Total amount to claim, minus the excess amount
 
 struct Claim
 {
@@ -58,6 +57,7 @@ struct Claim
     {
         typeCover = tcover;  // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
         payClaim = pclaim;   // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
+
         claimBal = balclaim; // total balance after paying if any from the pay claim
         claimExcess = excclaim;
         username = uname;
@@ -73,6 +73,7 @@ void createClaim(struct User user, bool newClaim, string claimNo);
 void editClaim(struct User user);
 void viewClaim(struct User user);
 void inputClaim(); // This it the total amount customer is claiming
+
 void payClaim();
 void saveClaim();
 void deleteClaim(struct User user);
@@ -84,6 +85,7 @@ void getClaimData(); // new claim
 // Menus prototypes
 void reviewClaim(struct User user);
 void showAdminClaimMenu(struct User user);
+
 void showUserClaimMenu(struct User user);
 char showMenu(vector<string> menu);
 void showClaimMenu(struct User user);
@@ -93,6 +95,7 @@ void dateFormat(string &date);
 void showClaimMenu(struct User user)
 {
     char choice = 0;
+
     vector<Claim> claim;
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -228,7 +231,6 @@ void getClaimData(struct Claim claim)
     {
         claim.payClaim = claim.claimBal;
     }
-};
 
 // this section will feed into the csv file
 void saveClaim(struct Claim claim)
