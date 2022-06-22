@@ -3,7 +3,7 @@
 #include <vector>
 #include <iterator>
 #include <string>
-
+#include <limits>
 #include <algorithm>
 
 using namespace std;
@@ -30,8 +30,7 @@ struct User
     }
 };
 
-// Each Claim should have the username, date of birth, policy number (will have car details etc), date of incident, and incident description. 
-// It will then have the Total amount to claim, minus the excess amount
+// Each Claim should have the username, date of birth, policy number (will have car details etc), date of incident, and incident description.
 
 struct Reports
 {
@@ -42,15 +41,15 @@ struct Reports
     string typeCover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
     char accDescription;
     float claimExcess; // total amount user has
-    float payClaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
-    float claimBal; // total balance after paying if any from the pay claim
+    float payClaim;    // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
+    float claimBal;    // total balance after paying if any from the pay claim
 
     // Constructor to initialize members
-   Reports(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
-   string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
-    
+    Reports(string dincident = "", string policyno = "", string uname = "", string dbirth = "",
+            string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
+
     {
-        payClaim = pclaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
+        payClaim = pclaim;   // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
         claimBal = balclaim; // total balance after paying if any from the pay claim
         claimExcess = excclaim;
         username = uname;
@@ -59,7 +58,6 @@ struct Reports
         accDescription = descript;
     }
 };
-
 
 struct Policy
 {
@@ -97,8 +95,7 @@ void showReportMenu(struct User user);
 void showAdminReportMenu(struct User user);
 char showMenu(vector<string> menu);
 
-
-//menus
+// menus
 void showAdminReportMenu(struct User user)
 {
     // int choice = 0;
@@ -131,12 +128,10 @@ void showAdminPolicyMenu(struct User user)
         "",
     };
 
-
-  while (choice != 5)
+    while (choice != 5)
     {
 
-
-        choice = showMenu(menu); // residing in main.cpp 
+        choice = showMenu(menu); // residing in main.cpp
 
         switch (choice)
         {
@@ -161,7 +156,7 @@ void showAdminPolicyMenu(struct User user)
     }
 }
 
-//feed to the list of clients - this will connect to users
+// feed to the list of clients - this will connect to users
 void viewUser(struct User user)
 {
     fstream userFile("users.csv", ios::app); // open file in append mode
@@ -171,9 +166,9 @@ void viewUser(struct User user)
 
 // List of insurance policies due to expire in a particular period (date shall be inputted by user)
 void policiesToExpire(struct User user)
-{   
+{
     fstream policyFile("policy.csv", ios::app); // open file in append mode
-    policyFile << policy.policyNum << "," << policy.username << policy.typeCover << "," <<policy.dateExpiry << "," << endl;
+    policyFile << policy.policyNum << "," << policy.username << policy.typeCover << "," << policy.dateExpiry << "," << endl;
     policyFile.close();
 }
 
@@ -181,43 +176,37 @@ void policiesToExpire(struct User user)
 void overduePremiumsPoilcy(struct User user)
 {
     fstream policyFile("policy.csv", ios::app); // open file in append mode
-    policyFile << policy.policyNum << "," << policy.username << "," <<policy.dateExpiry << "," << policy.typeCover << "," << policy.carInsuredAmount << "," << policy.excessAmount << "," << policy.premiumTotalAmount << "," << policy.premiumPayAmount << "," << policy.payFrequency << endl;
+    policyFile << policy.policyNum << "," << policy.username << "," << policy.dateExpiry << "," << policy.typeCover << "," << policy.carInsuredAmount << "," << policy.excessAmount << "," << policy.premiumTotalAmount << "," << policy.premiumPayAmount << "," << policy.payFrequency << endl;
     policyFile.close();
 }
 
-//List of outstanding claims - link to claims
+// List of outstanding claims - link to claims
 void viewOutstandingClaims(struct User user)
 {
     fstream claimsFile("claims.csv", ios::app);
-    claimsFile << claim.username << ","  << claim.policyNum << ","  << claim.claimBal <<","<< endl;
+    claimsFile << claim.username << "," << claim.policyNum << "," << claim.claimBal << "," << endl;
     claimsFile.close();
 }
 
-
-//List of paid claims
+// List of paid claims
 void viewPaidClaims(struct User user)
 {
     fstream claimsFile("claims.csv", ios::app);
-    claimsFile << claim.username << ","  << claim.policyNum << "," << claim.payClaim << endl;
+    claimsFile << claim.username << "," << claim.policyNum << "," << claim.payClaim << endl;
     claimsFile.close();
 }
-
 
 // List of overdue premiums payments - link to policies
 void overduePremiumsPoilcy(struct User user);
 
-
-
-//List of outstanding claims - link to claims
+// List of outstanding claims - link to claims
 void viewOutstandingClaims(struct User user);
 
-
-
-//List of paid claims
+// List of paid claims
 void viewPaidClaims(struct User user);
 {
     cout << "Claim Amount: " << claim.claimBal;
     fstream claimsFile("claims.csv", ios::app);
-    claimsFile << claim.username << ","  << claim.policyNum << "," << claim.dateBirth << "," << claim.dateIncident << "," << claim.typeCover << "," << claim.claimExcess << "," << claim.payClaim << "," <<claim.claimBal << claim.accDescription <<","<< endl;
+    claimsFile << claim.username << "," << claim.policyNum << "," << claim.dateBirth << "," << claim.dateIncident << "," << claim.typeCover << "," << claim.claimExcess << "," << claim.payClaim << "," << claim.claimBal << claim.accDescription << "," << endl;
     claimsFile.close();
 }
