@@ -8,9 +8,7 @@
 
 #include "claims.h"
 #include <iostream>
-#include <string>
-#include <cstdio>
-
+#include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -21,6 +19,7 @@ struct User
 {
     string firstname;
     string lastname;
+    string phone;
     int accessLevel;
 
     // Constructor to initialize members
@@ -75,6 +74,7 @@ void payClaim();
 void saveClaim();
 vector<Claim> readClaimFile(struct User user);
 void deleteClaim(struct User user);
+
 void readClaimData();
 void getClaimData(); // new claim
 
@@ -89,7 +89,7 @@ void dateFormat(string &date);
 // Admin menu starts here
 void showClaimMenu(struct User user)
 {
-    // int choice = 0;
+    char choice = 0;
     vector<Claim> claim;
 
     if (user.accessLevel > 1)
@@ -104,8 +104,9 @@ void showClaimMenu(struct User user)
 }
 
 void showAdminClaimMenu(struct User user)
+
 {
-    int choice = 0;
+    char choice = ' ';
     vector<Claim> claim;
     vector<string> menu{
         "Manage Insurance Claims",
@@ -132,6 +133,7 @@ void showAdminClaimMenu(struct User user)
             viewClaim(user);
             break;
         case 3:
+
             editClaim(user);
             break;
         case 4:
@@ -145,9 +147,10 @@ void showAdminClaimMenu(struct User user)
 
 // User menu starts here
 
-void showUserClaimMenu(struct User user, string name)
+void showUserClaimMenu(struct User user)
 {
-    int choice = 0;
+
+    char choice = ' ';
     vector<Claim> claim;
     vector<string> menu{
         "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
@@ -159,9 +162,10 @@ void showUserClaimMenu(struct User user, string name)
     };
 
     while (choice != 3)
-    {
 
+    {
         choice = showMenu(menu);
+
         switch (choice)
         {
         case 1:
@@ -221,7 +225,7 @@ void getClaimData(struct Claim claim)
 };
 
 // this section will feed into the csv file
-void savePolicy(struct Claim claim)
+void saveClaim(struct Claim claim)
 {
     cout << "Claim Amount: " << claim.claimBal;
     fstream claimsFile("claims.csv", ios::app);
@@ -264,6 +268,7 @@ void deleteClaim(struct User user)
          << "for the record to be deleted: ";
     cin >> user.firstname, user.lastname;
 
+    cin >> user.firstname;
     // removing the existing file
     remove("claims.csv");
 
