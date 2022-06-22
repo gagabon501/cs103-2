@@ -4,10 +4,13 @@
 #include <iterator>
 #include <string>
 
+#include <algorithm>
+
 using namespace std;
 
 struct User
 {
+
     string email;
     string password;
     string firstname;
@@ -23,11 +26,12 @@ struct User
         password = passwd;
         firstname = fname;
         lastname = lname;
-        phone = ph;
         accessLevel = access;
     }
 };
 
+// Each Claim should have the username, date of birth, policy number (will have car details etc), date of incident, and incident description. 
+// It will then have the Total amount to claim, minus the excess amount
 
 struct Reports
 {
@@ -40,7 +44,6 @@ struct Reports
     float claimExcess; // total amount user has
     float payClaim; // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
     float claimBal; // total balance after paying if any from the pay claim
-
 
     // Constructor to initialize members
    Reports(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
@@ -83,6 +86,8 @@ struct Policy
     }
 };
 
+string outstandingClaims;
+
 void viewPaidClaims(struct User user);
 void viewOutstandingClaims(struct User user);
 void overduePremiumsPoilcy(struct User user);
@@ -110,8 +115,9 @@ void showAdminReportMenu(struct User user)
 
 void showAdminPolicyMenu(struct User user)
 {
-    char choice = 0;
     string accessStr = (user.accessLevel > 1) ? "Administrator Level" : "User Level";
+    char choice = ' ';
+    vector<Reports> report;
     vector<string> menu = {
         "Manage Insurance Reports",
         "============================================",
@@ -193,5 +199,25 @@ void viewPaidClaims(struct User user)
 {
     fstream claimsFile("claims.csv", ios::app);
     claimsFile << claim.username << ","  << claim.policyNum << "," << claim.payClaim << endl;
+    claimsFile.close();
+}
+
+
+// List of overdue premiums payments - link to policies
+void overduePremiumsPoilcy(struct User user);
+
+
+
+//List of outstanding claims - link to claims
+void viewOutstandingClaims(struct User user);
+
+
+
+//List of paid claims
+void viewPaidClaims(struct User user);
+{
+    cout << "Claim Amount: " << claim.claimBal;
+    fstream claimsFile("claims.csv", ios::app);
+    claimsFile << claim.username << ","  << claim.policyNum << "," << claim.dateBirth << "," << claim.dateIncident << "," << claim.typeCover << "," << claim.claimExcess << "," << claim.payClaim << "," <<claim.claimBal << claim.accDescription <<","<< endl;
     claimsFile.close();
 }

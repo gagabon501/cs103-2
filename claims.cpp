@@ -52,7 +52,9 @@ struct Claim
 
     // Constructor to initialize members
    Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "", 
+
     string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
+
     
     {
         typeCover = tcover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
@@ -75,6 +77,9 @@ void inputClaim(); // This it the total amount customer is claiming
 void payClaim();
 void saveClaim();
 void deleteClaim(struct User user);
+
+void readClaimData();
+
 void getClaimData(); // new claim 
 
 //Menus prototypes
@@ -84,7 +89,6 @@ void showUserClaimMenu(struct User user);
 char showMenu(vector<string> menu);
 void showClaimMenu(struct User user);
 void dateFormat(string &date);
-
 
 //Admin menu starts here
 void showClaimMenu(struct User user)
@@ -105,7 +109,7 @@ void showClaimMenu(struct User user)
 }
 
 void showAdminClaimMenu(struct User user)
-{
+
 {
     char choice = ' ';
     vector<Claim> claim;
@@ -117,9 +121,8 @@ void showAdminClaimMenu(struct User user)
         "\033[1;32m[3]\033[0m Edit Claim",
         "\033[1;32m[4]\033[0m Delete Claim",
         "\033[1;32m[5]\033[0m Exit",
-        "============================================",
-        "",
-    };
+          "============================================",
+      ""};
 
   while (choice != 5)
     {
@@ -136,6 +139,7 @@ void showAdminClaimMenu(struct User user)
             viewClaim(user);
             break;
         case 3:
+
             editClaim(user);
             break;
         case 4:
@@ -149,23 +153,26 @@ void showAdminClaimMenu(struct User user)
 
 //User menu starts here
 
-void showUserClaimMenu(struct User user, string name)
+void showUserClaimMenu(struct User user)
 {
-    char choice = 0;
+
+    char choice = ' ';
     vector<Claim> claim;
     vector<string> menu = {
-            "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
-            "==========================================",
-            "[1] Create New Claim",
-            "[2] View Claim",
-            "[3] Exit",
-            "==========================================",
+        "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
+        "==========================================",
+        "\033[1;32m[1]\033[0m Create New Claim",
+        "\033[1;32m[2]\033[0m View Claim",
+        "\033[1;32m[3]\033[0m Exit",
+        "==========================================",
+        "",
     };
 
     while (choice != 3)
+    
     {
-
         choice = showMenu(menu);
+        
         switch (choice)
         {
         case 1:
@@ -228,7 +235,7 @@ void getClaimData(struct Claim claim)
 };
 
 // this section will feed into the csv file
-void savePolicy(struct Claim claim)
+void saveClaim(struct Claim claim)
 {
     cout << "Claim Amount: " << claim.claimBal;
     fstream claimsFile("claims.csv", ios::app);
@@ -271,8 +278,8 @@ void deleteClaim(struct User user){
     // user name to be deleted decide the data to be deleted
     cout << "User name for the claim"
          << "for the record to be deleted: ";
-     cin >> user.firstname; 
 
+    cin >> user.firstname; 
     // removing the existing file
     remove("claims.csv");
   
