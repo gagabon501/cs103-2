@@ -75,7 +75,6 @@ void inputClaim(); // This it the total amount customer is claiming
 void payClaim();
 void saveClaim();
 void deleteClaim(struct User user);
-void readClaimData();
 void getClaimData(); // new claim 
 
 //Menus prototypes
@@ -90,7 +89,7 @@ void dateFormat(string &date);
 //Admin menu starts here
 void showClaimMenu(struct User user)
 {
-    // int choice = 0;
+    char choice = 0;    
     vector<Claim> claim;
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -107,18 +106,19 @@ void showClaimMenu(struct User user)
 
 void showAdminClaimMenu(struct User user)
 {
-    // int choice = 0;
+{
     char choice = ' ';
     vector<Claim> claim;
     vector<string> menu = {
-            "Manage Insurance Claims",
-            "============================================",
-            "[1] Create New Claim",
-            "[2] View Claim",
-            "[3] Edit Claim",
-            "[4] Delete Claim",
-            "[5] Exit",
-            "============================================",
+        "Manage Insurance Claim",
+        "============================================",
+        "\033[1;32m[1]\033[0m Create New Claim",
+        "\033[1;32m[2]\033[0m View Claim",
+        "\033[1;32m[3]\033[0m Edit Claim",
+        "\033[1;32m[4]\033[0m Delete Claim",
+        "\033[1;32m[5]\033[0m Exit",
+        "============================================",
+        "",
     };
 
   while (choice != 5)
@@ -151,7 +151,7 @@ void showAdminClaimMenu(struct User user)
 
 void showUserClaimMenu(struct User user, string name)
 {
-    char choice = ' ';
+    char choice = 0;
     vector<Claim> claim;
     vector<string> menu = {
             "Manage Insurance Claim for: " + user.firstname + " " + user.lastname,
