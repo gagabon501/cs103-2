@@ -33,7 +33,6 @@ struct User
 };
 
 // Each Claim should have the username, date of birth, policy number (will have car details etc), date of incident, and incident description.
-// It will then have the Total amount to claim, minus the excess amount
 
 struct Claim
 {
@@ -50,11 +49,13 @@ struct Claim
 
     // Constructor to initialize members
     Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "",
+
           string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
 
     {
-        typeCover = tcover;  // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
-        payClaim = pclaim;   // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
+        typeCover = tcover; // C-Comprehensive, F-Fire / Theft / Third Party, T-Third Party Only
+        payClaim = pclaim;  // Pay claim (this could be the full amount or a portion - if portion use total balance to work out the rest
+
         claimBal = balclaim; // total balance after paying if any from the pay claim
         claimExcess = excclaim;
         username = uname;
@@ -78,9 +79,12 @@ void deleteClaim(struct User user);
 void readClaimData();
 void getClaimData(); // new claim
 
+void getClaimData(); // new claim
+
 // Menus prototypes
 void reviewClaim(struct User user);
 void showAdminClaimMenu(struct User user);
+
 void showUserClaimMenu(struct User user);
 int showMenu(vector<string> menu);
 void showClaimMenu(struct User user);
@@ -111,13 +115,13 @@ void showAdminClaimMenu(struct User user)
     vector<string> menu{
         "Manage Insurance Claims",
         "============================================",
-        "[1] Create New Claim",
-        "[2] View Claim",
-        "[3] Edit Claim",
-        "[4] Delete Claim",
-        "[5] Exit",
+        "\033[1;32m[1]\033[0m Create New Claim",
+        "\033[1;32m[2]\033[0m View Claim",
+        "\033[1;32m[3]\033[0m Edit Claim",
+        "\033[1;32m[4]\033[0m Delete Claim",
+        "\033[1;32m[5]\033[0m Exit",
         "============================================",
-    };
+        ""};
 
     while (choice != 5)
     {
@@ -222,56 +226,55 @@ void getClaimData(struct Claim claim)
     {
         claim.payClaim = claim.claimBal;
     }
-};
 
-// this section will feed into the csv file
-void saveClaim(struct Claim claim)
-{
-    cout << "Claim Amount: " << claim.claimBal;
-    fstream claimsFile("claims.csv", ios::app);
-    claimsFile << claim.username << "," << claim.policyNum << "," << claim.dateBirth << "," << claim.dateIncident << "," << claim.typeCover << "," << claim.claimExcess << "," << claim.payClaim << "," << claim.claimBal << claim.accDescription << "," << endl;
-    claimsFile.close();
-}
+    // this section will feed into the csv file
+    void saveClaim(struct Claim claim)
+    {
+        cout << "Claim Amount: " << claim.claimBal;
+        fstream claimsFile("claims.csv", ios::app);
+        claimsFile << claim.username << "," << claim.policyNum << "," << claim.dateBirth << "," << claim.dateIncident << "," << claim.typeCover << "," << claim.claimExcess << "," << claim.payClaim << "," << claim.claimBal << claim.accDescription << "," << endl;
+        claimsFile.close();
+    }
 
-// review claim - admin
+    // review claim - admin
 
-void reviewClaim(struct Claim claim, string name)
-{
+    void reviewClaim(struct Claim claim, string name)
+    {
 
-    cout << endl;
-    cout << "============================================" << endl;
-    cout << "Username: " << claim.username << endl;
-    cout << "Policy Holder: " << claim.policyNum << endl;
-    cout << "Date of birth: " << claim.dateBirth << endl;
-    cout << "Date of incident: " << claim.dateIncident << endl;
-    cout << "Type cover: " << claim.typeCover << endl;
-    cout << "Claim excess: " << claim.claimExcess << endl;
-    cout << "Expiry Date: " << claim.payClaim << endl;
-    cout << " Claim description: " << claim.accDescription << endl;
-    cout << "============================================" << endl;
-}
+        cout << endl;
+        cout << "============================================" << endl;
+        cout << "Username: " << claim.username << endl;
+        cout << "Policy Holder: " << claim.policyNum << endl;
+        cout << "Date of birth: " << claim.dateBirth << endl;
+        cout << "Date of incident: " << claim.dateIncident << endl;
+        cout << "Type cover: " << claim.typeCover << endl;
+        cout << "Claim excess: " << claim.claimExcess << endl;
+        cout << "Expiry Date: " << claim.payClaim << endl;
+        cout << " Claim description: " << claim.accDescription << endl;
+        cout << "============================================" << endl;
+    }
 
-void deleteClaim(struct User user)
-{
+    void deleteClaim(struct User user)
+    {
 
-    // Open FIle pointers
-    fstream fin, fout;
+        // Open FIle pointers
+        fstream fin, fout;
 
-    // Open the existing file
-    fin.open("claims.csv", ios::in);
+        // Open the existing file
+        fin.open("claims.csv", ios::in);
 
-    // Create a new file to store the non-deleted data
-    fout.open("claimsNew.csv", ios::out);
+        // Create a new file to store the non-deleted data
+        fout.open("claimsNew.csv", ios::out);
 
-    // user name to be deleted decide the data to be deleted
-    cout << "User name for the claim"
-         << "for the record to be deleted: ";
-    cin >> user.firstname, user.lastname;
+        // user name to be deleted decide the data to be deleted
+        cout << "User name for the claim"
+             << "for the record to be deleted: ";
+        cin >> user.firstname, user.lastname;
 
-    cin >> user.firstname;
-    // removing the existing file
-    remove("claims.csv");
+        cin >> user.firstname;
+        // removing the existing file
+        remove("claims.csv");
 
-    // renaming the new file with the existing file name
-    rename("claimsNew.csv", "reportcard.csv");
-}
+        // renaming the new file with the existing file name
+        rename("claimsNew.csv", "reportcard.csv");
+    }
