@@ -14,22 +14,28 @@
 #include <vector>
 #include <limits>
 #include <string>
+#include "vis.h"
 
 using namespace std;
 
 struct User
 {
+    string email;
+    string password;
     string firstname;
     string lastname;
     string phone;
     int accessLevel;
 
     // Constructor to initialize members
-    User(string fname = "", string lname = "", int access = 1)
+    User(string em = "", string passwd = "", string fname = "", string lname = "", string ph = "", int access = 1)
     {
 
+        email = em;
+        password = passwd;
         firstname = fname;
         lastname = lname;
+        phone = ph;
         accessLevel = access;
     }
 };
@@ -52,7 +58,6 @@ struct Claim
 
     // Constructor to initialize members
     Claim(string dincident = "", string policyno = "", string uname = "", string dbirth = "",
-
           string tcover = "", char descript = 'A', float pclaim = 0.00, float balclaim = 0.00, float excclaim = 0.00)
 
     {
@@ -76,9 +81,7 @@ void inputClaim(); // This it the total amount customer is claiming
 void payClaim();
 void saveClaim();
 void deleteClaim(struct User user);
-
 void readClaimData();
-
 void getClaimData(); // new claim
 
 // Menus prototypes
@@ -123,24 +126,23 @@ void showAdminClaimMenu(struct User user)
         "============================================",
         ""};
 
-    while (choice != 5)
+    while (choice != '5')
     {
 
         choice = showMenu(menu); // residing in main.cpp
 
         switch (choice)
         {
-        case 1:
+        case '1':
             createClaim(user, true, "");
             break;
-        case 2:
+        case '2':
             viewClaim(user);
             break;
-        case 3:
-
+        case '3':
             editClaim(user);
             break;
-        case 4:
+        case '4':
             deleteClaim(user);
             break;
         default:
@@ -166,17 +168,17 @@ void showUserClaimMenu(struct User user)
         "",
     };
 
-    while (choice != 3)
+    while (choice != '3')
 
     {
         choice = showMenu(menu);
 
         switch (choice)
         {
-        case 1:
+        case '1':
             createClaim(user, true, "");
             break;
-        case 2:
+        case '2':
             viewClaim(user);
             break;
         default:

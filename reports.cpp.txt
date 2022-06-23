@@ -5,6 +5,7 @@
 #include <string>
 #include <limits>
 #include <algorithm>
+#include "vis.h"
 
 using namespace std;
 

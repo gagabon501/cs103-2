@@ -13,7 +13,7 @@
 #include <sstream>
 #include <vector>
 #include <limits>
-#include "policies.h"
+#include "vis.h"
 
 #define COMPREHENSIVE 0.10
 #define FIRE 0.08
@@ -81,29 +81,6 @@ struct Policy
         payFrequency = freq;       // W-Weekly, F-Fortnightly, M-Monthly
     }
 };
-
-// Function Prototypes here
-int getLastPolicyNum();
-void createPolicy(struct User user, bool newPolicy, string policyNo);
-void editPolicy(struct User user);
-void delPolicy(struct User user);
-void savePolicy(struct Policy policy);
-void saveEditedPolicy(vector<Policy> policyVector, struct Policy policy);
-void showPolicy(struct Policy policy, string name);
-vector<Policy> readPolicyFile(struct User user);
-void viewPolicy(struct User user);
-void showAdminPolicyMenu(struct User user);
-void showUserPolicyMenu(struct User user);
-char showMenu(vector<string> menu);
-struct Policy getUserPolicy(string policyNo);
-void getPolicyData(struct Policy &policy, string msg);
-void dateFormat(string &date);
-void validateCode(char &code, string validEntries);
-void newDateExpiry(string &dateExpiry, string dateStart);
-void gotoXY(int row, int col, string text);
-string repl(char charToDisplay, int dispQty);
-void showHeader();
-void waitKey(string msg);
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System

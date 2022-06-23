@@ -11,8 +11,7 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <limits>
-#include "users.h"
-#include "policies.h"
+#include "vis.h"
 
 using namespace std;
 
@@ -39,17 +38,7 @@ struct User
     }
 };
 
-// Function prototypes here
-void showMainMenu(struct User user);
-void showLoginMenu(struct User &user);
-void showAdminMenu(struct User user);
-void showUserMenu(struct User user);
-char showMenu(vector<string> menu);
-void updateProfileMenu(struct User user);
-void gotoXY(int row, int col, string text);
-string repl(char charToDisplay, int dispQty);
-void showHeader();
-void waitKey(string msg);
+// Function declations here
 
 int main()
 {
@@ -199,64 +188,4 @@ void showUserMenu(struct User user)
             break;
         }
     }
-}
-
-/***********************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: gotoXY(int row, int col, string text)
- * Purpose      : General purpose function to display text at a particular row and column
- * Parameters   : int row --> screen row, int col --> screen column, string text --> text to display
- * Returns      : None
- * Author       : Gilberto Gabon
- *************************************************************************************************************************************************/
-void gotoXY(int row, int col, string text)
-{
-    for (int i = 0; i < row; i++)
-    {
-        cout << endl;
-    }
-    for (int i = 0; i < col; i++)
-    {
-        cout << " ";
-    }
-    cout << text;
-}
-
-/***********************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: string repl(char charToDisplay, int dispQty)
- * Purpose      : General purpose function to display a series of characters - sort of replicating the display. This is useful for displaying lines.
- * Parameters   : char charToDisplay --> the character to display repeatedly, int dispQty --> number of times to display the character.
- * Returns      : Returns a 'string' which contains the replicated characters.
- * Author       : Gilberto Gabon
- *************************************************************************************************************************************************/
-string repl(char charToDisplay, int dispQty)
-{
-    string returnedString = "";
-    for (int i = 0; i < dispQty; i++)
-    {
-        returnedString.push_back(charToDisplay);
-    }
-    return returnedString;
-}
-
-/***********************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: void showHeader()
- * Purpose      : General purpose function to display the header of this application.
- * Parameters   : None
- * Returns      : None
- * Author       : Gilberto Gabon
- *************************************************************************************************************************************************/
-void showHeader()
-{
-    struct winsize w;                     // Structure that defines the row, column of the screen
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w); // function to get the row and column of the terminal
-
-    system("clear");
-    gotoXY(1, 1, repl('-', w.ws_col - 1));                                 // w.ws_col --> number of columns of the terminal
-    gotoXY(1, 1, "\033[1;32mVehicle Insurance System v1.0\033[0m");        // Green bold text
-    gotoXY(0, 50, "\033[1;32mABC Insurance Company Ltd\033[0m");           // Green bold text
-    gotoXY(0, 47, "\033[1;32mDeveloped by TGG Software Solutions\033[0m"); // Green bold text
-    gotoXY(1, 1, repl('-', w.ws_col - 1));
 }

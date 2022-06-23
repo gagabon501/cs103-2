@@ -13,12 +13,12 @@
 #include <sstream>
 #include <vector>
 #include <limits>
-#include <conio.h>
-#include "users.h"
+#include "vis.h"
 
 using namespace std;
 
 // Structure definitions here
+vector<User> readFile();
 
 // Define a user structure here: email, password, firstname, lastname, phone
 struct User
@@ -42,48 +42,6 @@ struct User
         accessLevel = access;
     }
 };
-
-// Function Prototypes here
-void doLogin(struct User &user);
-int doRegister();
-void registerUser(struct User user);
-bool checkDuplicate(string email, vector<User> frmUsersFile);
-string getPasswd(string &passwd, string textPrompt);
-string doEncrypt(string text);
-vector<User> readFile();
-void writeFile(struct User user);
-void dateFormat(string &date);
-void validateCode(char &code, string validEntries);
-void updateProfileMenu(struct User user);
-char showMenu(vector<string> menu);
-void saveEditedUser(vector<User> userVector, struct User user);
-void changePassword(struct User &user);
-void gotoXY(int row, int col, string text);
-void updateUserInfo(struct User &user);
-string repl(char charToDisplay, int dispQty);
-void listUsers(string msg);
-void deleteUser();
-void showHeader();
-char displayLoginScreen();
-void waitKey(string msg);
-
-char displayLoginScreen()
-{
-    char choice = ' ';
-
-    showHeader();
-
-    gotoXY(12, 65, "");
-
-    gotoXY(1, 65, repl('-', 50));
-    gotoXY(1, 67, "\033[1;32m[1]\033[0m Login");
-    gotoXY(0, 5, "\033[1;32m[2]\033[0m Register");
-    gotoXY(0, 5, "\033[1;32m[3]\033[0m Exit Program");
-    gotoXY(1, 65, repl('-', 50));
-    gotoXY(1, 65, "Choice: ");
-    choice = getchar();
-    return (char)choice;
-}
 
 /***********************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
@@ -184,8 +142,9 @@ void doLogin(struct User &user)
         }
         else
         {
-            gotoXY(2, 58, "*** Wrong username or password. Try again. ***");
-            gotoXY(1, 58, "");
+            gotoXY(2, 63, "");
+            waitKey("*** Wrong username or password. Try again. ***");
+            gotoXY(1, 63, "");
         }
 
         tries++;
@@ -296,63 +255,6 @@ void registerUser(struct User user)
 
 /*******************************************************************************************************************************************************************
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: string getPasswd(string &passwd, string textPrompt)
- * Purpose      : Function to accept the user's password.
- * Parameters   : A string for the password - passed by reference and a string for the text prompt displayed when asking the user to enter the password.
- * Returns      : Returns a string which contains the encrypted value of the password.
- * Author       : Gilberto Gabon
- ******************************************************************************************************************************************************************/
-string getPasswd(string &passwd, string textPrompt)
-{
-    {
-        int ch;
-
-        string textInput = "";
-
-        cout << textPrompt;
-
-        while (true)
-        {
-            ch = getch(); // this is from conio.h
-            if (ch == 10) // This is the ENTER key (LF-Line Feed character).
-            {
-                break;
-            }
-            else
-            {
-                textInput.push_back(ch); // save every character to the textInput variable of type string
-            }
-            cout << 'x'; // Display an 'x' instead of the actual text that is typed
-        }
-
-        passwd = doEncrypt(textInput); // simple encryption only (Caesar cipher)
-
-        return passwd; // returned string is encrypted already
-    }
-}
-
-/*******************************************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: string doEncrypt(string text)
- * Purpose      : Function that does the actual encryption of the plaintext string.
- * Parameters   : A string for the text to be encrypted.
- * Returns      : Returns the encrypted text.
- * Author       : Gilberto Gabon
- ******************************************************************************************************************************************************************/
-string doEncrypt(string text)
-{
-
-    for (int i = 0; i < (int)sizeof(text); i++)
-    {
-        // text[i] = (text[i] + 3) % 26; // Caesar Cipher here
-        text[i] = (text[i] + 10); // Caesar Cipher here
-    }
-
-    return text;
-}
-
-/*******************************************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * Function Name: vector<User> readFile()
  * Purpose      : Function that does the actual reading of the "users.csv" file.
  * Parameters   : None.
@@ -434,84 +336,6 @@ void writeFile(struct User user)
     fstream userFile("users.csv", ios::app); // open file in append mode
     userFile << user.email << "," << user.password << "," << user.lastname << "," << user.firstname << "," << user.phone << "," << user.accessLevel << "\n";
     userFile.close();
-}
-
-/*******************************************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: void dateFormat(string &date)
- * Purpose      : Function that formats the string to a date format (DD-MM-YYYY)
- * Parameters   : string &date --> the date string to be formatted. String is passed by reference and updated here accordingly.
- * Returns      : None
- * Author       : Gilberto Gabon
- ******************************************************************************************************************************************************************/
-void dateFormat(string &date)
-{
-    int ch, ctr = 0;
-
-    // clear contents first of the date string - otherwise you will end up adding the new date data into the existing one
-    date.clear();
-
-    while (true)
-    {
-
-        if (ctr == 2 || ctr == 5)
-        {
-            ctr++;
-            ch = 45;                       // dash (-) character
-            date.push_back(ch);            // save every character to the date variable of type string
-            cout << static_cast<char>(ch); // need to cast this, otherwise the ASCII code will be displayed instead of the character
-        }
-        else
-        {
-            ch = getch();            // this is from conio.h
-            if (ch == 10 || ctr > 9) // This is the ENTER key (LF-Line Feed character).
-            {
-                break;
-            }
-            else if (isdigit(ch)) // check if the typed character is a digit. Only accept digit entries.
-            {
-                ctr++;                         // increment character counter only when entry is a digit
-                date.push_back(ch);            // save every character to the date variable of type string
-                cout << static_cast<char>(ch); // need to cast this, otherwise the ASCII code will be displayed instead of the character
-            }
-        }
-    }
-}
-
-/*******************************************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: void validateCode(char &code, string validEntries)
- * Purpose      : General purpose function to get input from the user (a code) and it is validated againts a string of acceptable entries. Each letter in the string represents the acceptable entry.
- * Parameters   : char &code -> this is the code to be validated against - passed here by reference, string validEntries --> this is the string that contains the valid entries.
- * Returns      : None
- * Author       : Gilberto Gabon
- ******************************************************************************************************************************************************************/
-void validateCode(char &code, string validEntries)
-{
-
-    bool isValid = false;
-
-    while (true)
-    {
-        code = getch(); // the variable 'code' here is passed by reference and hence get updated based on the input  entry of the user.
-        cout << static_cast<char>(code);
-        for (int i = 0; i < (int)validEntries.size(); i++)
-        {
-            if (toupper(code) == toupper(validEntries[i]))
-            {
-                isValid = true;
-                break;
-            }
-        }
-        if (!isValid)
-        {
-            cout << "\nInvalid entry. Please re-enter: ";
-        }
-        else
-        {
-            break;
-        }
-    }
 }
 
 /*******************************************************************************************************************************************************************
@@ -638,8 +462,8 @@ void changePassword(struct User &user)
 
     if (oldPassword != user.password)
     {
-        gotoXY(2, 65, "*** Sorry, wrong password. Please re-enter correct password. ***");
-        gotoXY(1, 65, "");
+        gotoXY(2, 65, "");
+        waitKey("*** Sorry, wrong password. Please re-enter correct password. ***");
     }
     else
     {
@@ -652,14 +476,14 @@ void changePassword(struct User &user)
         {
             user.password = newPassword;
             saveEditedUser(userVector, user);
-            gotoXY(2, 65, "*** Password successfuly changed ***");
-            gotoXY(1, 65, "");
+            gotoXY(2, 65, "");
+            waitKey("*** Password successfuly changed ***");
         }
         else
         {
 
-            gotoXY(2, 65, "*** Passwords do not match. Please re-enter passwords. ***");
-            gotoXY(1, 65, "");
+            gotoXY(2, 65, "");
+            waitKey("*** Passwords do not match. Please re-enter passwords. ***");
         }
     }
 }
@@ -827,42 +651,4 @@ void deleteUser()
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
         }
     }
-}
-
-/***********************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: void waitKey(string msg)
- * Purpose      : General purpose function to display a message and wait for key press. Sort of suspending the system and display the message.
- * Parameters   : string msg --> message to display
- * Returns      : None
- * Author       : Gilberto Gabon
- *************************************************************************************************************************************************/
-void waitKey(string msg)
-{
-    cout << "\033[1;32m" << msg << "\033[0m";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
-    getch();
-}
-
-/***********************************************************************************************************************************************
- * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
- * Function Name: char showMenu(vector<string> menu)
- * Purpose      : General purpose function to display a menu list based on the passed parameter
- * Parameters   : vector<string> menu --> an array of strings to display as a menu
- * Returns      : Returns the character pressed by the user
- * Author       : Gilberto Gabon
- *************************************************************************************************************************************************/
-char showMenu(vector<string> menu)
-{
-    char ch = ' ';
-
-    for (int i = 0; i < (int)menu.size(); i++)
-    {
-        gotoXY(1, 65, menu[i]);
-    }
-
-    cout << "Choice: ";
-    ch = (char)getchar();
-
-    return ch;
 }
