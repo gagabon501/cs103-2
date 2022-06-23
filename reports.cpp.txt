@@ -32,7 +32,6 @@ struct User
 };
 
 // Each Claim should have the username, date of birth, policy number (will have car details etc), date of incident, and incident description.
-// It will then have the Total amount to claim, minus the excess amount
 
 struct Reports
 {
