@@ -6,12 +6,12 @@
  * Returns      : None
  ************************************************************************************/
 
-#include "claims.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include "vis.h"
 
 using namespace std;
 
@@ -71,7 +71,7 @@ struct Claim
 };
 
 // Function prototypes here
-void createClaim(struct User user, bool newClaim, string claimNo);
+void createClaim(struct User user, bool newClaim, string claimNo); // still needs to be created
 void editClaim(struct User user);
 void viewClaim(struct User user);
 void inputClaim(); // This it the total amount customer is claiming
@@ -81,7 +81,6 @@ vector<Claim> readClaimFile(struct User user);
 void deleteClaim(struct User user);
 void readClaimData();
 void getClaimData(); // new claim
-
 void getClaimData(); // new claim
 
 // Menus prototypes
@@ -89,14 +88,12 @@ void reviewClaim(struct User user);
 void showAdminClaimMenu(struct User user);
 
 void showUserClaimMenu(struct User user);
-int showMenu(vector<string> menu);
 void showClaimMenu(struct User user);
-void dateFormat(string &date);
 
 // Admin menu starts here
 void showClaimMenu(struct User user)
 {
-    char choice = 0;
+
     vector<Claim> claim;
 
     if (user.accessLevel > 1)
@@ -129,7 +126,7 @@ void showAdminClaimMenu(struct User user)
     while (choice != '5')
     {
 
-        choice = showMenu(menu); // residing in main.cpp
+        choice = showMenu(menu);
 
         switch (choice)
         {
@@ -191,6 +188,7 @@ void showUserClaimMenu(struct User user)
 void getClaimData(struct Claim claim)
 {
     char ans = 'N';
+    float sum = 0.00;
 
     cout << "==================================================================================" << endl;
     cin.ignore();
