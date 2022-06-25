@@ -166,10 +166,12 @@ void showAdminClaimMenu(struct User user)
             editClaim(user);
             break;
         case '4':
-            // deleteClaim(user);
-            // cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             processClaim(user);
             break;
+        case '5':
+            delClaim(user);
+            break;
+
         default:
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             break;
@@ -352,6 +354,76 @@ void doProcessClaim(struct User user, string claimNo)
     }
 }
 
+void delClaim(struct User user)
+{
+    string claimNum;
+    vector<Claim> claimVector;
+    struct Claim claim;
+    string name = user.firstname + " " + user.lastname;
+    char ans = 'N';
+
+    viewClaim(user); // Show the available claims
+
+    cout << "\nEnter claim number to delete (0=ESC): ";
+    cin >> claimNum;
+
+    // Entering "0" will not proceed to delete - sort of ESCaping the process (deleting policy)
+    if (claimNum != "0")
+    {
+        claim = getUserClaimData(claimNum); // get the user's policy information
+
+        if (claim.claimNum != "") // Check if Claim Number is on file. Proceed only if it is on file.
+        {
+
+            showClaim(claim, name);
+            cout << "Delete claim (y/n)? ";
+            cin >> ans;
+
+            if (toupper(ans) == 'Y')
+            {
+                claimVector = readClaimFile(user); // read the policy file and save the date into memory (vector<Policy>)
+
+                fstream claimFile("claims.csv", ios::out); // overwrite mode
+                for (int i = 0; i < (int)claimVector.size(); i++)
+                {
+                    if (claimVector[i].claimNum != claimNum)
+                    {
+                        // Re-write into the file only those records that do not have the same claimNum (claim being deleted)
+
+                        claimFile << claimVector[i].username << ","
+                                  << claimVector[i].policyNum << ","
+                                  << claimVector[i].claimNum << ","
+                                  << claimVector[i].typeCover << ","
+                                  << claimVector[i].dateIncident << ","
+                                  << claimVector[i].accDescription << ","
+                                  << claimVector[i].claimExcess << ","
+                                  << claimVector[i].payClaim << ","
+                                  << claimVector[i].claimBal << ","
+                                  << claimVector[i].approvalStatus << ","
+                                  << claimVector[i].remarks
+                                  << endl;
+                    }
+                }
+                claimFile.close();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            }
+            else
+            {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            }
+        }
+        else
+        {
+            cout << "\nClaim number: " << claimNum << " not on file." << endl;
+            waitKey("Press any key to continue...");
+        }
+    }
+    else
+    {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+    }
+}
+
 // Get claim information
 void getClaimData(struct Claim &claim, string msg, struct User user)
 {
@@ -513,31 +585,6 @@ void viewClaim(struct User user)
         gotoXY(1, 65, "");
         waitKey("No claims to show...");
     }
-}
-
-void deleteClaim(struct User user)
-{
-
-    // Open FIle pointers
-    fstream fin, fout;
-
-    // Open the existing file
-    fin.open("claims.csv", ios::in);
-
-    // Create a new file to store the non-deleted data
-    fout.open("claimsNew.csv", ios::out);
-
-    // user name to be deleted decide the data to be deleted
-    cout << "User name for the claim"
-         << "for the record to be deleted: ";
-    // cin >> user.firstname, user.lastname;
-
-    // cin >> user.firstname;
-    // removing the existing file
-    remove("claims.csv");
-
-    // renaming the new file with the existing file name
-    rename("claimsNew.csv", "reportcard.csv");
 }
 
 // Reads one record from claims.csv based on the claimNo

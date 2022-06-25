@@ -55,13 +55,13 @@ string payFeqDesc(char payFreq);                                          // Thi
 string approvalDesc(char appCode);                                        // This functions returns a string that expands the meaning of the claims approval status (i.e. I=In-Process, Y=Approved, N=Denied)
 
 // From claims.cpp
-void showAdminClaimMenu(struct User user);
-void showUserClaimMenu(struct User user);
-void showClaimMenu(struct User user);
-void createClaim(struct User user, bool newClaim, string claimNo); // create a new claim
-void editClaim(struct User user);                                  // edit a claim - only Admins can do this
-void processClaim(struct User user);
-void doProcessClaim(struct User user, string claimNum);
+void showClaimMenu(struct User user);                                 // Main Claims menu
+void showAdminClaimMenu(struct User user);                            // Admin menus for Claims module
+void showUserClaimMenu(struct User user);                             // User menus for Claims module
+void createClaim(struct User user, bool newClaim, string claimNo);    // create a new claim
+void editClaim(struct User user);                                     // edit a claim - only Admins can do this
+void processClaim(struct User user);                                  // Process a claim (approve or deny)
+void doProcessClaim(struct User user, string claimNum);               // Actual processing of claims
 void saveClaim(struct Claim &claim);                                  // save claim data - used during adding of new claim
 void saveEditedClaim(vector<Claim> claimVector, struct Claim claim);  // save edited claim - only Admins execute this function
 void showClaim(struct Claim claim, string name);                      // displays contents of a claim based on claim structure
@@ -69,9 +69,8 @@ int getLastClaimNum();                                                // gets th
 void getClaimData(struct Claim &claim, string msg, struct User user); // gets user input on claims
 struct Claim getUserClaimData(string claimNo);                        // reads the file "claims.csv" and gets one record based on claimNo
 vector<Claim> readClaimFile(struct User user);                        // reads whole file
-void viewClaim(struct User user);
-
-void deleteClaim(struct User user);
+void viewClaim(struct User user);                                     // View a list of claims
+void delClaim(struct User user);                                      // Delete a claim
 
 // From main.cpp
 void showMainMenu(struct User user);      // Function to show the Main Menu of the system. Menu displayed is based on the access level of the current user (Admin or User)
