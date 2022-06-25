@@ -2,8 +2,9 @@
  * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
  * File         : policies.cpp
  * Purpose      : Program file to manage Insurance Policies in the Vehicle Insurance System
- * Parameters   : struct User user
- * Returns      : None
+ * Parameters   : N/A
+ * Returns      : N/A
+ * Author       : Gilberto Gabon
  ************************************************************************************/
 
 #include <iostream>
@@ -300,7 +301,7 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
 void showPolicy(struct Policy policy, string name)
 {
     string strPolicyCover = "         Coverage (C/F/T): ";
-    strPolicyCover.push_back(policy.typeCover); // Needs to do this to concatenate this into the field descprtion string because policy.typeCover is of type char
+    strPolicyCover.push_back(policy.typeCover); // Needs to do this to concatenate this into the field description string because policy.typeCover is of type char
                                                 // Otherwise if you just concatenate 'string' and a 'char' data type, it causes "segmentation fault" error.
 
     string strPaymentFreq = "Payment Frequency (W/F/M): ";
@@ -425,7 +426,20 @@ void savePolicy(struct Policy policy)
 {
 
     fstream policyFile("policy.csv", ios::app); // open file in append mode
-    policyFile << policy.policyNum << "," << policy.username << "," << policy.carMake << "," << policy.carColor << "," << policy.carRego << "," << policy.dateInsured << "," << policy.dateExpiry << "," << policy.typeCover << "," << policy.carInsuredAmount << "," << policy.excessAmount << "," << policy.premiumTotalAmount << "," << policy.premiumPayAmount << "," << policy.payFrequency << endl;
+    policyFile << policy.policyNum << ","
+               << policy.username << ","
+               << policy.carMake << ","
+               << policy.carColor << ","
+               << policy.carRego << ","
+               << policy.dateInsured << ","
+               << policy.dateExpiry << ","
+               << policy.typeCover << ","
+               << policy.carInsuredAmount << ","
+               << policy.excessAmount << ","
+               << policy.premiumTotalAmount << ","
+               << policy.premiumPayAmount << ","
+               << policy.payFrequency
+               << endl;
     policyFile.close();
 }
 
@@ -881,4 +895,103 @@ void newDateExpiry(string &dateExpiry, string dateStart)
         dateExpiry.push_back(strNewYear[i]);
     }
     cout << dateExpiry;
+}
+
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: string typeCoverDesc(char typeCover)
+ * Purpose      : This functions returns a string that expands the meaning of the type of insurance cover (i.e. Comprehensive, Fire/Theft, Third Party)
+ * Parameters   : char typeCover --> the code for the insurance coverage
+ * Returns      : Returns a string - the description of the insurance coverage
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
+string typeCoverDesc(char typeCover)
+{
+    string typeCoverDescription = "";
+
+    switch (toupper(typeCover))
+    {
+    case 'C':
+
+        typeCoverDescription = "Comprehensive";
+        break;
+    case 'F':
+
+        typeCoverDescription = "Fire/Theft";
+        break;
+    case 'T':
+
+        typeCoverDescription = "Third Party";
+        break;
+
+    default:
+        break;
+    }
+    return typeCoverDescription;
+}
+
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: string payFeqDesc(char payFreq)
+ * Purpose      : This functions returns a string that expands the meaning of the payment frequency (i.e. Weekly, Forthnightly, Monthly)
+ * Parameters   : char payFreq --> the code for the payment frequency
+ * Returns      : Returns a string - the description of the payment frequency
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
+string payFeqDesc(char payFreq)
+{
+    string payFreqDescription = "";
+
+    switch (toupper(payFreq))
+    {
+    case 'W':
+
+        payFreqDescription = "Weekly";
+        break;
+    case 'F':
+
+        payFreqDescription = "Forthnightly";
+        break;
+    case 'T':
+
+        payFreqDescription = "Monthly";
+        break;
+
+    default:
+        break;
+    }
+    return payFreqDescription;
+}
+
+/***********************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: string payFeqDesc(char payFreq)
+ * Purpose      : This functions returns a string that expands the meaning of the payment frequency (i.e. Weekly, Forthnightly, Monthly)
+ * Parameters   : char payFreq --> the code for the payment frequency
+ * Returns      : Returns a string - the description of the payment frequency
+ * Author       : Gilberto Gabon
+ *************************************************************************************************************************************************/
+string approvalDesc(char appCode)
+{
+    string description = "";
+
+    switch (toupper(appCode))
+    {
+    case 'I':
+
+        description = "In-process";
+        break;
+    case 'Y':
+
+        description = "Approved";
+        break;
+    case 'N':
+
+        description = "Denied";
+        break;
+
+    default:
+        break;
+    }
+    return description;
 }
