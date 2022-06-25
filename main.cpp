@@ -106,21 +106,15 @@ void showAdminMenu(struct User user)
         gotoXY(1, 65, user.email);
         gotoXY(1, 65, accessStr);
 
-        // cout << user.firstname << " " << user.lastname << endl;
-        // cout << user.email << endl;
-        // cout << accessStr << endl;
-
-        choice = showMenu(menu);
+          choice = showMenu(menu);
 
         switch (choice)
         {
         case '1':
-
             showPoliciesMenu(user);
             break;
         case '2':
-            cout << "2. Manage Claims\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            showClaimMenu(user);
             break;
         case '3':
             cout << "3. System Reports\n";
@@ -176,8 +170,7 @@ void showUserMenu(struct User user)
             showPoliciesMenu(user);
             break;
         case '2':
-            cout << "[2] Manage Claims\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            showClaimMenu(user);
             break;
         case '3':
             updateProfileMenu(user);
