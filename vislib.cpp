@@ -8,6 +8,7 @@
 #include <limits>
 #include <iomanip>
 #include <conio.h>
+#include <ctime>
 #include "vis.h"
 
 using namespace std;
@@ -106,7 +107,7 @@ char showMenu(vector<string> menu)
 void waitKey(string msg)
 {
     cout << "\033[1;32m" << msg << "\033[0m";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
     getch();
 }
 
@@ -155,8 +156,9 @@ void dateFormat(string &date)
         }
         else
         {
-            ch = getch();            // this is from conio.h
-            if (ch == 10 || ctr > 9) // This is the ENTER key (LF-Line Feed character).
+            ch = getch();  // this is from conio.h
+                           // if (ch == 10 || ctr > 9) // This is the ENTER key (LF-Line Feed character).
+            if (ctr >= 10) // This is the ENTER key (LF-Line Feed character).
             {
                 break;
             }
@@ -168,6 +170,98 @@ void dateFormat(string &date)
             }
         }
     }
+}
+
+/*******************************************************************************************************************************************************************
+ * Title        : CS-103 Integrated Studio I Assessment 2: Vehicle Insurance System
+ * Function Name: void isValidate(string date)
+ * Purpose      : Function to check if the date string in the format DD-MM-YYYY is a valid date
+ * Parameters   : string date --> the date string to be validated
+ * Returns      : bool isValid
+ * Author       : Gilberto Gabon
+ ******************************************************************************************************************************************************************/
+bool isValidDate(string date)
+{
+    bool isValid = false;
+    bool isLeapYear = false;
+    bool isThirtyDay = false;
+    bool isDayValid = false;
+    bool isMonthValid = false;
+    bool isYearValid = false;
+
+    int day = 0, month = 0, year = 0, currentYear = 0;
+    string sday, smonth, syear;
+
+    time_t now = time(0); // From <ctime> header
+    tm *ltm = localtime(&now);
+
+    currentYear = 1900 + ltm->tm_year;
+
+    // Break string into day, month, year
+    for (int i = 0; i < (int)date.size(); i++)
+    {
+        if (i >= 0 && i < 2)
+        {
+            sday.push_back(date[i]);
+        }
+        else if (i > 2 && i < 5)
+        {
+            smonth.push_back(date[i]);
+        }
+        else if (i > 5 && i < 10)
+        {
+            syear.push_back(date[i]);
+        }
+    }
+
+    // Convert strings to integer for more accurate evaluation
+    day = stoi(sday);
+    month = stoi(smonth);
+    year = stoi(syear);
+
+    isLeapYear = (year % 4 == 0 ? true : false); // if Divisible by 4 then it's a leap year
+
+    // Validate the day first
+    if (month == 9 || month == 4 || month == 6 || month == 11) // Thirty days are September, April, June, and November - all the rest are 31 except February alone
+    {
+        isThirtyDay = true;
+    }
+
+    if (month == 2 && isLeapYear && (day > 0 && day < 30))
+    {
+        isDayValid = true;
+    }
+    else if (month == 2 && !isLeapYear && (day > 0 && day < 29))
+    {
+        isDayValid = true;
+    }
+    else if (isThirtyDay && (day > 0 && day < 31))
+    {
+        isDayValid = true;
+    }
+    else if (day > 0 && day < 31)
+    {
+        isDayValid = true;
+    }
+
+    // Validate month
+    if (month > 0 && month < 13)
+    {
+        isMonthValid = true;
+    }
+
+    // Validate year
+    if (year >= currentYear)
+    {
+        isYearValid = true;
+    }
+
+    if (isDayValid && isMonthValid && isYearValid)
+    {
+        isValid = true;
+    }
+
+    return isValid;
 }
 
 /*******************************************************************************************************************************************************************

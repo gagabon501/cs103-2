@@ -150,14 +150,15 @@ void showAdminPolicyMenu(struct User user)
             createPolicy(user, true, ""); // Policy number is taken from policyNum.txt record added by 1
             break;
         case '2':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             viewPolicy(user);
             break;
         case '3':
-
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             editPolicy(user);
             break;
         case '4':
-
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             delPolicy(user);
             break;
         default:
@@ -200,9 +201,11 @@ void showUserPolicyMenu(struct User user)
         switch (choice)
         {
         case '1':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             createPolicy(user, true, "");
             break;
         case '2':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             viewPolicy(user);
             break;
         default:
@@ -243,11 +246,15 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
         while (toupper(ans) != 'Y')
         {
 
-            getPolicyData(policy, msg); // Take user inputs of policy data
-                                        // showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
+            if (getPolicyData(policy, msg))
+            {
 
-            gotoXY(1, 65, "Save policy (y/n)? ");
-            cin >> ans;
+                gotoXY(1, 65, repl('-', 45));
+                gotoXY(1, 65, "        Save policy (y/n)? ");
+                cin >> ans;
+
+            }; // Take user inputs of policy data
+               // showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
         }
 
         savePolicy(policy);
@@ -256,7 +263,7 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
         fstream policyFile("policyNum.txt", ios::out); // open file in write mode
         policyFile << lastPolicyNum << endl;
         policyFile.close();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+        // cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer -
     }
     else
     {
@@ -272,19 +279,23 @@ void createPolicy(struct User user, bool newPolicy, string policyNo)
 
             while (toupper(ans) != 'Y')
             {
-                getPolicyData(policy, msg); // Take user inputs of policy data
+                if (getPolicyData(policy, msg))
+                {
+                    gotoXY(1, 65, repl('-', 45));
+                    gotoXY(1, 65, "        Save policy (y/n)? ");
+                    cin >> ans;
+
+                }; // Take user inputs of policy data
 
                 // showPolicy(policy, newPolicy ? name : policy.username); // Show the policy data that was just entered to the user for confirmation.
-
-                gotoXY(1, 65, "Save policy (y/n)? ");
-                cin >> ans;
             }
             saveEditedPolicy(policyVector, policy);
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
         }
         else
         {
-            cout << "\nPolicy number: " << policyNo << " not on file." << endl;
+            // cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer -
+            gotoXY(1, 1, "Policy number: " + policyNo + " not on file. ");
             waitKey("Press any key to continue...");
         }
     }
@@ -308,10 +319,10 @@ void showPolicy(struct Policy policy, string name)
     strPaymentFreq.push_back(policy.payFrequency); // Needs to do this to concatenate this into the field descprtion string because policy.payFrequency is of type char
                                                    // Otherwise if you just concatenate 'string' and a 'char' data type, it causes "segmentation fault" error.
 
-    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, repl('-', 45));
     gotoXY(1, 65, "               Policy No.: " + policy.policyNum);
     gotoXY(1, 65, "            Policy Holder: " + name);
-    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, repl('-', 45));
     gotoXY(1, 65, "                 Car Make: " + policy.carMake);
     gotoXY(1, 65, "                Car Color: " + policy.carColor);
     gotoXY(1, 65, "                 Car REGO: " + policy.carRego);
@@ -321,7 +332,7 @@ void showPolicy(struct Policy policy, string name)
     gotoXY(1, 65, "           Insured Amount: " + to_string(policy.carInsuredAmount)); // Convert 'float' to 'string' here too to avoid "segmentation fault" error
     gotoXY(1, 65, "            Excess Amount: " + to_string(policy.excessAmount));     // Convert 'float' to 'string' here too to avoid "segmentation fault" error
     gotoXY(1, 65, strPaymentFreq);
-    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, repl('-', 45));
     gotoXY(1, 65, ""); // to put a newline
 }
 
@@ -334,84 +345,98 @@ void showPolicy(struct Policy policy, string name)
  * Returns      : No return value.
  * Author       : Gilberto Gabon
  *************************************************************************************************************************************************/
-void getPolicyData(struct Policy &policy, string msg)
+bool getPolicyData(struct Policy &policy, string msg)
 {
     string coverType = "CFT";
     string payFreq = "WFM";
+    bool isOkToProceed = false;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
 
     gotoXY(1, 65, ""); // just to position the cursor for the next set of screen outputs
-
-    // gotoXY(1,65,endl;
-    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, repl('-', 45));
     gotoXY(1, 65, msg + " No.: " + policy.policyNum);
-    gotoXY(1, 65, "============================================");
+    gotoXY(1, 65, repl('-', 45));
     gotoXY(1, 65, "                 Car Make: ");
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
     getline(cin, policy.carMake);
     gotoXY(0, 65, "                Car Color: ");
     getline(cin, policy.carColor);
     gotoXY(0, 65, "                 Car REGO: ");
     getline(cin, policy.carRego);
     gotoXY(0, 65, "  Start Date (DD-MM-YYYY): ");
-    dateFormat(policy.dateInsured);
+    dateFormat(policy.dateInsured); // Get a formatted date
 
-    gotoXY(1, 65, "  Expiry Date(DD-MM-YYYY): "); // Actually user need not enter this. System will create the expiry which is one year from start date.
-
-    newDateExpiry(policy.dateExpiry, policy.dateInsured);
-
-    gotoXY(1, 65, "         Coverage (C/F/T): ");
-
-    validateCode(policy.typeCover, coverType); // policy.typeCover is passed here by reference - hence it gets updated inside validateCode()
-
-    gotoXY(1, 65, "           Insured Amount: ");
-    cin >> policy.carInsuredAmount;
-    gotoXY(0, 65, "            Excess Amount: ");
-    cin >> policy.excessAmount;
-    gotoXY(0, 65, "Payment Frequency (W/F/M): ");
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the validateCode() function be called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
-
-    validateCode(policy.payFrequency, payFreq); // policy.payFrequency is passed here by reference - hence it gets updated inside validateCode()
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the validateCode() function be called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
-
-    switch (toupper(policy.typeCover))
+    if (isValidDate(policy.dateInsured)) // Check if date entered is valid
     {
-    case 'C':
+        gotoXY(1, 65, "  Expiry Date(DD-MM-YYYY): "); // Actually user need not enter this. System will create the expiry which is one year from start date.
 
-        policy.premiumTotalAmount = policy.carInsuredAmount * COMPREHENSIVE;
-        break;
-    case 'F':
+        newDateExpiry(policy.dateExpiry, policy.dateInsured);
 
-        policy.premiumTotalAmount = policy.carInsuredAmount * FIRE;
-        break;
-    case 'T':
+        gotoXY(1, 65, "         Coverage (C/F/T): ");
 
-        policy.premiumTotalAmount = policy.carInsuredAmount * THIRDPARTY;
-        break;
+        validateCode(policy.typeCover, coverType); // policy.typeCover is passed here by reference - hence it gets updated inside validateCode()
 
-    default:
-        break;
+        gotoXY(1, 65, "           Insured Amount: ");
+
+        cin >> policy.carInsuredAmount;
+        gotoXY(0, 65, "            Excess Amount: ");
+        cin >> policy.excessAmount;
+        gotoXY(0, 65, "Payment Frequency (W/F/M): ");
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
+
+        validateCode(policy.payFrequency, payFreq); // policy.payFrequency is passed here by reference - hence it gets updated inside validateCode()
+
+        // cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
+
+        switch (toupper(policy.typeCover))
+        {
+        case 'C':
+
+            policy.premiumTotalAmount = policy.carInsuredAmount * COMPREHENSIVE;
+            break;
+        case 'F':
+
+            policy.premiumTotalAmount = policy.carInsuredAmount * FIRE;
+            break;
+        case 'T':
+
+            policy.premiumTotalAmount = policy.carInsuredAmount * THIRDPARTY;
+            break;
+
+        default:
+            break;
+        }
+
+        switch (toupper(policy.payFrequency))
+        {
+        case 'W':
+
+            policy.premiumPayAmount = policy.premiumTotalAmount / WEEKLY;
+            break;
+        case 'F':
+
+            policy.premiumPayAmount = policy.premiumTotalAmount / FORTHNIGHTLY;
+            break;
+        case 'M':
+
+            policy.premiumPayAmount = policy.premiumTotalAmount / MONTHLY;
+            break;
+
+        default:
+            break;
+        }
+        isOkToProceed = true;
+    }
+    else
+    {
+        // cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
+        gotoXY(1, 65, "");
+        waitKey("Invalid date entry. Please enter valid date.");
+        isOkToProceed = false;
     }
 
-    switch (toupper(policy.payFrequency))
-    {
-    case 'W':
-
-        policy.premiumPayAmount = policy.premiumTotalAmount / WEEKLY;
-        break;
-    case 'F':
-
-        policy.premiumPayAmount = policy.premiumTotalAmount / FORTHNIGHTLY;
-        break;
-    case 'M':
-
-        policy.premiumPayAmount = policy.premiumTotalAmount / MONTHLY;
-        break;
-
-    default:
-        break;
-    }
+    return isOkToProceed;
 }
 
 /***********************************************************************************************************************************************
@@ -505,7 +530,7 @@ void viewPolicy(struct User user)
     vector<Policy> policy;
 
     policy = readPolicyFile(user);
-
+    // cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
     if (policy.size() > 0)
     {
 
@@ -742,18 +767,18 @@ void editPolicy(struct User user)
 {
     string policyNum;
     viewPolicy(user);
-
-    cout << "\nEnter policy number to edit (0=ESC): ";
+    gotoXY(1, 1, "Enter policy number to edit (0=ESC): ");
     cin >> policyNum;
 
     // Entering "0" will not proceed to delete - sort of ESCaping the process (deleting policy)
     if (policyNum != "0")
     {
-        createPolicy(user, false, policyNum); // Using createPolicy() in Edit Mode
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+        createPolicy(user, false, policyNum);                // Using createPolicy() in Edit Mode
     }
     else
     {
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
     }
 }
 
@@ -774,7 +799,8 @@ void delPolicy(struct User user)
     char ans = 'N';
 
     viewPolicy(user); // Show the available policies to the user with administrator access
-    cout << "\nEnter policy number to delete (0=ESC): ";
+
+    gotoXY(1, 1, "Enter policy number to DELETE (0=ESC): ");
     cin >> policyNum;
 
     // Entering "0" will not proceed to delete - sort of ESCaping the process (deleting policy)
@@ -824,7 +850,8 @@ void delPolicy(struct User user)
         }
         else
         {
-            cout << "\nPolicy number: " << policyNum << " not on file." << endl;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            gotoXY(1, 1, "Policy number: " + policyNum + " not on file. ");
             waitKey("Press any key to continue...");
         }
     }
