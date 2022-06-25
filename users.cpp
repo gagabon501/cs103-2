@@ -412,22 +412,24 @@ void updateProfileMenu(struct User user)
         case '3':
             if (user.accessLevel > 1)
             {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
                 listUsers("List of users:");
             }
             else
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             }
 
             break;
         case '4':
             if (user.accessLevel > 1)
             {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
                 deleteUser();
             }
             else
             {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             }
 
             break;
@@ -616,6 +618,7 @@ void deleteUser()
 
     if (choice > (int)userVector.size() || choice <= 0)
     {
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
         gotoXY(1, 65, "");
         waitKey("*** Invalid choice. Select only a number from the list. ***");
     }

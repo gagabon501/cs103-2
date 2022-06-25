@@ -157,18 +157,23 @@ void showAdminClaimMenu(struct User user)
         switch (choice)
         {
         case '1':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             createClaim(user, true, "");
             break;
         case '2':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             viewClaim(user);
             break;
         case '3':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             editClaim(user);
             break;
         case '4':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             processClaim(user);
             break;
         case '5':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             delClaim(user);
             break;
 
@@ -201,9 +206,11 @@ void showUserClaimMenu(struct User user)
         switch (choice)
         {
         case '1':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             createClaim(user, true, "");
             break;
         case '2':
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
             viewClaim(user);
             break;
         default:
@@ -243,7 +250,7 @@ void createClaim(struct User user, bool newClaim, string claimNo)
         fstream claimFile("claimNum.txt", ios::out); // open file in write mode
         claimFile << lastClaimNum << endl;
         claimFile.close();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
     }
     else
     {
@@ -265,11 +272,12 @@ void createClaim(struct User user, bool newClaim, string claimNo)
                 cin >> ans;
             }
             saveEditedClaim(claimVector, claim);
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
         }
         else
         {
-            cout << "\nClaim number: " << claimNo << " not on file." << endl;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
+            gotoXY(1, 1, "Claim number: " + claimNo + " not on file. ");
             waitKey("Press any key to continue...");
         }
     }
@@ -414,7 +422,8 @@ void delClaim(struct User user)
         }
         else
         {
-            cout << "\nClaim number: " << claimNum << " not on file." << endl;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer
+            gotoXY(1, 1, "Claim number: " + claimNum + " not on file. ");
             waitKey("Press any key to continue...");
         }
     }
@@ -459,8 +468,21 @@ void getClaimData(struct Claim &claim, string msg, struct User user)
 
     claim.typeCover = userPolicy.typeCover; // get the insurance policy coverage
     gotoXY(1, 65, "        Insurance coverage: " + typeCoverDesc(claim.typeCover));
-    gotoXY(1, 65, "Incident Date (DD-MM-YYYY): ");
-    dateFormat(claim.dateIncident);
+
+    while (true)
+    {
+        gotoXY(1, 65, "Incident Date (DD-MM-YYYY): ");
+        dateFormat(claim.dateIncident);
+        if (isValidDate(claim.dateIncident))
+        {
+            break;
+        }
+        else
+        {
+            gotoXY(1, 65, "");
+            waitKey("Invalid date entry. Please enter valid date.");
+        }
+    }
 
     gotoXY(1, 65, "      Incident Description: ");
     getline(cin, claim.accDescription);

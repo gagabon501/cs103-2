@@ -20,6 +20,7 @@ void dateFormat(string &date);                       // Formats a date input str
 void validateCode(char &code, string validEntries);  // Validate a code based on the set of valid entries (one character per code)
 string getPasswd(string &passwd, string textPrompt); // get user password - masks the password with 'x'
 string doEncrypt(string text);                       // Does simple encryption of text
+bool isValidDate(string date);
 
 // From users.cpp
 void doLogin(struct User &user);                                // Does actual Login
@@ -47,7 +48,7 @@ void viewPolicy(struct User user);                                        // Sho
 void showAdminPolicyMenu(struct User user);                               // Shows Policy Menu for Admins
 void showUserPolicyMenu(struct User user);                                // Shows Policy Menu for ordinar user
 struct Policy getUserPolicy(string policyNo);                             // This functions reads the "policy.csv" file and returns the policy information of a user for a particular policy number
-void getPolicyData(struct Policy &policy, string msg);                    // This function takes data input from the user when creating or editing a policy.
+bool getPolicyData(struct Policy &policy, string msg);                    // This function takes data input from the user when creating or editing a policy.
 void newDateExpiry(string &dateExpiry, string dateStart);                 // This functions returns a formatted expiry date that is one year from the dateStart
 void showPoliciesMenu(struct User user);                                  // Function to show the Policies Menu of the Vehicle Insurance System application. This is the main menu for the Policies Module.
 string typeCoverDesc(char typeCover);                                     // This functions returns a string that expands the meaning of the type of insurance cover (i.e. Comprehensive, Fire/Theft, Third Party)
@@ -71,6 +72,11 @@ struct Claim getUserClaimData(string claimNo);                        // reads t
 vector<Claim> readClaimFile(struct User user);                        // reads whole file
 void viewClaim(struct User user);                                     // View a list of claims
 void delClaim(struct User user);                                      // Delete a claim
+
+// From reports.cpp
+void showReportsMenu(struct User user);      // Main Reports Menu
+void showAdminReportsMenu(struct User user); // Reports Admin Menu
+void showUserReportsMenu(struct User user);  // Reports User Menu
 
 // From main.cpp
 void showMainMenu(struct User user);      // Function to show the Main Menu of the system. Menu displayed is based on the access level of the current user (Admin or User)
