@@ -106,25 +106,18 @@ void showAdminMenu(struct User user)
         gotoXY(1, 65, user.email);
         gotoXY(1, 65, accessStr);
 
-        // cout << user.firstname << " " << user.lastname << endl;
-        // cout << user.email << endl;
-        // cout << accessStr << endl;
-
         choice = showMenu(menu);
 
         switch (choice)
         {
         case '1':
-
             showPoliciesMenu(user);
             break;
         case '2':
-            cout << "2. Manage Claims\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            showClaimMenu(user);
             break;
         case '3':
-            cout << "3. System Reports\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            showReportsMenu(user);
             break;
         case '4':
             updateProfileMenu(user);
@@ -155,12 +148,13 @@ void showUserMenu(struct User user)
         "======================================",
         "\033[1;32m[1]\033[0m Manage Insurance Policies",
         "\033[1;32m[2]\033[0m Manage Claims",
-        "\033[1;32m[3]\033[0m Update Profile",
-        "\033[1;32m[4]\033[0m Exit Program",
+        "\033[1;32m[3]\033[0m Reports",
+        "\033[1;32m[4]\033[0m Update Profile",
+        "\033[1;32m[5]\033[0m Exit Program",
         "======================================",
         ""};
 
-    while (choice != '4')
+    while (choice != '5')
     {
         // system("clear"); // clear screen
         showHeader();
@@ -176,10 +170,12 @@ void showUserMenu(struct User user)
             showPoliciesMenu(user);
             break;
         case '2':
-            cout << "[2] Manage Claims\n";
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // This clears the input buffer - helps in getting the getline() function called to do its job (get input from user) instead of skipping it because of the newline character stuffed before.
+            showClaimMenu(user);
             break;
         case '3':
+            showReportsMenu(user);
+            break;
+        case '4':
             updateProfileMenu(user);
             break;
 

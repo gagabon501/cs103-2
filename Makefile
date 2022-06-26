@@ -10,7 +10,7 @@ LDFLAGS =
 # Makefile settings - Can be customized.
 APPNAME = vis
 EXT = .cpp
-SRCDIR = /home/gag501/Documents/00_DipSoftwareDev/Assessments/CS103_Integrated_Studio-1/CS103_Assessment-2_Gilberto_Gabon/cs103-2
+SRCDIR = /Users/patricia/Documents/cs103-2
 OBJDIR = obj
 
 ############## Do not change anything from here downwards! #############
