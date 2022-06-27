@@ -20,7 +20,7 @@ void dateFormat(string &date);                       // Formats a date input str
 void validateCode(char &code, string validEntries);  // Validate a code based on the set of valid entries (one character per code)
 string getPasswd(string &passwd, string textPrompt); // get user password - masks the password with 'x'
 string doEncrypt(string text);                       // Does simple encryption of text
-bool isValidDate(string date);
+bool isValidDate(string date);                       // Check if string passed is a valid date of the format (DD-MM-YYYY)
 
 // From users.cpp
 void doLogin(struct User &user);                                // Does actual Login
