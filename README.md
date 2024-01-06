@@ -1,7 +1,6 @@
 # cs103-2
 
-CS103 Assessment-2 Project - Vehicle Insurance System
-This is a console-based app created in C++ for a school project as part of the requirement in CS103 - Integrated Studio-1
+CS103 Assessment-2 Project - Vehicle Insurance System. This is a console-based app created in C++ for a school project as part of the requirement in CS103 - Integrated Studio-1
 
 ## Introduction
 This report discusses the development of a console-based software application using the C++ programming language. The software application will manage the business requirements of a vehicle insurance company.
@@ -32,7 +31,7 @@ Insurance System_Component_Structure.pdf
 * Technical Style Guide – to enable consistent coding style, a Technical Style Guide was developed. The style guide defines the naming conventions of variables used in the system, the documentation of functions and files used in the system, and
 good and clean coding styles. Refer to 08_TECHNICAL STYLE GUIDE.pdf
 * Collaboration
-** Github – to enable a common platform for storing the source codes and tracking revisions, the GIT version control system was used. A Github repository was created for the application. This repository is located at https://github.com/yoobeesdc/cs103-2 
+  - Github – to enable a common platform for storing the source codes and tracking revisions, the GIT version control system was used. A Github repository was created for the application. This repository is located at https://github.com/yoobeesdc/cs103-2 
 ** Regular Progress Meetings via Teams – regular agile meetings/progress meetings were held to discuss issues, feedback, and other relevant topics related to the development of the software application. See screenshot of progress meetings calendar 10_Project_Progress_Meetings.png
 ** Blog - to enable sharing of personal experiences in the development of the software application, the author has set up his own “blog” located at https://ggabon-vehicle-insurance-system.blogspot.com/
   
