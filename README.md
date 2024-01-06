@@ -39,12 +39,12 @@ good and clean coding styles. Refer to 08_TECHNICAL STYLE GUIDE.pdf
 The software application was coded based on the information gathered during the planning stage. The user requirements, UMLdiagrams, and the technical style guides became the framework in coding the software application (app).
 The codes for the app were organised into six (6) different source codes (.cpp) files, and one header file (vis.h):
 * main.cpp - This is the main entry of the application. Inside main.cpp, the login function is called and on successful login, the main menu is called and a variable (user) with a data type structure User is filled with contents of user information including, the user email, lastname, firstname, phone, and access level. Unsuccessful logins are given appropriate error messages. Three (3) attempts of unsuccessful logins will terminate the application. Only users who are registered into the system may attempt to login. At the start of the application, there are three (3) options: [1] Login [2] Register [3] Exit Program. Users who would want to get an insurance policy with ABC Insurance will need to select option 2 to register into the system. During user registration, information such as email address, lastname, firstname, phone, and passwords are asked from the user. On successful registration, the user information is saved into the “users.csv” file. Passwords are encrypted before being saved into the file. For purposes of this project, the encryption method is a simple Caesar cipher. This file contains the following functions:
-* int main() - The main entry point of the application
-* void showMainMenu(struct User user) - Function to show the Main Menu of the system. Menu displayed is based on the access level of the current user (Admin or User)
-* void showLoginMenu(struct User &user) - Function to show the Login Menu of the Vehicle Insurance System application. This is the first function called by the system.
-* void showAdminMenu(struct User user) - Function to show the Menu for the Administrator of the system.
-* void showUserMenu(struct User user) - Function to show the Menu for the ordinary user of the system.
-* void updateProfileMenu(struct User user) - Function to display the updating of profile information of the user
+- int main() - The main entry point of the application
+- void showMainMenu(struct User user) - Function to show the Main Menu of the system. Menu displayed is based on the access level of the current user (Admin or User)
+- void showLoginMenu(struct User &user) - Function to show the Login Menu of the Vehicle Insurance System application. This is the first function called by the system.
+- void showAdminMenu(struct User user) - Function to show the Menu for the Administrator of the system.
+- void showUserMenu(struct User user) - Function to show the Menu for the ordinary user of the system.
+- void updateProfileMenu(struct User user) - Function to display the updating of profile information of the user
 * policies.cpp - This file contains all the functions related to management of insurance policies. Included in this file are the functions to Create, View, Edit, and Delete an Insurance Policy. The availability of the functions relies on the access level of the user. Users who are considered application administrators (access level 4) can do all the functionalities of this module, e.g. Create, View, Edit, and Delete. Users with access level 1 (ordinary users/clients) can only Create New Policy and View Policy (read-only). Policy records are saved into the “policies.csv” file. During creation of new policy, the app opens the “policyNum.txt” file. This file contains the last policy number that was assigned to during the creation of the new policy. Policy numbers are assigned sequentially. Functions to read and write the “policies.csv” file is contained in this file (policies.cpp). This file contains the following functions:
 - int getLastPolicyNum() - gets last policy number - reads from "policyNum.txt"
 - void createPolicy(struct User user, bool newPolicy, string policyNo) - Create new policy
@@ -106,7 +106,7 @@ The codes for the app were organised into six (6) different source codes (.cpp) 
 - string getPasswd(string &passwd, string textPrompt) - get user password - masks the password with 'x'
 - string doEncrypt(string text) - Does simple encryption of text
 - bool isValidDate(string date) - Check if string passed is a valid date of the format (DD-MM-YYYY)
-- vis.h - This is the header file for this application. This file contains all the function protoypes used in this application. This file is called in every .cpp file used in the app.List of Attachments.
+* vis.h - This is the header file for this application. This file contains all the function protoypes used in this application. This file is called in every .cpp file used in the app.List of Attachments.
 ## The following documents are part of this report:
 * 01_CS103-Assessment2-Report_GilbertoGabon.pdf
 * 02_CS103_Assessment2_presentation.pdf
