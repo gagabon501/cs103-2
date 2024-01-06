@@ -1,4 +1,4 @@
-# cs103-2
+# CS103-2 - INTEGRATED STUDIO I
 
 CS103 Assessment-2 Project - Vehicle Insurance System. This is a console-based app created in C++ for a school project as part of the requirement in CS103 - Integrated Studio-1
 
